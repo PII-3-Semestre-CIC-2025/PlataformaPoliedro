@@ -16,3 +16,8 @@
 - [@LeonardoTBelo](https://github.com/LeonardoTBelo)  
 - [@HenriqueNalin](https://github.com/HenriqueNalin)  
 - [@VPortoV](https://github.com/VPortoV)
+
+# RODAR:
+```bash
+npm run dev
+```
