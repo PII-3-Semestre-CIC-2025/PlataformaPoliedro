@@ -241,3 +241,32 @@ gap: 0.25rem;
     height: 1px;
     margin-top: .75rem;
 }
+
+
+.etapa-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
+}
+
+.dropdown {
+    background-color: #12B8C8;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+    appearance: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dropdown option {
+    color: #12B8C8;
+    background-color: #e0e0e0;
+    font-size: 1rem;
+}
