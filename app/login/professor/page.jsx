@@ -1,7 +1,12 @@
+'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+import { ModalCadastro } from '@/components/modal-cadastro';
 
 const LoginProfPage = () => {
+    const [showCadastroModal, setShowCadastroModal] = useState(false);
     return(
+        <>
         <div className="split-container">
             <section className="login-box white-section">
                 <h2>Login</h2>
@@ -22,13 +27,17 @@ const LoginProfPage = () => {
                 
                 <div className="divider"></div>
                 
-                <a href="cadastro.html">
-                    <button type="button" className="cadastro-btn">Cadastre-se</button>
-                </a>
+                <button type="button" className="cadastro-btn" onClick={() => setShowCadastroModal(true)}>Cadastre-se</button>
             </section>
 
             <div className="pattern-section d-none d-lg-block col-lg-6"  />
         </div>
+
+        {showCadastroModal && (
+                <ModalCadastro onClose={() => setShowCadastroModal(false)} />
+        )}
+
+        </>
     );
 }
 
