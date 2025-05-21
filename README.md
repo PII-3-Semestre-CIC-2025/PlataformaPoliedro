@@ -21,3 +21,4 @@
 ```bash
 npm run dev
 ```
+abre [https://](http://localhost:3000/) no navegador
