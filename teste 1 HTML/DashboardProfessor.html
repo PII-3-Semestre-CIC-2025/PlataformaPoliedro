@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Professor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<body class="professor-dashboard">
+    <header class="dashboard-header-prof">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-3">
+                    <img src="img/logo-cubo.png" alt="Logo" class="logo">
+                </div>
+                <div class="col-8 turma-info">
+                    <span class="turma-atual">Turma Atual: 7ª A </span>
+                    <span class="prof-atual">Professor: Leonardo Nogueira</span>
+                </div>
+                <div class="col-1">
+                    <a href="index.html" class="logout-btn">↻</a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <br><br>
+    <div class="container caixa-informacao">
+        <div class="row">
+            <div class="col-12 info-box">
+                <span class="total-alunos">Total de Alunos: 30</span>
+                <span class="media-turma">Média da Turma: 8.9</span>
+                <span class="aluno-destaque">Aluno Destaque: Vitor Porto (195 PoliPoints)</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container botoes-abas">
+        <div class="rowcols-3 ">
+            <button class="botao alunos"><i class="fas fa-graduation-cap icone"></i> Alunos</button>
+            <button class="botao pontuacao"><i class="fas fa-award icone"></i> Pontuação</button>
+            <button class="botao ranking"><i class="fas fa-list-ol icone"></i> Ranking</button>
+            <button class="botao avaliacoes"><i class="fas fa-clipboard icone"></i> Avaliações</button>
+            <button class="botao relatorios"><i class="fas fa-file-alt icone"></i> Relatórios</button>
+            <button class="botao config"><i class="fas fa-cog icone"></i> Configuração</button>
+
+        </div>
+    </div>
+</body>
+
+</html>
