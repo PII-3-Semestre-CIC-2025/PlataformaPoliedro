@@ -262,3 +262,97 @@ body.turma-page {
     background-color: #8CB44C;
     color: white;
 }
+
+.dashboard-header-prof {
+    align-content: center;
+    font-size: 25px;
+    height: 45px;
+    background-color: #124F8F;
+    color: white;
+    align-content: end;
+}
+
+.turma-info {
+    text-align: end;
+}
+
+.turma-atual {
+    margin-right: 120px;
+}
+
+.logout-btn {
+    text-align: end;
+    margin-left: 40px;
+}
+
+.info-box {
+    justify-content: center;
+    align-content: center;
+    background-color: #CCCC;
+    text-align: center;
+    height: 50px;
+    color: #124F8F;
+    font-size: 25px;
+    border-radius: 15px;
+}
+
+.total-alunos {
+    margin-right: 70px;
+}
+
+.media-turma {
+    margin-right: 70px;
+}
+
+.caixa-informacao {
+    justify-content: center;
+}
+.botoes-abas{
+    margin-top: -500px;
+}
+.botao {
+    width: 200px;
+    height: 180px;
+    margin: 10px;
+    border-radius: 20px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.botao:hover {
+    transform: scale(1.05);
+}
+
+.alunos {
+    background-color: #17c1e8;
+}
+
+.pontuacao {
+    background-color: #f24679;
+}
+
+.ranking {
+    background-color: #f4a300;
+}
+
+.avaliacoes {
+    background-color: #f4a300;
+}
+
+.relatorios {
+    background-color: #17c1e8;
+}
+
+.config {
+    background-color: #f24679;
+}
+
+.icone {
+    font-size: 30px;
+    margin-right: 8px;
+}
