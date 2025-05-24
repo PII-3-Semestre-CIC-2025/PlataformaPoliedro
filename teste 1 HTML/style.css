@@ -307,52 +307,61 @@ body.turma-page {
 .caixa-informacao {
     justify-content: center;
 }
-.botoes-abas{
+
+.botoes-abas {
     margin-top: -500px;
 }
-.botao {
-    width: 200px;
-    height: 180px;
-    margin: 10px;
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
     border-radius: 20px;
     color: white;
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 3.0rem;
+    font-weight: 400;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    height: 200px;
     transition: transform 0.2s;
+    margin-bottom: 80px;
 }
 
-.botao:hover {
-    transform: scale(1.05);
+.menu-row {
+    row-gap: -50px; /* ou outro valor menor */
+  }
+.menu-btn i {
+    font-size: 2rem;
+    margin-right: 15px;
 }
 
-.alunos {
-    background-color: #17c1e8;
+.menu-btn:hover {
+    transform: scale(1.02);
 }
 
-.pontuacao {
-    background-color: #f24679;
+.bg-alunos {
+    background-color: #1abddc;
 }
 
-.ranking {
-    background-color: #f4a300;
+.bg-pontuacao {
+    background-color: #e91e63;
 }
 
-.avaliacoes {
-    background-color: #f4a300;
+.bg-ranking {
+    background-color: #f59c00;
 }
 
-.relatorios {
-    background-color: #17c1e8;
+.bg-avaliacoes {
+    background-color: #f59c00;
 }
 
-.config {
-    background-color: #f24679;
+.bg-relatorios {
+    background-color: #1abddc;
 }
 
-.icone {
-    font-size: 30px;
-    margin-right: 8px;
+.bg-configuracao {
+    background-color: #e91e63;
+}
+.py-4{
+    margin-top: -620px;
 }
