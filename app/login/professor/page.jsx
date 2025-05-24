@@ -1,7 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { ModalCadastro } from '@/components/modal-cadastro';
+import { ModalCadastro } from '@/app/components/modal-cadastro';
 
 const LoginProfPage = () => {
     const [showCadastroModal, setShowCadastroModal] = useState(false);
