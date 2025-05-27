@@ -33,11 +33,11 @@ export const ModalCadastro = ({ onClose }) => {
         password: senha,
       })
 
-      if (signInError) throw new Error('Erro ao autenticar após cadastro: ' + signInError.message)
+      if (signInError) throw new Error('Erro ao autenticar: ' + signInError.message)
 
       const { data: session } = await supabase.auth.getSession()
       const uid = session.session?.user?.id
-      if (!uid) throw new Error('auth.uid() não está disponível')
+      if (!uid) throw new Error('Erro ao autenticar: ID do usuário não está disponível.')
 
       const { error: insertError } = await supabase.from('professores').insert([
         {
@@ -46,7 +46,7 @@ export const ModalCadastro = ({ onClose }) => {
         },
       ])
 
-      if (insertError) throw new Error('Erro ao salvar na tabela professores: ' + insertError.message)
+      if (insertError) throw new Error('Erro ao adicionar na tabela professores: ' + insertError.message)
 
       setSucesso(true)
       setTimeout(() => onClose(), 2000)
