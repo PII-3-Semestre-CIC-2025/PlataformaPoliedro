@@ -1,7 +1,6 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
 
 export const ModalCadastro = ({ onClose }) => {
   const [email, setEmail] = useState('')
@@ -21,38 +20,24 @@ export const ModalCadastro = ({ onClose }) => {
     }
 
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password: senha,
-      })
-
-      if (signUpError) throw new Error('Erro no cadastro: ' + signUpError.message)
-
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password: senha,
-      })
-
-      if (signInError) throw new Error('Erro ao autenticar: ' + signInError.message)
-
-      const { data: session } = await supabase.auth.getSession()
-      const uid = session.session?.user?.id
-      if (!uid) throw new Error('Erro ao autenticar: ID do usuário não está disponível.')
-
-      const { error: insertError } = await supabase.from('professores').insert([
-        {
-          email,
-          user_id: uid,
+      const response = await fetch('/api/auth/cadastro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      ])
+        body: JSON.stringify({ email, senha }),
+      })
 
-      if (insertError) throw new Error('Erro ao adicionar na tabela professores: ' + insertError.message)
+      const data = await response.json()
 
-      setSucesso(true)
-      setTimeout(() => onClose(), 2000)
-
+      if(!response.ok) {
+        throw new Error(data.error || 'Erro ao realizar cadastro. Tente novamente mais tarde.')
+      } else {
+        setSucesso(true);
+        setTimeout(() => onClose(), 2000);
+      }
     } catch (err) {
-      setErro(err.message)
+      setErro(err.message || 'Erro de conexão com o servidor.')
     }
   }
 
@@ -68,27 +53,34 @@ export const ModalCadastro = ({ onClose }) => {
           <input
             type="email"
             id="email"
+            placeholder='Ex.: joao@p4ed.com.br'
+            //pattern=".+@p4ed\.com\.br"
+            //title="Use seu e-mail institucional que termina com @p4ed.com.br"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
 
           <label htmlFor="senha">Senha:</label>
           <input
             type="password"
             id="senha"
+            placeholder='Mínimo 8 caracteres'
+            minLength="8"
+            required
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            required
           />
 
           <label htmlFor="confirmar">Confirmar Senha:</label>
           <input
             type="password"
             id="confirmar"
+            placeholder="Repita a senha"
+            minLength="8"
+            required
             value={confirmarSenha}
             onChange={(e) => setConfirmarSenha(e.target.value)}
-            required
           />
 
           <button type="submit" className="cadastro-btn">Confirmar</button>

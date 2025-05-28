@@ -2,7 +2,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { ModalCadastro } from '@/app/components/modal-cadastro';
-import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 
 
@@ -11,7 +10,7 @@ const LoginProfPage = () => {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [erro, setErro] = useState(null)
-    const router = useRouter()
+     const [sucesso, setSucesso] = useState(false)
 
     return(
         <>
@@ -19,28 +18,47 @@ const LoginProfPage = () => {
             <section className="login-box white-section">
                 <h2>Login</h2>
                 <form className="login-form"
-                    onSubmit={async (event) => {
-                        event.preventDefault()
+                    onSubmit={async (e) => {
+                        e.preventDefault()
                         setErro(null)
+                        setSucesso(false)
 
-                        const { error } = await supabase.auth.signInWithPassword({
-                        email,
-                        password: senha,
-                        })
+                        try {
+                            const response = await fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ email, senha }),
+                            })
 
-                        if (error) {
-                        setErro(error.message)
-                        } else {
-                        router.push('/etapa')
+                            const data = await response.json()
+
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Erro ao realizar login. Tente novamente mais tarde.')
+                            } else {
+                                setSucesso(true)
+                                //TODO: TOKEN SESSÃO
+                                setTimeout(() => useRouter().push('/etapa'), 2000)
+                            }
+                        }
+                        catch (err) {
+                            setErro(err.message || 'Erro de conexão com o servidor.')
                         }
                     }}>
                     {erro && <p style={{ color: 'red' }}>{erro}</p>}
+                    {sucesso && <p style={{ color: 'green' }}>Login realizado com sucesso!</p>}
                     <div className="form-group">
                         <label>E-mail:</label>
                         <input
                             type="email"
                             id="email"
                             name="email"
+                            autoComplete="email"
+                            autoFocus
+                            placeholder='Ex.: joao@p4ed.com.br'
+                            //pattern=".+@p4ed\.com\.br"
+                            //title="Use seu e-mail institucional que termina com @p4ed.com.br"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -53,6 +71,8 @@ const LoginProfPage = () => {
                             type="password"
                             id="senha"
                             name="senha"
+                            autoComplete="current-password"
+                            placeholder='Digite sua senha'
                             required
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
