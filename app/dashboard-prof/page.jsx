@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const DashboardProf = () => {
     return (
         <div className="professor-dashboard">
-            <header className="dashboard-header-prof">
+            <header className="header-prof">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-3">
@@ -60,8 +60,8 @@ const DashboardProf = () => {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="menuBtn bgConfiguracao">
-                            <i className="fas fa-cog"></i> Configuração
+                        <div className="menuBtn bgCategorias">
+                            <i className="fas fa-cog"></i> Categorias
                         </div>
                     </div>
                 </div>
