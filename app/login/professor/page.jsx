@@ -10,7 +10,8 @@ const LoginProfPage = () => {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [erro, setErro] = useState(null)
-     const [sucesso, setSucesso] = useState(false)
+    const [sucesso, setSucesso] = useState(false)
+    const router = useRouter()
 
     return(
         <>
@@ -24,7 +25,7 @@ const LoginProfPage = () => {
                         setSucesso(false)
 
                         try {
-                            const response = await fetch('/api/auth/login', {
+                            const response = await fetch('/api/auth/login-prof', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -38,8 +39,7 @@ const LoginProfPage = () => {
                                 throw new Error(data.error || 'Erro ao realizar login. Tente novamente mais tarde.')
                             } else {
                                 setSucesso(true)
-                                //TODO: TOKEN SESSÃO
-                                setTimeout(() => useRouter().push('/etapa'), 2000)
+                                setTimeout(() => router.push('/etapa'), 2000)
                             }
                         }
                         catch (err) {

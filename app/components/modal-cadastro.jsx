@@ -20,7 +20,7 @@ export const ModalCadastro = ({ onClose }) => {
     }
 
     try {
-      const response = await fetch('/api/auth/cadastro', {
+      const response = await fetch('/api/auth/cadastro-prof', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
