@@ -38,9 +38,9 @@ describe('cadastrarProfessor', () => {
 
     test('Cadastro de usuário com dados válidos', async () => {
         fromReturn.single.mockResolvedValue({ data: null })
-        fromReturn.insert.mockResolvedValue({ erro: null })
+        fromReturn.insert.mockResolvedValue({ error: null })
 
-        await expect(cadastrarProfessor('profAna@teste.com', 'senhaMegaHiperSegura'))
+        await expect(cadastrarProfessor('Ana Paula', 'profAna@teste.com', 'senhaMegaHiperSegura'))
             .resolves.toBeUndefined()
         expect(fromReturn.insert).toHaveBeenCalled()
     })
@@ -48,7 +48,7 @@ describe('cadastrarProfessor', () => {
     test('Campos obrigatórios são validados corretamente(cadastro com senha < 8 caracteres)', async () => {
         fromReturn.single.mockResolvedValue({ data: null })
 
-        await expect(cadastrarProfessor('profAna@teste.com', '1234567'))
+        await expect(cadastrarProfessor('Ana Paula', 'profAna@teste.com', '1234567'))
             .rejects.toThrow('A senha deve ter pelo menos 8 caracteres.')
     })
 
