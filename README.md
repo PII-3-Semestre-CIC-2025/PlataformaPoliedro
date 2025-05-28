@@ -17,3 +17,5 @@
 npm i # instala todas as dependências
 npx jest # roda os testes 
 ```
+**Caso queira conferir o código fonte, os testes se encontram neste arquivo:**  
+![image](https://github.com/user-attachments/assets/42138250-af97-46e9-9f9f-8b4816f50f08)
