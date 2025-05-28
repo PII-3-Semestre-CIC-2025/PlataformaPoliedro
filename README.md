@@ -3,11 +3,11 @@
 
 ### ⚙️ Tecnologias:
 - [⚛️React JS](https://react.dev/)
-- [🟢Node.js](https://nodejs.org/)
-- [🍃MongoDB](https://www.mongodb.com/)
+- [🍃Next.js](https://nextjs.org/)
+- [⚡SupaBase](https://supabase.com/)
   
 ### 🔗Links Relevantes:
-- [🗂️Trello](https://trello.com/b/iJeprbAt/quadro-de-tarefas-polipoints)
+- [🚀Azure DevOps](https://dev.azure.com/ProjetoIntegradorSistemaPoliedro/ProjetoIntegradorPoliPoints-2025-1)
 - [📐Figma do Projeto](https://www.figma.com/design/hKAIL7VGMuepwqao3CamLZ/PI---2025---1SEMESTRE?node-id=0-1&t=XGezNpkPVttgZG90-1)  
 - [📑Documentação de Software](https://docs.google.com/document/d/1pHsOSU04TJgMk6EXPzR1UY7-iCh9av8w/edit?usp=sharing&ouid=114838215933637261222&rtpof=true&sd=true)
 
@@ -17,9 +17,16 @@
 - [@HenriqueNalin](https://github.com/HenriqueNalin)  
 - [@VPortoV](https://github.com/VPortoV)
 
-# RODAR:
+# 👨‍💻 Rodando o Projeto:
+
+> ⚠ **Importante:** O projeto **não funcionará** sem o arquivo `.env.local` na **raiz do repositório**.  
+> _Este arquivo contém dados sensíveis, importantes para o funcionamento do backend_.
+
+Caso o arquivo esteja no local correto, execute os comandos abaixo no terminal:
+
 ```bash
-npm i
-npm run dev
+npm i       # Instala todas as dependências do projeto
+npm run dev # Inicia o servidor de desenvolvimento
 ```
-Abra [http://localhost:3000/](http://localhost:3000/ ) no seu navegador.
+
+Então, basta abrir [http://localhost:3000](http://localhost:3000) no navegador.
