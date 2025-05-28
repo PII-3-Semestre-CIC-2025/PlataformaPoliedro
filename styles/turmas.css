@@ -1,0 +1,119 @@
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.split-container{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.white-section {
+    background-color: #ffffff;
+    height: 100vh;
+    width: 50%;
+}
+
+.pattern-section {
+    background-color: #ffffff;
+    background-image: url('/images/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    width: 50%;
+}
+
+    
+.container {
+    display: flex;
+    height: 100vh;
+}
+.etapa-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
+}
+
+.dropdown {
+    background-color: #12B8C8;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+    appearance: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dropdown option {
+    color: #12B8C8;
+    background-color: #e0e0e0;
+    font-size: 1rem;
+}
+
+.cadastro-btn {
+    margin-top: 1.5rem;
+    display: inline-block;
+    background-color: #8bc34a;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid;
+    transition: all 0.2s ease;
+}
+
+.criar-turma {
+    margin-top: 1.5rem;
+    display: inline-block;
+    background-color: #12B8C8;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+}

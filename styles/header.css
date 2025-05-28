@@ -1,0 +1,23 @@
+.logo {
+    width: 15%;
+}
+.logout-btn{
+    height: fit-content;
+}
+.header-prof { 
+    align-content: center;
+    font-size: 25px;
+    height: 65px;
+    background-color: #124F8F;
+    color: white;
+    align-content: end;
+
+}
+.prof-atual{
+    margin-left: 100px;
+    margin-top: 30px;
+}
+.turma-atual{
+    text-align: left;
+    margin-left: 300px;
+}
