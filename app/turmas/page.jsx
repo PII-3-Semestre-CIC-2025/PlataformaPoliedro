@@ -3,11 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import { buscarTurmasPorEtapa } from '@/lib/turmasService.js';
 import { useRouter } from 'next/navigation';
+import { ModalCriarTurma } from '@/app/components/modal-criar-turma';
 
 
 const Turmas = () => {
     const [opcoes, setOpcoes] = useState([]);
     const [turma, setTurma] = useState('nenhum');
+    const [showModal, setShowModal] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -55,10 +57,19 @@ const Turmas = () => {
                         ))}
                     </select>
                     <button className="cadastro-btn" type="submit">Entrar</button>
-                    <button className="criar-turma" type="button" onClick={() => router.push('/turma')}>Adicionar Turma</button>
+                    <button
+                      className="criar-turma"
+                      type="button"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Adicionar Turma
+                    </button>
                 </form>
             </section>
             <div className="pattern-section d-none d-lg-block col-lg-6"  />
+            {showModal && (
+              <ModalCriarTurma onClose={() => setShowModal(false)} />
+            )}
         </div>
     );
 }

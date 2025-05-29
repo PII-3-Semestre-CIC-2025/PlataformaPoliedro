@@ -379,3 +379,17 @@ a {
     text-align: left;
     margin-left: 300px;
 }
+
+.dropdown-cadastro-turmas {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-top: 0.3rem;
+    font-size: 1rem;
+}
+
+.dropdown-cadastro-turmas option {
+    background-color: #e0e0e0;
+    font-size: 1rem;
+}
