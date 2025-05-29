@@ -41,7 +41,9 @@ export const ModalCriarTurma = ({ onClose }) => {
         throw new Error(data.error || 'Erro ao cadastrar turma.');
       } else {
         setSucesso(true);
-        setTimeout(() => onClose(), 2000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (err) {
       setErro(err.message || 'Erro de conexão com o servidor.');
