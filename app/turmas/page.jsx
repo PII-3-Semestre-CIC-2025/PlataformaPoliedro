@@ -1,29 +1,63 @@
+'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect, useState } from 'react';
+import { buscarTurmasPorEtapa } from '@/lib/turmasService.js';
+import { useRouter } from 'next/navigation';
+
 
 const Turmas = () => {
+    const [opcoes, setOpcoes] = useState([]);
+    const [turma, setTurma] = useState('nenhum');
+    const router = useRouter();
+
+    useEffect(() => {
+        async function fetchTurmas() {
+            try {
+                const idEtapa = localStorage.getItem('etapaSelecionada');
+                if (!idEtapa) return;
+                const data = await buscarTurmasPorEtapa(idEtapa);
+                setOpcoes(data);
+            } catch (error) {
+                console.error('Erro ao buscar turmas:', error);
+                alert('Erro ao carregar as turmas. Tente novamente mais tarde.');
+            }
+        }
+        fetchTurmas();
+    }, []);
+
+    const handleChange = (e) => {
+        setTurma(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (turma !== 'nenhum') {
+            localStorage.setItem('turmaSelecionada', turma);
+            router.push('/turma');
+        }
+    };
+
     return(
         <div className="split-container">
             <section className="login-box white-section">
                 <h2>Turmas</h2>
-                <form className="etapa-form">
-                    <select name="etapa" className="dropdown" defaultValue="nenhum" required>
+                <form className="etapa-form" onSubmit={handleSubmit}>
+                    <select
+                        name="turma"
+                        className="dropdown"
+                        value={turma}
+                        onChange={handleChange}
+                        required
+                    >
                         <option value="nenhum" disabled hidden>Selecione uma turma</option>
-                        <option value="turma1">Turma I</option>
-                        <option value="turma2">Turma II</option>
-                        <option value="turma3">Turma III</option>
-                        <option value="turma4">Turma IV</option>
+                        {opcoes.map(opcao => (
+                            <option key={opcao.id} value={opcao.id}>{opcao.nome}</option>
+                        ))}
                     </select>
-                    <a href="/turma">
-                        <button className="cadastro-btn">Entrar</button>
-                    </a>
-
-                    <a href="/turma">
-                    <button className="criar-turma">Adicionar Turma</button>
-                    </a>
-                    
+                    <button className="cadastro-btn" type="submit">Entrar</button>
+                    <button className="criar-turma" type="button" onClick={() => router.push('/turma')}>Adicionar Turma</button>
                 </form>
             </section>
-            
             <div className="pattern-section d-none d-lg-block col-lg-6"  />
         </div>
     );

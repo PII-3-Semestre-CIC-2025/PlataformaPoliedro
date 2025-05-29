@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './menu-aluno.css';
+import '../../styles/menu-aluno.css';
 const MenuAluno = () => {
     return (
         <div className='menu-aluno'>
@@ -20,7 +20,7 @@ const MenuAluno = () => {
                 </div>
             </header>
 
-            <body>
+            <main>
                 <div className="container-menu-aluno">
                     <div className='row'>
                         <div className='col-md-4'>
@@ -52,7 +52,7 @@ const MenuAluno = () => {
                         </div>
                     </div>
                 </div>
-            </body>
+            </main>
         </div>
     );
 }
