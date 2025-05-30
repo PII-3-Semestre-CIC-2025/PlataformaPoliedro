@@ -354,8 +354,6 @@ a {
     justify-content: center;
 }
 
-
-
 .logo {
     width: 15%;
 }
@@ -378,6 +376,25 @@ a {
 .turma-atual{
     text-align: left;
     margin-left: 300px;
+}
+
+.criar-turma {
+    margin-top: 1.5rem;
+    display: inline-block;
+    background-color: #12B8C8;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: 1px solid;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.criar-turma:hover {
+    background-color: white;
+    color: #12B8C8;
 }
 
 .dropdown-cadastro-turmas {

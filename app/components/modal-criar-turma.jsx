@@ -6,7 +6,6 @@ import { buscarEtapas } from '@/lib/etapasService.js'
 export const ModalCriarTurma = ({ onClose }) => {
   const [etapa, setEtapa] = useState('1');
   const [codigo, setCodigo] = useState('');
-  const [nome, setNome] = useState('');
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
   const [opcoes, setOpcoes] = useState([]);
@@ -32,7 +31,7 @@ export const ModalCriarTurma = ({ onClose }) => {
       const response = await fetch('/api/turmas/cadastrar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ etapa, codigo, nome }),
+        body: JSON.stringify({ etapa, codigo }),
       });
 
       const data = await response.json();
@@ -76,18 +75,10 @@ export const ModalCriarTurma = ({ onClose }) => {
           <input
             type="text"
             id="codigo"
+            placeholder='Ex.: 5A'
             required
             value={codigo}
             onChange={(e) => setCodigo(e.target.value)}
-          />
-
-          <label htmlFor="nome">Nome:</label>
-          <input
-            type="text"
-            id="nome"
-            required
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
           />
 
           <button type="submit" className="cadastro-btn">Confirmar</button>

@@ -53,7 +53,7 @@ const Turmas = () => {
                     >
                         <option value="nenhum" disabled hidden>Selecione uma turma</option>
                         {opcoes.map(opcao => (
-                            <option key={opcao.id} value={opcao.id}>{opcao.nome}</option>
+                            <option key={opcao.id} value={opcao.id}>{opcao.código}</option>
                         ))}
                     </select>
                     <button className="cadastro-btn" type="submit">Entrar</button>

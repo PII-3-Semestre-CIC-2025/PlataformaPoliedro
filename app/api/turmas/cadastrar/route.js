@@ -2,14 +2,14 @@ import { supabase } from '@/lib/supabaseAdmin.js';
 
 export async function POST(request) {
   try {
-    const { etapa, codigo, nome } = await request.json();
-    if (!etapa || !codigo || !nome) {
+    const { etapa, codigo } = await request.json();
+    if (!etapa || !codigo) {
       return new Response(JSON.stringify({ error: 'Preencha todos os campos.' }), { status: 400 });
     }
 
     const { data, error } = await supabase
       .from('turmas')
-      .insert({ código: codigo, nome })
+      .insert({ código: codigo })
       .select();
 
     if (error) {
