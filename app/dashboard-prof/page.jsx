@@ -1,26 +1,11 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Header } from "@/app/components/header";
 
 const DashboardProf = () => {
     return (
         <div className="professor-dashboard">
-            <header className="header-prof">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-3">
-                            <img src="images/logo-cubo.png" alt="Logo" className="logo" />
-                        </div>
-                        <div className="col-8 turma-info">
-                            <span className="turma-atual">Turma Atual: 7ª A </span>
-                            <span className="prof-atual">Professor: Leonardo Nogueira</span>
-                        </div>
-                        <div className="col-1">
-                            <a href="index.html" className="logout-btn">↻</a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+            <Header />
             <br /><br />
             <div className="container caixa-informacao">
                 <div className="row">

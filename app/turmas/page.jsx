@@ -35,7 +35,7 @@ const Turmas = () => {
         e.preventDefault();
         if (turma !== 'nenhum') {
             localStorage.setItem('turmaSelecionada', turma);
-            router.push('/turma');
+            router.push('/dashboard-prof');
         }
     };
 
