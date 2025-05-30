@@ -16,7 +16,9 @@ export const Header = () => {
         <div className="container-fluid">
             <div className="row">
                 <div className="col-3">
-                    <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
+                    <a href="/dashboard-prof/" className="logo-link">
+                        <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
+                    </a>
                 </div>
                 <div className="col-8 turma-info">
                     <span className="turma-atual">Turma Atual: {turmaAtual}</span>

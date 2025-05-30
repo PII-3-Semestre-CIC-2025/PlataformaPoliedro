@@ -1,6 +1,7 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Header } from "@/app/components/header";
+import Link from 'next/link';
 
 const DashboardProf = () => {
     return (
@@ -20,9 +21,9 @@ const DashboardProf = () => {
             <div className="container py4">
                 <div className="row menuRow">
                     <div className="col-md-4">
-                        <div className="menuBtn bgAlunos">
+                        <Link href="/dashboard-prof/alunos" className="menuBtn bgAlunos">
                             <i className="fas fa-graduation-cap"></i> Alunos
-                        </div>
+                        </Link>
                     </div>
                     <div className="col-md-4">
                         <div className="menuBtn bgPontuacao">

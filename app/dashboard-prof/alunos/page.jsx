@@ -2,24 +2,37 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/alunos-prof.css';
 import '@/styles/botao-add-aluno.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';
 import { Header } from '@/app/components/header';
+import { buscarAlunosPorTurma } from '@/lib/alunosService';
 
 export default function AlunosProf() {
-    const [alunos, setAlunos] = useState([
-        { id: 1, nome: 'Henrique Nalin', matricula: '24.01883-0', turma: 'Turma 1 Sub 2' },
-        { id: 2, nome: 'Luiza Gomes', matricula: '25.00533-2', turma: 'Turma 1 Sub 2' },
-        { id: 3, nome: 'Leonardo Belo', matricula: '24.00000-0', turma: 'Turma 1 Sub 2' },
-        { id: 4, nome: 'Leticia Carvalho', matricula: '24.00000-1', turma: 'Turma 1 Sub 2' },
-        { id: 5, nome: 'Bruno Nogueira', matricula: '24.00000-2', turma: 'Turma 1 Sub 2' },
-        { id: 6, nome: 'Breno Augusto', matricula: '24.00000-3', turma: 'Turma 1 Sub 2' },
-        { id: 7, nome: 'Mateo Cortez', matricula: '24.00000-4', turma: 'Turma 1 Sub 2' },
-        { id: 8, nome: 'Vitor Porto', matricula: '24.00000-5', turma: 'Turma 1 Sub 2' },
-        { id: 9, nome: 'Lyssa Okawa', matricula: '24.00000-6', turma: 'Turma 1 Sub 2' }
-    ]);
+    const [alunos, setAlunos] = useState([]);
     const [erro, setErro] = useState(null);
     const [alunoParaEditar, setAlunoParaEditar] = useState(null);
+
+    useEffect(() => {
+        const fetchAlunos = async () => {
+            try {
+                const turmaSelecionada = localStorage.getItem('turmaSelecionada');
+                if (!turmaSelecionada) {
+                    setErro('Nenhuma turma selecionada.');
+                    return;
+                }
+                const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
+                setAlunos(alunosData.map((rel, idx) => ({
+                    id: idx + 1,
+                    nome: rel.alunos.nome,
+                    matricula: rel.alunos.RA,
+                    turma: turmaSelecionada
+                })));
+            } catch (error) {
+                setErro('Erro ao buscar alunos: ' + error.message);
+            }
+        };
+        fetchAlunos();
+    }, []);
 
     const handleEdit = (aluno) => {
         setAlunoParaEditar(aluno);
@@ -53,30 +66,31 @@ export default function AlunosProf() {
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {alunos.map((aluno) => (
-                                <tr key={aluno.id}>
-                                    <td>{aluno.nome}</td>
-                                    <td>{aluno.matricula}</td>
-                                    <td>{aluno.turma}</td>
-                                    <td>
-                                        <div className="acoes">                                            <button
-                                                className="edit-btn"
-                                                onClick={() => handleEdit(aluno)}
-                                            >
-                                                Editar
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(aluno.id)}
-                                                className="delete-btn"
-                                            >
-                                                <img src="/images/Icon Deletar.png" alt="Deletar" className="trash-icon" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>                    </table>                </div>
+                        <tbody>{alunos.map((aluno) => (
+                            <tr key={aluno.id}>
+                                <td>{aluno.nome}</td>
+                                <td>{aluno.matricula}</td>
+                                <td>{aluno.turma}</td>
+                                <td>
+                                    <div className="acoes">
+                                        <button
+                                            className="edit-btn"
+                                            onClick={() => handleEdit(aluno)}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(aluno.id)}
+                                            className="delete-btn"
+                                        >
+                                            <img src="/images/Icon Deletar.png" alt="Deletar" className="trash-icon" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}</tbody>
+                    </table>
+                </div>
                 <button className="botao-add-aluno">
                     Adicionar Aluno
                 </button>
