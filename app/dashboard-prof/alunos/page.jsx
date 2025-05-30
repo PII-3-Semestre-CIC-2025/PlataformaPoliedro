@@ -1,6 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/alunos-prof.css';
+import '@/styles/botao-add-aluno.css';
 import { useState } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';
 import { Header } from '@/app/components/header';
@@ -75,8 +76,10 @@ export default function AlunosProf() {
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
-                    </table>                </div>
+                        </tbody>                    </table>                </div>
+                <button className="botao-add-aluno">
+                    Adicionar Aluno
+                </button>
             </main>
 
             {alunoParaEditar && (
