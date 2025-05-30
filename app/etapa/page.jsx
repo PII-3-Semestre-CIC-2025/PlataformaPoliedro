@@ -30,6 +30,7 @@ const Etapa = () => {
         e.preventDefault();
         if (etapa !== 'nenhum') {
             localStorage.setItem('etapaSelecionada', etapa);
+            document.body.style.cursor = 'wait';
             router.push('/turmas');
         }
     };
@@ -48,7 +49,7 @@ const Etapa = () => {
                     >
                         <option value="nenhum" disabled hidden>Selecione uma etapa</option>
                         {opcoes.map(opcao => (
-                            <option key={opcao.id} value={opcao.id}>{opcao.nome_etapa}</option>
+                            <option key={opcao.nome_etapa} value={opcao.nome_etapa}>{opcao.nome_etapa}</option>
                         ))}
                     </select>
                     <button className="cadastro-btn" type="submit">Confirmar</button>

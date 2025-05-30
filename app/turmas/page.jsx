@@ -35,6 +35,7 @@ const Turmas = () => {
         e.preventDefault();
         if (turma !== 'nenhum') {
             localStorage.setItem('turmaSelecionada', turma);
+            document.body.style.cursor = 'wait';
             router.push('/dashboard-prof');
         }
     };
@@ -53,7 +54,7 @@ const Turmas = () => {
                     >
                         <option value="nenhum" disabled hidden>Selecione uma turma</option>
                         {opcoes.map(opcao => (
-                            <option key={opcao.id} value={opcao.id}>{opcao.código}</option>
+                            <option key={opcao.codigo} value={opcao.codigo}>{opcao.codigo}</option>
                         ))}
                     </select>
                     <button className="cadastro-btn" type="submit">Entrar</button>

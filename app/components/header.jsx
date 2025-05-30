@@ -1,8 +1,16 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/styles/header.css' 
+import { useEffect, useState } from 'react';
 
 export const Header = () => {
+  const [turmaAtual, setTurmaAtual] = useState('');
+
+  useEffect(() => {
+    const turmaSalva = localStorage.getItem('turmaSelecionada');
+    setTurmaAtual(turmaSalva || 'Não selecionada');
+  }, []);
+
   return (
     <header className="header-prof">
         <div className="container-fluid">
@@ -11,7 +19,7 @@ export const Header = () => {
                     <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
                 </div>
                 <div className="col-8 turma-info">
-                    <span className="turma-atual">Turma Atual: 7ª A </span>
+                    <span className="turma-atual">Turma Atual: {turmaAtual}</span>
                     <span className="prof-atual">Professor: Leonardo Nogueira</span>
                 </div>
                 <div className="col-1">

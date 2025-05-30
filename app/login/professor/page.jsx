@@ -39,6 +39,7 @@ const LoginProfPage = () => {
                                 throw new Error(data.error || 'Erro ao realizar login. Tente novamente mais tarde.')
                             } else {
                                 setSucesso(true)
+                                document.body.style.cursor = 'wait';
                                 setTimeout(() => router.push('/etapa'), 2000)
                             }
                         }

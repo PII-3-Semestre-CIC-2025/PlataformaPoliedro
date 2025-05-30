@@ -9,7 +9,7 @@ export async function POST(request) {
 
     const { data, error } = await supabase
       .from('turmas')
-      .insert({ código: codigo })
+      .insert({ codigo })
       .select();
 
     if (error) {
@@ -23,10 +23,9 @@ export async function POST(request) {
       return new Response(JSON.stringify({ error: 'Erro ao inserir turma.' }), { status: 500 });
     }
 
-    const turmaId = data[0].id;
     const { error: errorEtapa } = await supabase
       .from('etapas_turmas')
-      .insert({ id_etapa: etapa, id_turma: turmaId });
+      .insert({ codigo_turma: codigo, nome_etapa: etapa });
 
     if (errorEtapa) throw errorEtapa;
 

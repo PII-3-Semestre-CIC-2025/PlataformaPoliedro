@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import "../styles/globals.css";
+import CursorResetter from "./components/CursorResetter";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -9,13 +10,14 @@ const poppins = Poppins({
 
 export const metadata = {
   title: "PoliPoints",
-  description: "Criado por alunos do Instituro Mauá de Tecnologia",
+  description: "Criado por alunos do Instituto Mauá de Tecnologia",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
       <body className={`${poppins.variable}`}>
+        <CursorResetter />
         {children}
       </body>
     </html>
