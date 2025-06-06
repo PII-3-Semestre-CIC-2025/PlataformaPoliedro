@@ -4,6 +4,7 @@ import '@/styles/alunos-prof.css';
 import '@/styles/botao-add-aluno.css';
 import { useState, useEffect } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';
+import { ModalCadastrarAluno } from '@/app/components/modal-cadastrar-aluno';
 import { Header } from '@/app/components/header';
 import { buscarAlunosPorTurma } from '@/lib/alunosService';
 
@@ -11,6 +12,7 @@ export default function AlunosProf() {
     const [alunos, setAlunos] = useState([]);
     const [erro, setErro] = useState(null);
     const [alunoParaEditar, setAlunoParaEditar] = useState(null);
+    const [abrirModalCadastrar, setAbrirModalCadastrar] = useState(false);
 
     useEffect(() => {
         const fetchAlunos = async () => {
@@ -102,7 +104,10 @@ export default function AlunosProf() {
                         ))}</tbody>
                     </table>
                 </div>
-                <button className="botao-add-aluno">
+                <button
+                    className="botao-add-aluno"
+                    onClick={() => setAbrirModalCadastrar(true)}
+                >
                     Adicionar Aluno
                 </button>
             </main>
@@ -112,6 +117,12 @@ export default function AlunosProf() {
                     aluno={alunoParaEditar}
                     onClose={() => setAlunoParaEditar(null)}
                     onSave={handleSaveEdit}
+                />
+            )}
+
+            {abrirModalCadastrar && (
+                <ModalCadastrarAluno
+                    onClose={() => setAbrirModalCadastrar(false)}
                 />
             )}
         </div>
