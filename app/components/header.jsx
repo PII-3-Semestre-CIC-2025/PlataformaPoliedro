@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/styles/header.css' 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export const Header = () => {
   const [turmaAtual, setTurmaAtual] = useState('');
@@ -21,7 +22,9 @@ export const Header = () => {
                     </a>
                 </div>
                 <div className="col-8 turma-info">
-                    <span className="turma-atual">Turma Atual: {turmaAtual}</span>
+                    <Link href="/etapa" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <span className="turma-atual">Turma Atual: {turmaAtual}</span>
+                    </Link>
                     <span className="prof-atual">Professor: Leonardo Nogueira</span>
                 </div>
                 <div className="col-1">

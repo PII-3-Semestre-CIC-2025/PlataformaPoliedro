@@ -45,9 +45,20 @@ export default function AlunosProf() {
         setAlunoParaEditar(null);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (matricula) => {
         if (window.confirm('Tem certeza que deseja excluir este aluno?')) {
-            setAlunos(alunos.filter(aluno => aluno.id !== id));
+            try {
+                const res = await fetch('/api/alunos/excluir', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ra: matricula })
+                });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.error || 'Erro ao excluir aluno');
+                setAlunos(alunos.filter(aluno => aluno.matricula !== matricula));
+            } catch (error) {
+                setErro('Erro ao excluir aluno: ' + error.message);
+            }
         }
     };
 
@@ -80,7 +91,7 @@ export default function AlunosProf() {
                                             Editar
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(aluno.id)}
+                                            onClick={() => handleDelete(aluno.matricula)}
                                             className="delete-btn"
                                         >
                                             <img src="/images/Icon Deletar.png" alt="Deletar" className="trash-icon" />
