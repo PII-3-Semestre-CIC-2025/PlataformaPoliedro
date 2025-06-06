@@ -10,22 +10,34 @@ export const ModalEditarAluno = ({ aluno, onClose, onSave }) => {
   const [sucesso, setSucesso] = useState(false)
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setErro(null)
-    setSucesso(false)
+    e.preventDefault();
+    setErro(null);
+    setSucesso(false);
 
     try {
-      // Apenas atualização local por enquanto
-      onSave({
-        ...aluno,
-        nome,
-        matricula,
-        turma
-      })
-      setSucesso(true)
-      setTimeout(() => onClose(), 1500)
+      const res = await fetch('/api/alunos/editar', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ra: matricula,
+          nome,
+          turma
+        })
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || 'Erro ao atualizar aluno');
+      setSucesso(true);
+      setTimeout(() => {
+        onSave({
+          ...aluno,
+          nome,
+          matricula,
+          turma
+        });
+        window.location.reload();
+      }, 500);
     } catch (err) {
-      setErro('Erro ao atualizar aluno.')
+      setErro('Erro ao atualizar aluno.');
     }
   }
 
