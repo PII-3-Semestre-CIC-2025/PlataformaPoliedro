@@ -1,0 +1,31 @@
+.botao-add-categoria {
+    position: relative;
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 30px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 2px solid #0056b3;
+    background-color: white;
+    color: #0056b3;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.botao-add-c.botao-add-categoria {
+    content: "+";
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 1px;
+}
+
+.botao-add-categoria:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.02);
+}

@@ -1,0 +1,173 @@
+.table-responsive {
+    margin: 3.5rem 2rem;
+    border-radius: 15px;
+    overflow: hidden;
+    width: calc(100% - 4rem);
+    height: 400px;
+    position: relative;
+}
+
+.table-categoria {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.table-categoria thead {
+    background-color: #124F8F;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-categoria th {
+    padding: 15px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+
+.table-categoria td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+    background-color: white;
+    font-size: 1.1rem;
+}
+
+.table-categoria tbody {
+    display: block;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.table-categoria thead,
+.table-categoria tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table-categoria tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.acoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.edit-btn {
+    background-color: #124F8F;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.edit-btn:hover {
+    background-color: #0d3d6d;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.trash-icon {
+    width: 40px;
+    height: auto;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.delete-btn:hover .trash-icon {
+    transform: scale(1.1);
+}
+
+.cadastro-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cadastro-modal h2 {
+    color: #124F8F;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.cadastro-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cadastro-modal label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.cadastro-modal input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.cadastro-modal input:focus {
+    outline: none;
+    border-color: #124F8F;
+    box-shadow: 0 0 0 2px rgba(18, 79, 143, 0.1);
+}
+
+.cadastro-modal .cadastro-btn {
+    background-color: #124F8F;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+}
+
+.cadastro-modal .cadastro-btn:hover {
+    background-color: #0d3d6d;
+}
+
+.blur-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+}

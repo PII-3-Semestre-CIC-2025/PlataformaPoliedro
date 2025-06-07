@@ -44,11 +44,10 @@ const DashboardProf = () => {
                         <div className="menuBtn bgRelatorios">
                             <i className="fas fa-file-alt"></i> Relatórios
                         </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="menuBtn bgCategorias">
+                    </div>                    <div className="col-md-4">
+                        <Link href="/dashboard-prof/pontuacao" className="menuBtn bgCategorias">
                             <i className="fas fa-cog"></i> Categorias
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>
