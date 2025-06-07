@@ -1,60 +1,35 @@
+'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/menu-aluno.css';
-const MenuAluno = () => {
+import '@/styles/menu-aluno.css'
+
+export default function MenuAluno() {
     return (
-        <div className='menu-aluno'>
-            <header className="header-prof">
+        <div className="menu-aluno">
+            <header className="header-aluno">
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-3">
-                            <img src="images/logo-cubo.png" alt="Logo" className="logo" />
+                    <div className="row align-items-center">
+                        <div className="col-6">
+                            <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
                         </div>
-                        <div className="col-8 turma-info">
-                            <span className="turma-atual">Turma: 7ª A </span>
-                            <span className="prof-atual">Aluno: Leonardo Nogueira</span>
-                        </div>
-                        <div className="col-1">
-                            <a href="index.html" className="logout-btn">↻</a>
+                        <div className="col-6 d-flex justify-content-end">
+                            <a href="/" className="logout-btn">
+                                <img src="/images/IconLogout.png" alt="Sair" />
+                            </a>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <main>
-                <div className="container-menu-aluno">
-                    <div className='row'>
-                        <div className='col-md-4'>
-                            <div className='menu-aluno-btn'>
-                                <div>
-                                    <button className='btn-notas'>
-                                        <img src="images/Icone Notas.png" alt="botao-notas" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='col-md-4'>
-                            <div className='menu-aluno-btn'>
-                                <div>
-                                    <button className='btn-ranking'>
-                                        <img src="images/IconeRanking.png" alt="botao-ranking" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='col-md-4'>
-                            <div className='menu-aluno-btn'>
-                                <div>
-                                    <button className='btn-conquistas'>
-                                        <img src="images/IconeMinhasConquistas.png" alt="botao-conquistas" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+            <div className="menu-container">
+                <a href="#" className="menu-item">
+                    <img src="/images/IconeRanking.png" alt="Troféu" className="menu-icon" />
+                    <span className="menu-text">CONSULTAR PONTUAÇÃO</span>
+                </a>
+                <a href="#" className="menu-item">
+                    <img src="/images/IconeNotas.png" alt="Notas" className="menu-icon" />
+                    <span className="menu-text">CONSULTAR NOTAS</span>
+                </a>
+            </div>
         </div>
-    );
+    )
 }
-
-export default MenuAluno;

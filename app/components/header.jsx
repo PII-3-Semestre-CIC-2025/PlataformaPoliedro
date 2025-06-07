@@ -25,7 +25,6 @@ export const Header = () => {
                     <Link href="/etapa" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <span className="turma-atual">Turma Atual: {turmaAtual}</span>
                     </Link>
-                    <span className="prof-atual">Professor: Leonardo Nogueira</span>
                 </div>
                 <div className="col-1">
                     <a href="/" className="logout-btn">

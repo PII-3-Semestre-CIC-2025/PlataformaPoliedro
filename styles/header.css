@@ -3,7 +3,17 @@
 }
 .logout-btn{
     height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 60px;
 }
+.logout-btn img {
+    width: 40px;  /* Tamanho do ícone */
+    height: auto;
+}
+
 .header-prof { 
     align-content: center;
     font-size: 25px;
@@ -11,13 +21,13 @@
     background-color: #124F8F;
     color: white;
     align-content: end;
+}
 
-}
-.prof-atual{
-    margin-left: 100px;
-    margin-top: 30px;
-}
 .turma-atual{
-    text-align: left;
-    margin-left: 300px;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 880px;
+    margin-top: 10px;
 }
