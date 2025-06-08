@@ -1,0 +1,23 @@
+.botao-add-avaliacao {
+    padding: 12px 24px;
+    background-color: #124F8F;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.botao-add-avaliacao:hover {
+    background-color: #0d3d6f;
+    transform: translateY(-1px);
+}
+
+.botao-add-avaliacao:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(18, 79, 143, 0.2);
+}
+
+/* Removendo estilos do estado desabilitado pois o botão agora está sempre ativo */

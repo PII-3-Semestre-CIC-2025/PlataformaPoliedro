@@ -32,12 +32,11 @@ const DashboardProf = () => {
                         <Link href="/dashboard-prof/ranking" className="menuBtn bgRanking">
                             <i className="fas fa-list-ol"></i> Ranking
                         </Link>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="menuBtn bgAvaliacoes">
-                            <i className="fas fa-clipboard-list"></i> Avaliações
-                        </div>
                     </div>                    <div className="col-md-4">
+                        <Link href="/dashboard-prof/avaliacoes" className="menuBtn bgAvaliacoes">
+                            <i className="fas fa-clipboard-list"></i> Avaliações
+                        </Link>
+                    </div><div className="col-md-4">
                         <Link href="/relatorio" className="menuBtn bgRelatorios">
                             <i className="fas fa-file-alt"></i> Relatórios
                         </Link>

@@ -1,0 +1,32 @@
+.botao-atribuir-nota {
+    padding: 10px 20px;
+    background-color: #124F8F;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.botao-atribuir-nota:hover {
+    background-color: #0d3d6f;
+    transform: translateY(-1px);
+}
+
+.botao-atribuir-nota:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(18, 79, 143, 0.2);
+}
+
+.botao-atribuir-nota:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.botao-atribuir-nota:disabled:hover {
+    background-color: #ccc;
+    transform: none;
+}
