@@ -1,0 +1,68 @@
+.table-responsive {
+    margin: 3.5rem 2rem;
+    border-radius: 15px;
+    overflow: hidden;
+    width: calc(100% - 4rem);
+    height: 400px;
+    position: relative;
+}
+
+.tabela-ranking {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.tabela-ranking tbody {
+    display: block;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.tabela-ranking thead,
+.tabela-ranking tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tabela-ranking th,
+.tabela-ranking td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tabela-ranking thead {
+    background-color: #124F8F;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.tabela-ranking th {
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+
+.tabela-ranking td {
+    background-color: white;
+    font-size: 1.1rem;
+}
+
+.tabela-ranking tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.acoes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+

@@ -28,11 +28,10 @@ const DashboardProf = () => {
                         <Link href="/dashboard-prof/pontuar" className="menuBtn bgPontuacao">
                             <i className="fas fa-award"></i> Pontuação
                         </Link>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="menuBtn bgRanking">
+                    </div>                    <div className="col-md-4">
+                        <Link href="/dashboard-prof/ranking" className="menuBtn bgRanking">
                             <i className="fas fa-list-ol"></i> Ranking
-                        </div>
+                        </Link>
                     </div>
                     <div className="col-md-4">
                         <div className="menuBtn bgAvaliacoes">

@@ -88,9 +88,9 @@ export default function PontuarPage() {    const [categoriaAtual, setCategoriaAt
                     <table className="tabela-pontuar">
                         <thead>
                             <tr>
-                            <th>Nome</th>
-                            <th>Valor da categoria</th>
-                            <th>Ações</th>
+                                <th>Nome</th>
+                                <th>Valor da categoria</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>

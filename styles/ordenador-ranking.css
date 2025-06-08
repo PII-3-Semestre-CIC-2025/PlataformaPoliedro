@@ -1,6 +1,6 @@
-.botao-seleciona-categoria {
+.botao-ordenacao {
     width: 250px;
-    padding: 10px 35px 10px 15px;
+    padding: 10px 35px 10px 15px; /* Aumentei o padding direito para a seta */
     background-color: #ffffff;
     border: 3px solid #124F8F;
     border-radius: 15px;
@@ -13,22 +13,31 @@
     transition: all 0.3s ease;
     text-align: left;
     position: relative;
+    
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    
+    /* background com seta customizada */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23124F8F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
 }
 
-/* Removendo o pseudo-elemento after pois agora usamos background-image */
 
-.botao-seleciona-categoria:hover {
+.botao-ordenacao:hover {
     background-color: #f0f7ff;
 }
 
-.botao-seleciona-categoria:focus {
+.botao-ordenacao:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(18, 79, 143, 0.2);
+}
+
+.botao-ordenacao option {
+    padding: 12px;
+    font-size: 16px;
+    color: #124F8F;
+    background-color: #ffffff;
 }
