@@ -79,7 +79,10 @@ export default function AlunosProf() {
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody>{alunos.map((aluno) => (
+                        <tbody>{alunos
+                        .slice()
+                        .sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')) //ordem alfabetica
+                        .map((aluno) => (
                             <tr key={aluno.id}>
                                 <td>{aluno.nome}</td>
                                 <td>{aluno.matricula}</td>

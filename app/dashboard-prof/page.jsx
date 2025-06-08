@@ -25,7 +25,7 @@ const DashboardProf = () => {
                             <i className="fas fa-graduation-cap"></i> Alunos
                         </Link>
                     </div>                    <div className="col-md-4">
-                        <Link href="/dashboard-prof/pontuar" className="menuBtn bgPontuacao">
+                        <Link href="/dashboard-prof/pontuacao" className="menuBtn bgPontuacao">
                             <i className="fas fa-award"></i> Pontuação
                         </Link>
                     </div>                    <div className="col-md-4">
@@ -42,7 +42,7 @@ const DashboardProf = () => {
                             <i className="fas fa-file-alt"></i> Relatórios
                         </Link>
                     </div><div className="col-md-4">
-                        <Link href="/dashboard-prof/pontuacao" className="menuBtn bgCategorias">
+                        <Link href="/dashboard-prof/categorias" className="menuBtn bgCategorias">
                             <i className="fas fa-cog"></i> Categorias
                         </Link>
                     </div>

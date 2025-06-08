@@ -79,17 +79,34 @@
     transition: transform 0.2s;
 }
 
-.botao-mais {
-    background-color: #00c853;
+.botao-mais,.botao-menos {
+    background-color: #a3a3a3;
+    transition: transform 0.15s, background-color 0.15s;
 }
 
-.botao-menos {
+.botao-mais:hover{
+    transform: scale(1.1);
+    background-color: #00c853;
+}
+.botao-menos:hover {
+    transform: scale(1.1);
     background-color: #ff1744;
 }
 
-.botao-mais:hover,
-.botao-menos:hover {
+.botao-mais.ativo {
+    background-color: #00c853 !important;
     transform: scale(1.1);
+}
+.botao-menos.ativo {
+    background-color: #ff1744 !important;
+    transform: scale(1.1);
+}
+.botao-mais:disabled,
+.botao-menos:disabled {
+    background-color: #a3a3a3 !important;
+    transform: scale(1);
+    opacity: 0.7;
+    pointer-events: none;
 }
 
 .mensagem-popup {
@@ -103,6 +120,12 @@
     z-index: 1000;
     animation: slideIn 0.3s ease-out;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mensagem-popup.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
 }
 
 @keyframes slideIn {

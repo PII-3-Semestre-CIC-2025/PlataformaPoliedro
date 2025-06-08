@@ -1,102 +1,206 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '@/styles/categoria.css';
-import '@/styles/botao-add-categoria.css';
+import '@/styles/pontuacao.css';
+import '@/styles/botao-seleciona-categoria.css';
 import { useState, useEffect } from 'react';
 import { Header } from '@/app/components/header';
-import { ModalEditarCategoria } from '@/app/components/modal-editar-categoria';
-import { ModalCadastrarCategoria } from '@/app/components/modal-cadastrar-categoria';
+import { buscarAlunosPorTurma } from '@/lib/alunosService';
+import { buscarCategoriasPorEtapa } from '@/lib/categoriasService';
+import { buscarPontuacoes} from '@/lib/pontuacoesService';
 
-export default function PontuacaoPage() {
-    const [categorias, setCategorias] = useState([]);
-    const [erro, setErro] = useState(null);
-    const [categoriaParaEditar, setCategoriaParaEditar] = useState(null);
-    const [abrirModalCadastrar, setAbrirModalCadastrar] = useState(false);    useEffect(() => {
-        // TODO: Implementar busca de categorias
-        setCategorias([
-            { id: 1, categorias: 'Participação', valor: 10 },
-            { id: 2, categorias: 'Atividade Extra', valor: 5 },
-            { id: 3, categorias: 'Desafio', valor: 15 },
-            { id: 4, categorias: 'Pontualidade', valor: 15 },
-            { id: 5, categorias: 'Capricho', valor: 15 },
-            { id: 6, categorias: 'Respeito', valor: 15 }
-        ]);
-    }, []);    const handleEdit = (categoria) => {
-        setCategoriaParaEditar(categoria);
-    };
+export default function PontuarPage() {    
+    const [categoriaAtual, setCategoriaAtual] = useState('Selecionar Categoria:');    
+    const [alunos, setAlunos] = useState([]);
+    const [categorias, setCategorias] = useState([]);    
+    const [mensagem, setMensagem] = useState(null);
+    const [fade, setFade] = useState(false);
+    const [pontuacoes, setPontuacoes] = useState([]);
 
-    const handleSaveEdit = (categoriaAtualizada) => {
-        setCategorias(categorias.map(cat => 
-            cat.id === categoriaAtualizada.id ? categoriaAtualizada : cat
-        ));
-        setCategoriaParaEditar(null);
-    };
-
-    const handleDelete = async (id) => {
-        if (window.confirm('Tem certeza que deseja excluir esta categoria?')) {
+    // Buscar alunos
+    useEffect(() => {
+        const fetchAlunos = async () => {
             try {
-                // TODO: Implementar API de exclusão
-                setCategorias(categorias.filter(cat => cat.id !== id));
+                const turmaSelecionada = localStorage.getItem('turmaSelecionada');
+                if (!turmaSelecionada) return;
+                const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
+                setAlunos(alunosData.map((rel, idx) => ({
+                    id: idx + 1,
+                    nome: rel.alunos.nome,
+                    matricula: rel.alunos.RA,
+                    turma: turmaSelecionada
+                })));
             } catch (error) {
-                setErro('Erro ao excluir categoria: ' + error.message);
+                console.log(error);
             }
+        };
+        fetchAlunos();
+    }, []);
+
+    // Buscar categorias
+    useEffect(() => {
+        const etapaSelecionada = localStorage.getItem('etapaSelecionada');
+        if (!etapaSelecionada) return;
+        buscarCategoriasPorEtapa(etapaSelecionada).then(setCategorias);
+    }, []);
+
+    // Buscar pontuações (+ e -)
+    useEffect(() => {
+        async function fetchPontuacoes() {
+            const turmaSelecionada = localStorage.getItem('turmaSelecionada');
+            if (!turmaSelecionada || categorias.length === 0) return;
+            const idsCategorias = categorias.map(c => c.id);
+            const data = await buscarPontuacoes(turmaSelecionada, idsCategorias);
+            setPontuacoes(data);
         }
+        fetchPontuacoes();
+    }, [alunos, categorias]);
+
+    const mostrarMensagem = (texto) => {
+        setMensagem(texto);
+        setFade(false);
+        setTimeout(() => setFade(true), 1800); // inicia fade após 1.8s
+        setTimeout(() => setMensagem(null), 2000); // remove após 2s
     };
 
-    return (        <div className="pagina-categoria">
+    const handleAdicionar = async (alunoId) => {
+        if (categoriaAtual === 'Selecionar Categoria:') {
+            alert('Por favor, selecione uma categoria primeiro');
+            return;
+        }
+        const categoria = categorias.find(c => c.nome === categoriaAtual);
+        if (!categoria) return;
+        const aluno = alunos.find(a => a.id === alunoId);
+
+        // Salva no banco
+        await fetch('/api/pontuacoes/atualizar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_categoria: categoria.id,
+                RA_aluno: aluno.matricula,
+                performance: true
+            })
+        });
+
+        setPontuacoes((pontuacoesAntigas) => {
+            const outros = pontuacoesAntigas.filter(
+                p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
+            );
+            return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: true }];
+        });
+        
+        mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como positivo(+).`);
+    };
+
+    const handleSubtrair = async (alunoId) => {
+        if (categoriaAtual === 'Selecionar Categoria:') {
+            alert('Por favor, selecione uma categoria primeiro');
+            return;
+        }
+        const categoria = categorias.find(c => c.nome === categoriaAtual);
+        if (!categoria) return;
+        const aluno = alunos.find(a => a.id === alunoId);
+
+        await fetch('/api/pontuacoes/atualizar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_categoria: categoria.id,
+                RA_aluno: aluno.matricula,
+                performance: false
+            })
+        });
+
+        setPontuacoes((pontuacoesAntigas) => {
+            const outros = pontuacoesAntigas.filter(
+                p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
+            );
+            return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: false }];
+        });
+
+        mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como negativo(-).`);
+    };    
+
+    // pegar performance do aluno
+    function getPerformance(RA_aluno, id_categoria) {
+        const pontuacao = pontuacoes.find(
+            p => String(p.RA_aluno) === String(RA_aluno) && Number(p.id_categoria) === Number(id_categoria)
+        );
+        return pontuacao ? pontuacao.performance : null;
+    }
+
+    return (
+        <div className="pagina-pontuar">
+            {mensagem && (
+                <div className={`mensagem-popup${fade ? ' fade-out' : ''}`}>
+                    {mensagem}
+                </div>
+            )}
             <Header />
             <main className="container-fluid px-4">
-                {erro && <div className="alert alert-danger" role="alert">{erro}</div>}
+                <select 
+                    className="botao-seleciona-categoria"
+                    value={categoriaAtual}
+                    onChange={(e) => setCategoriaAtual(e.target.value)}
+                >
+                    <option value="Selecionar Categoria:" disabled>
+                        Selecionar Categoria:
+                    </option>
+                    {categorias.map(categoria => (
+                        <option key={categoria.id} value={categoria.nome}>
+                            {categoria.nome}
+                        </option>
+                    ))}
+                </select>
+
                 <div className="table-responsive">
-                    <table className="table-categoria">                        <thead>
+                    <table className="tabela-pontuar">
+                        <thead>
                             <tr>
-                                <th>Categorias</th>
-                                <th>Valor</th>
+                                <th>Nome</th>
+                                <th>Valor da categoria</th>
                                 <th>Ações</th>
                             </tr>
-                        </thead>                        <tbody>{categorias.map((categoria) => (
-                            <tr key={categoria.id}>
-                                <td>{categoria.categorias}</td>
-                                <td>{categoria.valor}</td>
-                                <td>
-                                    <div className="acoes">
-                                        <button
-                                            className="edit-btn"
-                                            onClick={() => handleEdit(categoria)}
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(categoria.id)}
-                                            className="delete-btn"
-                                        >
-                                            <img src="/images/Icon Deletar.png" alt="Deletar" className="trash-icon" />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}</tbody>
+                        </thead>
+                        <tbody>
+                            {alunos
+                            .slice()
+                            .sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')) //ordem alfabetica
+                            .map((aluno) => {
+                                const categoria = categorias.find(c => c.nome === categoriaAtual);
+                                const perf = categoria ? getPerformance(aluno.matricula, categoria.id) : null;
+                                return (
+                                    <tr key={aluno.id}>
+                                        <td>{aluno.nome}</td>
+                                        <td className="valor-categoria">
+                                            {categoriaAtual !== 'Selecionar Categoria:'
+                                                ? `${categoria?.valor ?? '-'} PoliPoints`
+                                                : '-'
+                                            }
+                                        </td>
+                                        <td>
+                                            <div className="acoes">
+                                                <button
+                                                    className={`botao-mais${perf === true ? ' ativo' : ''}`}
+                                                    onClick={() => handleAdicionar(aluno.id)}
+                                                >
+                                                    +
+                                                </button>
+                                                <button
+                                                    className={`botao-menos${perf === false ? ' ativo' : ''}`}
+                                                    onClick={() => handleSubtrair(aluno.id)}
+                                                >
+                                                    -
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>                   
                     </table>
-                </div>                <button
-                    className="botao-add-categoria"
-                    onClick={() => setAbrirModalCadastrar(true)}
-                >
-                    +Adicionar Categoria
-                </button>            </main>
-
-            {categoriaParaEditar && (
-                <ModalEditarCategoria
-                    categoria={categoriaParaEditar}
-                    onClose={() => setCategoriaParaEditar(null)}
-                    onSave={handleSaveEdit}
-                />
-            )}
-
-            {abrirModalCadastrar && (
-                <ModalCadastrarCategoria
-                    onClose={() => setAbrirModalCadastrar(false)}
-                />
-            )}
+                </div>
+            </main>
         </div>
     );
 }
