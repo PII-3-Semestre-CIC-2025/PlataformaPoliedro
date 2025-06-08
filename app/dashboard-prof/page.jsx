@@ -38,12 +38,11 @@ const DashboardProf = () => {
                         <div className="menuBtn bgAvaliacoes">
                             <i className="fas fa-clipboard-list"></i> Avaliações
                         </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="menuBtn bgRelatorios">
-                            <i className="fas fa-file-alt"></i> Relatórios
-                        </div>
                     </div>                    <div className="col-md-4">
+                        <Link href="/relatorio" className="menuBtn bgRelatorios">
+                            <i className="fas fa-file-alt"></i> Relatórios
+                        </Link>
+                    </div><div className="col-md-4">
                         <Link href="/dashboard-prof/pontuacao" className="menuBtn bgCategorias">
                             <i className="fas fa-cog"></i> Categorias
                         </Link>
