@@ -1,5 +1,6 @@
 .logo {
     width: 15%;
+    margin-bottom: 5px;
 }
 .logout-btn{
     height: fit-content;
@@ -17,7 +18,7 @@
 .header-prof { 
     align-content: center;
     font-size: 25px;
-    height: 65px;
+    height: 80px;
     background-color: #124F8F;
     color: white;
     align-content: end;

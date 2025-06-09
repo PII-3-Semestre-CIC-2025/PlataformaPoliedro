@@ -52,32 +52,32 @@ a {
     margin-top: -10px;
 }
 
-.menuBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 20px;
-    color: rgb(255, 255, 255);
-    font-size: 3.0rem;
-    font-weight: 380px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    height: 200px;
-    transition: transform 0.2s;
-    margin-bottom: 80px;
+.menuRow {
+    padding: 30px;
+    row-gap: 80px;
+    overflow: hidden;
 }
 
-.menuRow {
-    row-gap: -50px;
+.menuBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 250px;
+  font-size: 3rem;
+  padding: 30px;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.menuBtn:hover {
+  transform: scale(1.02);
 }
 
 .menuBtn i {
     font-size: 4rem;
-    margin-right: 15px;
-}
-
-.menuBtn:hover {
-    transform: scale(1.02);
 }
 
 .bgAlunos {
@@ -102,8 +102,4 @@ a {
 
 .bgConfiguracao {
     background-color: #e91e63;
-}
-
-.py4 {
-    margin-top: -620px;
 }

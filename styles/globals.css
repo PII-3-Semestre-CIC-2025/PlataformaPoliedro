@@ -36,7 +36,6 @@ a {
     text-decoration: none;
 }
 
-
 .blur-background {
     position: absolute;
     top: 0;
@@ -103,10 +102,9 @@ a {
     width: 50%;
 }
 
-
 .container {
-    display: flex;
-    height: 100vh;
+    display: auto;
+    height: auto;
 }
 
 .login-box {
@@ -178,7 +176,6 @@ a {
     font-size: 1rem;
 }
 
-
 .form-group {
     display: flex;
     flex-direction: column;
@@ -237,7 +234,6 @@ a {
     margin-top: .75rem;
 }
 
-
 .etapa-form {
     display: flex;
     flex-direction: column;
@@ -266,39 +262,8 @@ a {
     font-size: 1rem;
 }
 
-
-
 .professor-dashboard {
     background-color: white;
-}
-
-.menuBtn {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 20px;
-    color: white;
-    font-size: 2.9rem;
-    font-weight: 400;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    height: 200px;
-    transition: transform 0.2s;
-    margin-bottom: 80px;
-}
-
-.menuRow {
-    row-gap: -50px;
-}
-
-.menuBtn i {
-    font-size: 2rem;
-    margin-right: 15px;
-}
-
-.menuBtn:hover {
-    transform: scale(1.02);
 }
 
 .bgAlunos {
@@ -324,12 +289,6 @@ a {
 .bgCategorias {
     background-color: #e91e63;
 }
-
-.py4 {
-    margin-top: -620px;
-}
-
-
 
 .info-box{
     justify-content: center;
