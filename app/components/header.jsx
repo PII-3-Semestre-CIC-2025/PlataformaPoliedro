@@ -109,7 +109,8 @@ export const Header = () => {
                 ))}
               </select>
             </div>
-            <div className="label-select-group">              <select
+            <div className="label-select-group">              
+              <select
                 id="turmaDropdown"
                 value={turmaSelecionada}
                 onChange={handleTurmaChange}
