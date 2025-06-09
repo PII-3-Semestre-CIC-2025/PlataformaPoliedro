@@ -72,12 +72,15 @@ export const Header = () => {
     const novaEtapa = e.target.value;
     setEtapaSelecionada(novaEtapa);
     setTurmaSelecionada('');
+    localStorage.setItem('etapaSelecionada', novaEtapa);
+    localStorage.setItem('turmaSelecionada', '');
     window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
 
   const handleTurmaChange = (e) => {
     const novaTurma = e.target.value;
     setTurmaSelecionada(novaTurma);
+    localStorage.setItem('turmaSelecionada', novaTurma);
     window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
 
