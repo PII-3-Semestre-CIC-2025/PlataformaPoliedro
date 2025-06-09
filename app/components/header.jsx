@@ -95,7 +95,8 @@ export const Header = () => {
               <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
             </a>
           </div>
-          <div className="col-8 turma-info" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>            <div className="label-select-group">
+          <div className="col-8 turma-info" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>            
+            <div className="label-select-group">
               <select
                 id="etapaDropdown"
                 value={etapaSelecionada}
