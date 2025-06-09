@@ -44,14 +44,14 @@ export function ModalGerenciarAvaliacoes({ isOpen, onClose, avaliacoes, onEdit, 
                                     required
                                 />
                                 <span className="peso-symbol">%</span>
-                            </div>
-                            <div className="acoes">
+                            </div>                            <div className="acoes">
                                 <button type="submit" className="botao-salvar">
                                     <img 
-                                        src="/images/save-icon.png" 
+                                        src="/images/iconcheckbox.png" 
                                         alt="Salvar"
-                                        width={20}
-                                        height={20}
+                                        width={35}
+                                        height={35}
+                                        style={{ filter: 'invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)' }}
                                     />
                                 </button>
                                 <button 
@@ -62,8 +62,8 @@ export function ModalGerenciarAvaliacoes({ isOpen, onClose, avaliacoes, onEdit, 
                                     <img 
                                         src="/images/Icon Deletar.png" 
                                         alt="Excluir"
-                                        width={20}
-                                        height={20}
+                                        width={35}
+                                        height={35}
                                     />
                                 </button>
                             </div>

@@ -131,18 +131,19 @@ export default function AvaliacoesPage() {
                                 className="botao-add-avaliacao"
                                 onClick={() => setModalAddAvaliacaoAberto(true)}
                             >
-                                Adicionar Avaliação +
+                                Adicionar Avaliação
                             </button>
                             <button
                                 className="botao-configuracoes"
                                 onClick={() => setModalGerenciarAberto(true)}
-                            >
-                                <img 
-                                    src="/images/settings-icon.png"
-                                    alt="Configurações"
-                                    width={24}
-                                    height={24}
-                                />
+                            > 
+                            <img 
+                                src="/images/iconsettings.png"
+                                alt="Configurações"
+                                width={40}
+                                height={40}
+                                style={{ filter: 'brightness(0) saturate(100%) invert(27%) sepia(88%) saturate(1361%) hue-rotate(189deg) brightness(97%) contrast(89%)' }}
+                            />
                             </button>
                         </div>
                     </div>
