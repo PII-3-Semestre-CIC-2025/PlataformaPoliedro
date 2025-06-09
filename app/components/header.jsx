@@ -81,31 +81,29 @@ export const Header = () => {
               <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
             </a>
           </div>
-          <div className="col-8 turma-info" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-            <div className="label-select-group">
-              <label htmlFor="etapaDropdown">Etapa:</label>
+          <div className="col-8 turma-info" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>            <div className="label-select-group">
               <select
                 id="etapaDropdown"
                 value={etapaAtual}
                 onChange={handleEtapaChange}
                 className="form-select"
               >
+                <option value="" disabled hidden>Etapa</option>
                 {etapas.map(etapa => (
-                  <option key={etapa} value={etapa}>{etapa}</option>
+                  <option key={etapa} value={etapa}>Etapa: {etapa}</option>
                 ))}
               </select>
             </div>
-            <div className="label-select-group">
-              <label htmlFor="turmaDropdown">Turma:</label>
-              <select
+            <div className="label-select-group">              <select
                 id="turmaDropdown"
                 value={turmaAtual}
                 onChange={handleTurmaChange}
                 className="form-select"
                 disabled={!etapaAtual}
               >
+                <option value="" disabled hidden>Turma</option>
                 {turmas.map(turma => (
-                  <option key={turma} value={turma}>{turma}</option>
+                  <option key={turma} value={turma}>Turma: {turma}</option>
                 ))}
               </select>
             </div>

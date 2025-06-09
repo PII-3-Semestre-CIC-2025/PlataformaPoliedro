@@ -5,20 +5,8 @@ import Link from 'next/link';
 
 const DashboardProf = () => {
     return (
-        <div className="professor-dashboard">
-            <Header />
-            <br /><br />
-            <div className="container caixa-informacao">
-                <div className="row">
-                    <div className="col-12 info-box">
-                        <span className="total-alunos">Total de Alunos: 30</span>
-                        <span className="media-turma">Média da Turma: 8.9</span>
-                        <span className="aluno-destaque">Aluno Destaque: Vitor Porto (195 PoliPoints)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container py4">
+        <div className="professor-dashboard">            <Header />
+            <div className="container py4" style={{ marginTop: '100px' }}>
                 <div className="row menuRow">
                     <div className="col-md-4">
                         <Link href="/dashboard-prof/alunos" className="menuBtn bgAlunos">
