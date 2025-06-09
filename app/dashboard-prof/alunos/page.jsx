@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/alunos-prof.css';
 import '@/styles/botao-add-aluno.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';
 import { ModalCadastrarAluno } from '@/app/components/modal-cadastrar-aluno';
 import { Header } from '@/app/components/header';
@@ -13,28 +13,39 @@ export default function AlunosProf() {
     const [erro, setErro] = useState(null);
     const [alunoParaEditar, setAlunoParaEditar] = useState(null);
     const [abrirModalCadastrar, setAbrirModalCadastrar] = useState(false);
+l
+    const fetchAlunos = useCallback(async () => {
+        try {
+            const turmaSelecionada = localStorage.getItem('turmaSelecionada');
+            if (!turmaSelecionada) {
+                setErro('Nenhuma turma selecionada.');
+                setAlunos([]);
+                return;
+            }
+            const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
+            setAlunos(alunosData.map((rel, idx) => ({
+                id: idx + 1,
+                nome: rel.alunos.nome,
+                matricula: rel.alunos.RA,
+                turma: turmaSelecionada
+            })));
+            setErro(null);
+        } catch (error) {
+            setErro('Erro ao buscar alunos: ' + error.message);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchAlunos = async () => {
-            try {
-                const turmaSelecionada = localStorage.getItem('turmaSelecionada');
-                if (!turmaSelecionada) {
-                    setErro('Nenhuma turma selecionada.');
-                    return;
-                }
-                const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
-                setAlunos(alunosData.map((rel, idx) => ({
-                    id: idx + 1,
-                    nome: rel.alunos.nome,
-                    matricula: rel.alunos.RA,
-                    turma: turmaSelecionada
-                })));
-            } catch (error) {
-                setErro('Erro ao buscar alunos: ' + error.message);
-            }
-        };
         fetchAlunos();
-    }, []);
+        window.addEventListener('etapaOuTurmaAtualizada', fetchAlunos);
+        window.addEventListener('storage', fetchAlunos);
+        window.addEventListener('focus', fetchAlunos);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', fetchAlunos);
+            window.removeEventListener('storage', fetchAlunos);
+            window.removeEventListener('focus', fetchAlunos);
+        };
+    }, [fetchAlunos]);
 
     const handleEdit = (aluno) => {
         setAlunoParaEditar(aluno);
@@ -81,7 +92,7 @@ export default function AlunosProf() {
                         </thead>
                         <tbody>{alunos
                         .slice()
-                        .sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')) //ordem alfabetica
+                        .sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'))
                         .map((aluno) => (
                             <tr key={aluno.id}>
                                 <td>{aluno.nome}</td>

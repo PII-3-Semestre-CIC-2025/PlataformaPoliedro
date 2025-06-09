@@ -15,45 +15,55 @@ export default function PontuarPage() {
     const [mensagem, setMensagem] = useState(null);
     const [fade, setFade] = useState(false);
     const [pontuacoes, setPontuacoes] = useState([]);
+    
+    const [etapaSelecionada, setEtapaSelecionada] = useState('');
+    const [turmaSelecionada, setTurmaSelecionada] = useState('');
+
+    useEffect(() => {
+        function atualizarSelecoes() {
+            setEtapaSelecionada(localStorage.getItem('etapaSelecionada') || '');
+            setTurmaSelecionada(localStorage.getItem('turmaSelecionada') || '');
+        }
+        atualizarSelecoes();
+        window.addEventListener('etapaOuTurmaAtualizada', atualizarSelecoes);
+        window.addEventListener('storage', atualizarSelecoes);
+        window.addEventListener('focus', atualizarSelecoes);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', atualizarSelecoes);
+            window.removeEventListener('storage', atualizarSelecoes);
+            window.removeEventListener('focus', atualizarSelecoes);
+        };
+    }, []);
 
     // Buscar alunos
     useEffect(() => {
-        const fetchAlunos = async () => {
-            try {
-                const turmaSelecionada = localStorage.getItem('turmaSelecionada');
-                if (!turmaSelecionada) return;
-                const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
-                setAlunos(alunosData.map((rel, idx) => ({
-                    id: idx + 1,
-                    nome: rel.alunos.nome,
-                    matricula: rel.alunos.RA,
-                    turma: turmaSelecionada
-                })));
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchAlunos();
-    }, []);
+        if (!turmaSelecionada) return;
+        buscarAlunosPorTurma(turmaSelecionada).then(alunosData => {
+            setAlunos(alunosData.map((rel, idx) => ({
+                id: idx + 1,
+                nome: rel.alunos.nome,
+                matricula: rel.alunos.RA,
+                turma: turmaSelecionada
+            })));
+        });
+    }, [turmaSelecionada]);
 
     // Buscar categorias
     useEffect(() => {
-        const etapaSelecionada = localStorage.getItem('etapaSelecionada');
         if (!etapaSelecionada) return;
         buscarCategoriasPorEtapa(etapaSelecionada).then(setCategorias);
-    }, []);
+    }, [etapaSelecionada]);
 
-    // Buscar pontuações (+ e -)
+    // Buscar pontuacoes (+ e -)
     useEffect(() => {
         async function fetchPontuacoes() {
-            const turmaSelecionada = localStorage.getItem('turmaSelecionada');
             if (!turmaSelecionada || categorias.length === 0) return;
             const idsCategorias = categorias.map(c => c.id);
             const data = await buscarPontuacoes(turmaSelecionada, idsCategorias);
             setPontuacoes(data);
         }
         fetchPontuacoes();
-    }, [categorias]);
+    }, [turmaSelecionada, categorias]);
 
     const mostrarMensagem = (texto) => {
         setMensagem(texto);
@@ -67,44 +77,49 @@ export default function PontuarPage() {
         [categorias, categoriaAtual]
     );
 
-    const handleAdicionar = useCallback(async (alunoId) => {
-        if (!categoriaSelecionada) return;
-        const aluno = alunos.find(a => a.id === alunoId);
+    const handleAdicionar = async (alunoId) => {
+        try {
+            if (!categoriaSelecionada) return;
+            const aluno = alunos.find(a => a.id === alunoId);
 
-        const res = await fetch('/api/pontuacoes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id_categoria: categoriaSelecionada.id,
-                RA_aluno: aluno.matricula,
-                performance: true
-            })
-        });
-
-        if (res.status === 201) {
-            setPontuacoes((pontuacoesAntigas) => {
-                const outros = pontuacoesAntigas.filter(
-                    p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
-                );
-                return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
-            });
-            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi salvo como positivo(+).`);
-        } else if (res.status === 409) {
-            const { id } = await res.json();
-            await fetch(`/api/pontuacoes/${id}`, {
-                method: 'PUT',
+            const res = await fetch('/api/pontuacoes', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ performance: true })
+                body: JSON.stringify({
+                    id_categoria: categoriaSelecionada.id,
+                    RA_aluno: aluno.matricula,
+                    performance: true
+                })
             });
-            setPontuacoes((pontuacoesAntigas) => {
-                const outros = pontuacoesAntigas.filter(
-                    p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
-                );
-                return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
-            });
-            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para positivo(+).`);
+
+            if (res.status === 201) {
+                setPontuacoes((pontuacoesAntigas) => {
+                    const outros = pontuacoesAntigas.filter(
+                        p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
+                    );
+                    return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
+                });
+                mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi salvo como positivo(+).`);
+            } else if (res.status === 409) {
+                const { id } = await res.json();
+                await fetch(`/api/pontuacoes/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ performance: true })
+                });
+                setPontuacoes((pontuacoesAntigas) => {
+                    const outros = pontuacoesAntigas.filter(
+                        p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
+                    );
+                    return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
+                });
+                mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para positivo(+).`);
+            }
+        } catch (error) {
+            setMensagem('Erro ao adicionar ponto.');
+            setFade(true);
         }
-    }, [categoriaSelecionada, alunos]);
+    };
 
     const handleSubtrair = async (alunoId) => {
         if (categoriaAtual === 'Selecionar Categoria:') {
@@ -159,6 +174,16 @@ export default function PontuarPage() {
         );
         return pontuacao ? pontuacao.performance : null;
     }
+
+    useEffect(() => {
+        if (fade) {
+            const timer = setTimeout(() => {
+                setFade(false);
+                setMensagem(null);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [fade]);
 
     return (
         <div className="pagina-pontuar">

@@ -12,12 +12,28 @@ export default function PontuacaoPage() {
     const [erro, setErro] = useState(null);
     const [categoriaParaEditar, setCategoriaParaEditar] = useState(null);
     const [abrirModalCadastrar, setAbrirModalCadastrar] = useState(false);
+    const [etapaSelecionada, setEtapaSelecionada] = useState('');
 
     useEffect(() => {
+        function atualizarSelecao() {
+            setEtapaSelecionada(localStorage.getItem('etapaSelecionada') || 'Ensino Médio');
+        }
+        atualizarSelecao(); // inicial
+        window.addEventListener('etapaOuTurmaAtualizada', atualizarSelecao);
+        window.addEventListener('storage', atualizarSelecao);
+        window.addEventListener('focus', atualizarSelecao);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', atualizarSelecao);
+            window.removeEventListener('storage', atualizarSelecao);
+            window.removeEventListener('focus', atualizarSelecao);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!etapaSelecionada) return;
         async function fetchCategorias() {
             try {
-                const etapa = localStorage.getItem('etapaSelecionada') || 'Fundamental II';
-                const res = await fetch(`/api/categorias?etapa=${encodeURIComponent(etapa)}`);
+                const res = await fetch(`/api/categorias?etapa=${encodeURIComponent(etapaSelecionada)}`);
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'Erro ao buscar categorias');
                 setCategorias(data);
@@ -26,13 +42,12 @@ export default function PontuacaoPage() {
             }
         }
         fetchCategorias();
-    }, []);
+    }, [etapaSelecionada]);
 
     const handleEdit = (categoria) => {
         setCategoriaParaEditar(categoria);
     };
 
-    // Atualize a categoria na lista após edição
     const handleSaveEdit = (categoriaAtualizada) => {
         setCategorias(categorias.map(cat =>
             cat.id === categoriaAtualizada.id ? categoriaAtualizada : cat

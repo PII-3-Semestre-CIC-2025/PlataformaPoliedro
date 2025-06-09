@@ -6,10 +6,26 @@ import { buscarTurmasPorEtapa } from '@/lib/turmasService.js';
 import { buscarEtapas } from '@/lib/etapasService.js';
 
 export const Header = () => {
-  const [etapaAtual, setEtapaAtual] = useState('');
-  const [turmaAtual, setTurmaAtual] = useState('');
   const [etapas, setEtapas] = useState([]);
   const [turmas, setTurmas] = useState([]);
+  const [etapaSelecionada, setEtapaSelecionada] = useState('');
+  const [turmaSelecionada, setTurmaSelecionada] = useState('');
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const etapaSalva = localStorage.getItem('etapaSelecionada') || '';
+    const turmaSalva = localStorage.getItem('turmaSelecionada') || '';
+    setEtapaSelecionada(etapaSalva);
+    setTurmaSelecionada(turmaSalva);
+    setCarregando(false);
+  }, []);
+
+  useEffect(() => {
+    if (etapaSelecionada) localStorage.setItem('etapaSelecionada', etapaSelecionada);
+  }, [etapaSelecionada]);
+  useEffect(() => {
+    if (turmaSelecionada) localStorage.setItem('turmaSelecionada', turmaSelecionada);
+  }, [turmaSelecionada]);
 
   useEffect(() => {
     async function carregarEtapas() {
@@ -17,60 +33,55 @@ export const Header = () => {
       const nomesEtapas = etapasData.map(e => e.nome_etapa);
       setEtapas(nomesEtapas);
 
-      const etapaSalva = localStorage.getItem('etapaSelecionada');
-      if (etapaSalva && nomesEtapas.includes(etapaSalva)) {
-        setEtapaAtual(etapaSalva);
+      if (etapaSelecionada && nomesEtapas.includes(etapaSelecionada)) {
+        setEtapaSelecionada(etapaSelecionada);
       } else if (nomesEtapas.length > 0) {
-        setEtapaAtual(nomesEtapas[0]);
-        localStorage.setItem('etapaSelecionada', nomesEtapas[0]);
+        setEtapaSelecionada(nomesEtapas[0]);
       } else {
-        setEtapaAtual('');
+        setEtapaSelecionada('');
       }
     }
-    carregarEtapas();
-  }, []);
+    if (!carregando) carregarEtapas();
+  }, [carregando]);
 
   useEffect(() => {
     async function carregarTurmas() {
-      if (etapaAtual) {
+      if (etapaSelecionada) {
         try {
-          const turmasData = await buscarTurmasPorEtapa(etapaAtual);
+          const turmasData = await buscarTurmasPorEtapa(etapaSelecionada);
           const codigosTurmas = turmasData.map(t => t.codigo);
           setTurmas(codigosTurmas);
 
-          const turmaSalva = localStorage.getItem('turmaSelecionada');
-          if (turmaSalva && codigosTurmas.includes(turmaSalva)) {
-            setTurmaAtual(turmaSalva);
+          if (turmaSelecionada && codigosTurmas.includes(turmaSelecionada)) {
+            setTurmaSelecionada(turmaSelecionada);
           } else if (codigosTurmas.length > 0) {
-            setTurmaAtual(codigosTurmas[0]);
-            localStorage.setItem('turmaSelecionada', codigosTurmas[0]);
+            setTurmaSelecionada(codigosTurmas[0]);
           } else {
-            setTurmaAtual('');
+            setTurmaSelecionada('');
           }
         } catch {}
       } else {
         setTurmas([]);
-        setTurmaAtual('');
+        setTurmaSelecionada('');
       }
     }
-    carregarTurmas();
-  }, [etapaAtual]);
+    if (!carregando) carregarTurmas();
+  }, [etapaSelecionada, carregando]);
 
   const handleEtapaChange = (e) => {
     const novaEtapa = e.target.value;
-    setEtapaAtual(novaEtapa);
-    localStorage.setItem('etapaSelecionada', novaEtapa);
-    setTurmaAtual('');
-    localStorage.removeItem('turmaSelecionada');
-    window.location.reload();
+    setEtapaSelecionada(novaEtapa);
+    setTurmaSelecionada('');
+    window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
 
   const handleTurmaChange = (e) => {
     const novaTurma = e.target.value;
-    setTurmaAtual(novaTurma);
-    localStorage.setItem('turmaSelecionada', novaTurma);
-    window.location.reload();
+    setTurmaSelecionada(novaTurma);
+    window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
+
+  if (carregando) return null;
 
   return (
     <header className="header-prof">
@@ -84,7 +95,7 @@ export const Header = () => {
           <div className="col-8 turma-info" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>            <div className="label-select-group">
               <select
                 id="etapaDropdown"
-                value={etapaAtual}
+                value={etapaSelecionada}
                 onChange={handleEtapaChange}
                 className="form-select"
               >
@@ -96,10 +107,10 @@ export const Header = () => {
             </div>
             <div className="label-select-group">              <select
                 id="turmaDropdown"
-                value={turmaAtual}
+                value={turmaSelecionada}
                 onChange={handleTurmaChange}
                 className="form-select"
-                disabled={!etapaAtual}
+                disabled={!etapaSelecionada}
               >
                 <option value="" disabled hidden>Turma</option>
                 {turmas.map(turma => (
