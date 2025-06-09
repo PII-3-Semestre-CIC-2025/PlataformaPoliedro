@@ -1,21 +1,27 @@
 import { supabase } from '@/lib/supabaseClient.js';
 
-export async function PUT(request, { params }) {
+export async function PUT(request, context) {
+    const params = await context.params;
+    const id = params.id;
     try {
-        const id = params.id;
         const { performance } = await request.json();
 
-        if (!performance) {
+        if (performance === undefined) {
             return new Response(JSON.stringify({ error: 'Performance não informada.' }), { status: 400 });
         }
 
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('pontuacoes')
             .update({ performance })
-            .eq('id', id);
+            .eq('id', id)
+            .select();
 
         if (error) {
             return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        }
+
+        if (!data || data.length === 0) {
+            return new Response(JSON.stringify({ error: 'Pontuação não encontrada.' }), { status: 404 });
         }
 
         return new Response(JSON.stringify({ message: 'Pontuação atualizada.' }), { status: 200 });

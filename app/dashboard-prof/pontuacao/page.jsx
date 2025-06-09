@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/pontuacao.css';
 import '@/styles/botao-seleciona-categoria.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Header } from '@/app/components/header';
 import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 import { buscarCategoriasPorEtapa } from '@/lib/categoriasService';
@@ -53,7 +53,7 @@ export default function PontuarPage() {
             setPontuacoes(data);
         }
         fetchPontuacoes();
-    }, [alunos, categorias]);
+    }, [categorias]);
 
     const mostrarMensagem = (texto) => {
         setMensagem(texto);
@@ -62,7 +62,51 @@ export default function PontuarPage() {
         setTimeout(() => setMensagem(null), 2000); // remove após 2s
     };
 
-    const handleAdicionar = async (alunoId) => {
+    const categoriaSelecionada = useMemo(
+        () => categorias.find(c => c.nome === categoriaAtual),
+        [categorias, categoriaAtual]
+    );
+
+    const handleAdicionar = useCallback(async (alunoId) => {
+        if (!categoriaSelecionada) return;
+        const aluno = alunos.find(a => a.id === alunoId);
+
+        const res = await fetch('/api/pontuacoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_categoria: categoriaSelecionada.id,
+                RA_aluno: aluno.matricula,
+                performance: true
+            })
+        });
+
+        if (res.status === 201) {
+            setPontuacoes((pontuacoesAntigas) => {
+                const outros = pontuacoesAntigas.filter(
+                    p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
+                );
+                return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
+            });
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi salvo como positivo(+).`);
+        } else if (res.status === 409) {
+            const { id } = await res.json();
+            await fetch(`/api/pontuacoes/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ performance: true })
+            });
+            setPontuacoes((pontuacoesAntigas) => {
+                const outros = pontuacoesAntigas.filter(
+                    p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
+                );
+                return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
+            });
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para positivo(+).`);
+        }
+    }, [categoriaSelecionada, alunos]);
+
+    const handleSubtrair = async (alunoId) => {
         if (categoriaAtual === 'Selecionar Categoria:') {
             alert('Por favor, selecione uma categoria primeiro');
             return;
@@ -77,7 +121,7 @@ export default function PontuarPage() {
             body: JSON.stringify({
                 id_categoria: categoria.id,
                 RA_aluno: aluno.matricula,
-                performance: true
+                performance: false
             })
         });
 
@@ -86,49 +130,26 @@ export default function PontuarPage() {
                 const outros = pontuacoesAntigas.filter(
                     p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
                 );
-                return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: true }];
+                return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: false }];
             });
-            
-            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como positivo(+).`);
+
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como negativo(-).`);
         } else if (res.status === 409) {
             // Já existe em pontuacoes, então atualiza:
             const { id } = await res.json();
             await fetch(`/api/pontuacoes/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ performance: true })
+                body: JSON.stringify({ performance: false })
             });
-            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi atualizado para positivo(+).`);
+            setPontuacoes((pontuacoesAntigas) => {
+                const outros = pontuacoesAntigas.filter(
+                    p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
+                );
+                return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: false }];
+            });
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi atualizado para negativo(-).`);
         }
-    };
-
-    const handleSubtrair = async (alunoId) => {
-        if (categoriaAtual === 'Selecionar Categoria:') {
-            alert('Por favor, selecione uma categoria primeiro');
-            return;
-        }
-        const categoria = categorias.find(c => c.nome === categoriaAtual);
-        if (!categoria) return;
-        const aluno = alunos.find(a => a.id === alunoId);
-
-        await fetch('/api/pontuacoes/atualizar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id_categoria: categoria.id,
-                RA_aluno: aluno.matricula,
-                performance: false
-            })
-        });
-
-        setPontuacoes((pontuacoesAntigas) => {
-            const outros = pontuacoesAntigas.filter(
-                p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
-            );
-            return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: false }];
-        });
-
-        mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como negativo(-).`);
     };    
 
     // pegar performance do aluno
