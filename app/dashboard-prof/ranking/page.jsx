@@ -1,28 +1,69 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@/styles/alunos-prof.css';
 import '@/styles/ranking.css';
-import '@/styles/ordenador-ranking.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Header } from '@/app/components/header';
+import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 
-export default function RankingPage() {    
+export default function RankingPage() {
     const [ordenacao, setOrdenacao] = useState('Posição Decrescente');
-    const [alunos, setAlunos] = useState([
-        { id: 1, nome: 'Henrique Nalin', pontos: 135, posicao: 1 },
-        { id: 2, nome: 'Vitor Porto', pontos: 135, posicao: 2 },
-        { id: 3, nome: 'Leonardo Belo', pontos: 130, posicao: 3 },
-        { id: 4, nome: 'Lyssa Okawa', pontos: 125, posicao: 4 },
-        { id: 5, nome: 'Breno Augusto', pontos: 110, posicao: 5 },
-        { id: 6, nome: 'Leticia Carvalho', pontos: 105, posicao: 6 },
-        { id: 7, nome: 'Gustavo Serripieri', pontos: 100, posicao: 7 },
-        { id: 8, nome: 'Bruno Nogueira', pontos: 95, posicao: 8 },
-        { id: 9, nome: 'Mateo Cortez', pontos: 0, posicao: 9 }
-    ]);
+    const [alunos, setAlunos] = useState([]);
+    const [erro, setErro] = useState(null);
 
+    // TODO: FUNCIONAR COM MÉDIA
+
+
+    const fetchAlunos = useCallback(async () => {
+        try {
+            const turmaSelecionada = localStorage.getItem('turmaSelecionada');
+            if (!turmaSelecionada) {
+                setErro('Nenhuma turma selecionada.');
+                setAlunos([]);
+                return;
+            }
+            const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
+            // Mapeia para o formato esperado
+            const alunosFormatados = alunosData.map((rel, idx) => ({
+                id: idx + 1,
+                nome: rel.alunos.nome,
+                pontos: rel.alunos.total_pontos ?? 0
+            }));
+            // Calcula o ranking real por pontos
+            const ranking = [...alunosFormatados]
+                .sort((a, b) => b.pontos - a.pontos)
+                .map((aluno, idx) => ({
+                    ...aluno,
+                    posicao: idx + 1
+                }));
+            // Associa a posição real a cada aluno
+            const alunosComRanking = alunosFormatados.map(aluno => {
+                const pos = ranking.find(r => r.id === aluno.id)?.posicao ?? '-';
+                return { ...aluno, posicao: pos };
+            });
+            setAlunos(alunosComRanking);
+            setErro(null);
+        } catch (error) {
+            setErro('Erro ao buscar ranking: ' + error.message);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchAlunos();
+        window.addEventListener('etapaOuTurmaAtualizada', fetchAlunos);
+        window.addEventListener('storage', fetchAlunos);
+        window.addEventListener('focus', fetchAlunos);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', fetchAlunos);
+            window.removeEventListener('storage', fetchAlunos);
+            window.removeEventListener('focus', fetchAlunos);
+        };
+    }, [fetchAlunos]);
+
+    // Ordenação visual, mas não altera o campo posicao
     const ordenarAlunos = (criterio) => {
         setOrdenacao(criterio);
-        const alunosOrdenados = [...alunos];
-        
+        let alunosOrdenados = [...alunos];
         switch (criterio) {
             case 'Posição Crescente':
                 alunosOrdenados.sort((a, b) => a.posicao - b.posicao);
@@ -49,26 +90,14 @@ export default function RankingPage() {
                 alunosOrdenados.sort((a, b) => (b.pontos / 10) - (a.pontos / 10));
                 break;
         }
-        
         setAlunos(alunosOrdenados);
     };
-
-    // Atualizar posições iniciais baseadas nos pontos
-    useEffect(() => {
-        const alunosOrdenados = [...alunos]
-            .sort((a, b) => b.pontos - a.pontos)
-            .map((aluno, index) => ({
-                ...aluno,
-                posicao: index + 1
-            }));
-        setAlunos(alunosOrdenados);
-    }, []);
 
     return (
         <div className="pagina-pontuar">
             <Header />
             <main className="container-fluid px-4">
-                <select 
+                <select
                     className="botao-ordenacao"
                     value={ordenacao}
                     onChange={(e) => ordenarAlunos(e.target.value)}

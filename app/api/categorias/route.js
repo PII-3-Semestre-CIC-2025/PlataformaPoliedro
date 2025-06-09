@@ -1,4 +1,4 @@
-import { buscarCategoriasPorEtapa } from '@/lib/categoriasService.js';
+import { buscarCategoriasPorEtapa } from '@/lib/client/categoriasService.js';
 import { criarCategoria } from '@/lib/admin/categoriasAdminService.js';
 
 export async function GET(request) {

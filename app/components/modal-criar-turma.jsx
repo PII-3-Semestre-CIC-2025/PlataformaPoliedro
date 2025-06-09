@@ -1,7 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useState, useEffect } from 'react'
-import { buscarEtapas } from '@/lib/etapasService.js'
+import { buscarEtapas } from '@/lib/client/etapasService.js'
 
 export const ModalCriarTurma = ({ onClose }) => {
   const [etapa, setEtapa] = useState('1');

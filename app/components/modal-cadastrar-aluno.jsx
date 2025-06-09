@@ -1,7 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useState, useEffect } from 'react'
-import { buscarTurmasPorEtapa } from '@/lib/turmasService'
+import { buscarTurmasPorEtapa } from '@/lib/client/turmasService'
 
 export const ModalCadastrarAluno = ({ onClose }) => {
   const [nome, setNome] = useState('')

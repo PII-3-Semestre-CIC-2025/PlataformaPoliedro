@@ -5,8 +5,8 @@ import '@/styles/botao-seleciona-categoria.css';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Header } from '@/app/components/header';
 import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
-import { buscarCategoriasPorEtapa } from '@/lib/categoriasService';
-import { buscarPontuacoes} from '@/lib/pontuacoesService';
+import { buscarCategoriasPorEtapa } from '@/lib/client/categoriasService';
+import { buscarPontuacoes} from '@/lib/client/pontuacoesService';
 
 export default function PontuarPage() {    
     const [categoriaAtual, setCategoriaAtual] = useState('Selecionar Categoria:');    
@@ -114,10 +114,12 @@ export default function PontuarPage() {
                     return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
                 });
                 mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para positivo(+).`);
+            } else {
+                // Só loga erro se não for 409
+                console.error('Erro inesperado:', res.status);
             }
-        } catch (error) {
-            setMensagem('Erro ao adicionar ponto.');
-            setFade(true);
+        } catch (e) {
+            // Só loga erro se não for 409
         }
     };
 
@@ -165,6 +167,7 @@ export default function PontuarPage() {
             });
             mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi atualizado para negativo(-).`);
         }
+        await fetch(`/api/alunos/${aluno.matricula}/atualizar-total`, { method: 'POST' });
     };    
 
     // pegar performance do aluno

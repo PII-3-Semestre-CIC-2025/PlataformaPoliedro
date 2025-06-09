@@ -2,8 +2,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/styles/header.css' 
 import { useEffect, useState } from 'react';
-import { buscarTurmasPorEtapa } from '@/lib/turmasService.js';
-import { buscarEtapas } from '@/lib/etapasService.js';
+import { buscarTurmasPorEtapa } from '@/lib/client/turmasService.js';
+import { buscarEtapas } from '@/lib/client/etapasService.js';
 
 export const Header = () => {
   const [etapas, setEtapas] = useState([]);

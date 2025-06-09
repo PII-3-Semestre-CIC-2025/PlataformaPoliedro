@@ -1,7 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
-import { buscarTurmasPorEtapa } from '@/lib/turmasService.js';
+import { buscarTurmasPorEtapa } from '@/lib/client/turmasService.js';
 import { useRouter } from 'next/navigation';
 import { ModalCriarTurma } from '@/app/components/modal-criar-turma';
 

@@ -13,7 +13,7 @@ export default function AlunosProf() {
     const [erro, setErro] = useState(null);
     const [alunoParaEditar, setAlunoParaEditar] = useState(null);
     const [abrirModalCadastrar, setAbrirModalCadastrar] = useState(false);
-l
+
     const fetchAlunos = useCallback(async () => {
         try {
             const turmaSelecionada = localStorage.getItem('turmaSelecionada');

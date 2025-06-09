@@ -1,7 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
-import { buscarEtapas } from '@/lib/etapasService.js';
+import { buscarEtapas } from '@/lib/client/etapasService.js';
 import { useRouter } from 'next/navigation';
 
 const Etapa = () => {
