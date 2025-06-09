@@ -51,17 +51,6 @@ a {
     border-radius: 15px;
     margin-top: -10px;
 }
-.total-alunos {
-    margin-right: 70px;
-}
-
-.media-turma {
-    margin-right: 70px;
-}
-
-.caixa-informacao {
-    justify-content: center;
-}
 
 .menuBtn {
     display: flex;
@@ -69,7 +58,7 @@ a {
     justify-content: center;
     padding: 20px;
     border-radius: 20px;
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 3.0rem;
     font-weight: 380px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -83,7 +72,7 @@ a {
 }
 
 .menuBtn i {
-    font-size: 2rem;
+    font-size: 4rem;
     margin-right: 15px;
 }
 
