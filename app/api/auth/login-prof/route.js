@@ -1,4 +1,4 @@
-import { autenticarProfessor } from '@/lib/professoresService.js'
+import { autenticarProfessor } from '@/lib/admin/professoresService.js'
 import { cookies } from 'next/headers'
 import { SignJWT } from 'jose'
 

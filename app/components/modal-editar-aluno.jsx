@@ -15,11 +15,10 @@ export const ModalEditarAluno = ({ aluno, onClose, onSave }) => {
     setSucesso(false);
 
     try {
-      const res = await fetch('/api/alunos/editar', {
+      const res = await fetch(`/api/alunos/${matricula}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ra: matricula,
           nome,
           turma
         })

@@ -1,4 +1,4 @@
-import { cadastrarProfessor } from "@/lib/professoresService.js";
+import { cadastrarProfessor } from "@/lib/admin/professoresService.js";
 
 export async function POST(request) {
     try {

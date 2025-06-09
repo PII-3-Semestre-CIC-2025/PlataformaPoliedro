@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';
 import { ModalCadastrarAluno } from '@/app/components/modal-cadastrar-aluno';
 import { Header } from '@/app/components/header';
-import { buscarAlunosPorTurma } from '@/lib/alunosService';
+import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 
 export default function AlunosProf() {
     const [alunos, setAlunos] = useState([]);
@@ -50,7 +50,7 @@ export default function AlunosProf() {
     const handleDelete = async (matricula) => {
         if (window.confirm('Tem certeza que deseja excluir este aluno?')) {
             try {
-                const res = await fetch('/api/alunos/excluir', {
+                const res = await fetch(`/api/alunos/${matricula}`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ra: matricula })

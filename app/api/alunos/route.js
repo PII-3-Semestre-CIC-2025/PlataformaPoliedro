@@ -1,4 +1,4 @@
-import { cadastrarAluno } from '@/lib/alunosAdminService.js';
+import { cadastrarAluno } from '@/lib/admin/alunosAdminService.js';
 import bcrypt from 'bcrypt';
 
 export async function POST(request) {

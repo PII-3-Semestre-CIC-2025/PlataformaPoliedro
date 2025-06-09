@@ -14,7 +14,19 @@ export const ModalCadastrarCategoria = ({ onClose }) => {
     setSucesso(false)
 
     try {
-      // TODO: Implementar API de cadastro
+      const etapa = localStorage.getItem('etapaSelecionada') || 'Fundamental II'
+      const res = await fetch('/api/categorias', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome_etapa: etapa,
+          nome: nome,
+          valor: parseInt(valor)
+        })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Erro ao cadastrar categoria.')
+
       setSucesso(true)
       setTimeout(() => {
         window.location.reload()

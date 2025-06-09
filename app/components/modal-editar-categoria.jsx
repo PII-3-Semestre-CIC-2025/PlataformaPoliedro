@@ -3,7 +3,7 @@ import { useState } from 'react'
 import '@/styles/alunos-prof.css'
 
 export const ModalEditarCategoria = ({ categoria, onClose, onSave }) => {
-  const [nome, setNome] = useState(categoria.categorias)
+  const [nome, setNome] = useState(categoria.nome)
   const [valor, setValor] = useState(categoria.valor)
   const [erro, setErro] = useState(null)
   const [sucesso, setSucesso] = useState(false)
@@ -14,16 +14,20 @@ export const ModalEditarCategoria = ({ categoria, onClose, onSave }) => {
     setSucesso(false);
 
     try {
-      // TODO: Implementar API de edição
-      const categoriaAtualizada = {
-        ...categoria,
-        categorias: nome,
-        valor: parseInt(valor)
-      };
+      const res = await fetch(`/api/categorias/${categoria.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: nome,
+          valor: parseInt(valor)
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erro ao atualizar categoria.');
 
       setSucesso(true);
       setTimeout(() => {
-        onSave(categoriaAtualizada);
+        onSave(data);
       }, 500);
     } catch (err) {
       setErro('Erro ao atualizar categoria.');

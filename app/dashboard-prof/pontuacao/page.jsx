@@ -4,7 +4,7 @@ import '@/styles/pontuacao.css';
 import '@/styles/botao-seleciona-categoria.css';
 import { useState, useEffect } from 'react';
 import { Header } from '@/app/components/header';
-import { buscarAlunosPorTurma } from '@/lib/alunosService';
+import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 import { buscarCategoriasPorEtapa } from '@/lib/categoriasService';
 import { buscarPontuacoes} from '@/lib/pontuacoesService';
 
@@ -71,8 +71,7 @@ export default function PontuarPage() {
         if (!categoria) return;
         const aluno = alunos.find(a => a.id === alunoId);
 
-        // Salva no banco
-        await fetch('/api/pontuacoes/atualizar', {
+        const res = await fetch('/api/pontuacoes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -82,14 +81,25 @@ export default function PontuarPage() {
             })
         });
 
-        setPontuacoes((pontuacoesAntigas) => {
-            const outros = pontuacoesAntigas.filter(
-                p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
-            );
-            return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: true }];
-        });
-        
-        mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como positivo(+).`);
+        if (res.status === 201) {
+            setPontuacoes((pontuacoesAntigas) => {
+                const outros = pontuacoesAntigas.filter(
+                    p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
+                );
+                return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: true }];
+            });
+            
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como positivo(+).`);
+        } else if (res.status === 409) {
+            // Já existe em pontuacoes, então atualiza:
+            const { id } = await res.json();
+            await fetch(`/api/pontuacoes/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ performance: true })
+            });
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi atualizado para positivo(+).`);
+        }
     };
 
     const handleSubtrair = async (alunoId) => {
