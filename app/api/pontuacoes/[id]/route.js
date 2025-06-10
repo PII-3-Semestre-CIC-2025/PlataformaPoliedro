@@ -29,3 +29,16 @@ export async function PUT(request, context) {
         return new Response(JSON.stringify({ error: 'Erro inesperado no servidor.' }), { status: 500 });
     }
 }
+
+export async function DELETE(request, context) {
+    const { id } = await context.params;
+    const { error } = await supabase
+        .from('pontuacoes')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    }
+    return new Response(null, { status: 204 });
+}

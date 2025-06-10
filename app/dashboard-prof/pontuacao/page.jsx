@@ -97,9 +97,17 @@ export default function PontuarPage() {
                     const outros = pontuacoesAntigas.filter(
                         p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
                     );
-                    return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
+                    return [
+                        ...outros,
+                        {
+                            id: undefined,
+                            id_categoria: categoriaSelecionada.id,
+                            RA_aluno: aluno.matricula,
+                            performance: true
+                        }
+                    ];
                 });
-                mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi salvo como positivo(+).`);
+                mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi salvo como POSITIVO(+).`);
             } else if (res.status === 409) {
                 const { id } = await res.json();
                 await fetch(`/api/pontuacoes/${id}`, {
@@ -111,9 +119,17 @@ export default function PontuarPage() {
                     const outros = pontuacoesAntigas.filter(
                         p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoriaSelecionada.id)
                     );
-                    return [...outros, { id_categoria: categoriaSelecionada.id, RA_aluno: aluno.matricula, performance: true }];
+                    return [
+                        ...outros,
+                        {
+                            id,
+                            id_categoria: categoriaSelecionada.id,
+                            RA_aluno: aluno.matricula,
+                            performance: true
+                        }
+                    ];
                 });
-                mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para positivo(+).`);
+                mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para POSITIVO(+).`);
             } else {
                 // Só loga erro se não for 409
                 console.error('Erro inesperado:', res.status);
@@ -147,10 +163,21 @@ export default function PontuarPage() {
                 const outros = pontuacoesAntigas.filter(
                     p => !(p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id)
                 );
-                return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: false }];
+                const pontuacaoExistente = pontuacoesAntigas.find(
+                    p => p.RA_aluno === aluno.matricula && p.id_categoria === categoria.id
+                );
+                return [
+                    ...outros,
+                    {
+                        id: pontuacaoExistente?.id ?? id,
+                        id_categoria: categoria.id,
+                        RA_aluno: aluno.matricula,
+                        performance: false
+                    }
+                ];
             });
 
-            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como negativo(-).`);
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi salvo como NEGATIVO(-).`);
         } else if (res.status === 409) {
             // Já existe em pontuacoes, então atualiza:
             const { id } = await res.json();
@@ -165,10 +192,36 @@ export default function PontuarPage() {
                 );
                 return [...outros, { id_categoria: categoria.id, RA_aluno: aluno.matricula, performance: false }];
             });
-            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi atualizado para negativo(-).`);
+            mostrarMensagem(`O desempenho de ${aluno.nome} em ${categoria.nome} foi atualizado para NEGATIVO(-).`);
         }
         await fetch(`/api/alunos/${aluno.matricula}/atualizar-total`, { method: 'POST' });
     };    
+
+    const handleRemover = async (alunoId) => {
+        if (!categoriaSelecionada) return;
+        const aluno = alunos.find(a => a.id === alunoId);
+        const pontuacao = pontuacoes.find(
+            p => String(p.RA_aluno) === String(aluno.matricula) && Number(p.id_categoria) === Number(categoriaSelecionada.id)
+        );
+        if (!pontuacao) return;
+
+        await fetch(`/api/pontuacoes/${pontuacao.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ performance: null }) // performance NULL = NEUTRA
+        });
+
+        setPontuacoes((pontuacoesAntigas) =>
+            pontuacoesAntigas.map(p =>
+                p.id === pontuacao.id
+                    ? { ...p, performance: null }
+                    : p
+            )
+        );
+        mostrarMensagem(`Desempenho de ${aluno.nome} em ${categoriaSelecionada.nome} foi atualizado para NEUTRO.`);
+
+        await fetch(`/api/alunos/${aluno.matricula}/atualizar-total`, { method: 'POST' });
+    };
 
     // pegar performance do aluno
     function getPerformance(RA_aluno, id_categoria) {
@@ -241,13 +294,13 @@ export default function PontuarPage() {
                                             <div className="acoes">
                                                 <button
                                                     className={`botao-mais${perf === true ? ' ativo' : ''}`}
-                                                    onClick={() => handleAdicionar(aluno.id)}
+                                                    onClick={() => perf === true ? handleRemover(aluno.id) : handleAdicionar(aluno.id)}
                                                 >
                                                     +
                                                 </button>
                                                 <button
                                                     className={`botao-menos${perf === false ? ' ativo' : ''}`}
-                                                    onClick={() => handleSubtrair(aluno.id)}
+                                                    onClick={() => perf === false ? handleRemover(aluno.id) : handleSubtrair(aluno.id)}
                                                 >
                                                     -
                                                 </button>
