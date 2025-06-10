@@ -81,3 +81,15 @@
     overflow-x: auto;
     margin-bottom: 1rem;
 }
+
+/* Badge para mostrar a disciplina */
+.disciplina-badge {
+    background-color: #124F8F;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
