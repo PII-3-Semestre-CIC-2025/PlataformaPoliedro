@@ -1,0 +1,234 @@
+/* Consultar Notas - Page Styling seguindo o padrão do projeto */
+
+.consultar-notas {
+    min-height: 100vh;
+    background-image: url('/images/ClassBackground.png'); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.consultar-notas::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); 
+    z-index: 1;
+    pointer-events: none;
+}
+
+.consultar-notas > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem 0;
+}
+
+/* Disciplina Selector */
+.disciplina-selector-container {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    margin: 0 auto 2rem auto;
+    max-width: 1570px;
+}
+
+/* Ajuste específico para o dropdown dentro da caixa branca */
+.disciplina-selector-container .botao-seleciona-categoria {
+    margin-top: 0;
+    margin-left: 0;
+}
+
+/* Notas Section */
+.notas-section {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin: 0 auto;
+    max-width: 1570px;
+    padding: 20px;
+}
+
+.notas-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    background: transparent;
+    padding: 0;
+    font-weight: 500;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* Table seguindo o padrão do projeto */
+.table-responsive {
+    margin: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table-notas {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    table-layout: fixed; /* Força larguras fixas das colunas */
+}
+
+.table-notas thead {
+    background-color: #124F8F;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-notas th {
+    padding: 20px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 1.2rem;
+    border: none;
+    vertical-align: middle;
+    line-height: 1.2;
+}
+
+.table-notas th:first-child {
+    width: 70%; /* Coluna "Avaliações" */
+}
+
+.table-notas th:last-child {
+    width: 30%; /* Coluna "Notas" */
+}
+
+.table-notas td {
+    padding: 30px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+    background-color: white;
+    font-size: 1.1rem;
+    vertical-align: middle;
+    line-height: 1.2;
+    word-wrap: break-word; /* Quebra palavras longas se necessário */
+}
+
+.table-notas tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-notas tbody tr:hover {
+    background: #f8f9fb;
+}
+
+/* Nota específica - estilo de badges */
+.nota {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 6px 12px;
+    border-radius: 15px;
+    display: inline-block;
+    min-width: 50px;
+    color: white;
+}
+
+.nota:not(.nota-zero) {
+    background-color: #28a745;
+}
+
+.nota-zero {
+    background-color: #dc3545;
+}
+
+/* Empty State */
+.empty-state {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 1.1rem;
+    padding: 2rem !important;
+    background: #f8f9fb;
+}
+
+/* Logo como link de voltar */
+.logo-link {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.logo-link:hover {
+    opacity: 0.8;
+}
+
+.logo-link:hover .logo {
+    transform: scale(1.05);
+}
+
+.logo {
+    transition: transform 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    .notas-title {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
+    
+    .table-notas th {
+        font-size: 1rem;
+        padding: 10px;
+    }
+    
+    .table-notas td {
+        padding: 10px;
+        font-size: 1rem;
+    }
+    
+    .nota {
+        font-size: 1rem;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .table-notas {
+        font-size: 0.9rem;
+    }
+    
+    .table-notas th,
+    .table-notas td {
+        padding: 8px;
+    }
+    
+    .nota {
+        font-size: 0.9rem;
+        padding: 3px 6px;
+        min-width: 40px;
+    }
+}
