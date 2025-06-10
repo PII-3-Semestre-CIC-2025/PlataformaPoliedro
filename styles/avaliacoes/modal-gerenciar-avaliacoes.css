@@ -17,10 +17,11 @@
     grid-template-columns: 1fr 150px 120px;
     gap: 1rem;
     align-items: center;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     background-color: #f8f9fa;
     border-radius: 8px;
     transition: background-color 0.2s;
+    min-height: 50px;
 }
 
 .avaliacao-item:hover {
@@ -46,7 +47,7 @@
 
 .acoes {
     display: flex;
-    gap: 1rem;
+    gap:1rem;
     justify-content: flex-end;
 }
 
@@ -56,9 +57,23 @@
     cursor: pointer;
     padding: 5px;
     transition: opacity 0.2s;
+    transform: translateY(-10px);
 }
 
 .botao-salvar:hover {
+    opacity: 0.7;
+}
+
+.botao-excluir {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: opacity 0.2s;
+    transform: translateY(-10px);
+}
+
+.botao-excluir:hover {
     opacity: 0.7;
 }
 
@@ -90,4 +105,80 @@
 
 .botao-configuracoes:hover {
     opacity: 0.7;
+}
+
+.gerenciar-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.gerenciar-modal label {
+    font-weight: 500;
+    color: #333;
+    font-size: 1rem;
+}
+
+.gerenciar-modal .form-select {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23124F8F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+.gerenciar-modal .form-select:focus {
+    outline: none;
+    border-color: #124F8F;
+    box-shadow: 0 0 0 2px rgba(18, 79, 143, 0.1);
+}
+
+.gerenciar-modal .form-select:hover {
+    background-color: #f8f9fa;
+}
+
+.mensagem-inicial,
+.mensagem-vazia {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #666;
+    font-style: italic;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 2rem 0;
+    border: 2px dashed #ddd;
+}
+
+.mensagem-inicial p,
+.mensagem-vazia p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.mensagem-vazia {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .avaliacao-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .acoes {
+        justify-content: center;
+    }
 }

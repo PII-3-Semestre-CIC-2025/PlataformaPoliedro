@@ -16,12 +16,13 @@ export default function AvaliacoesPage() {
     const [modalAddAvaliacaoAberto, setModalAddAvaliacaoAberto] = useState(false);
     const [modalNotaAberto, setModalNotaAberto] = useState(false);
     const [modalGerenciarAberto, setModalGerenciarAberto] = useState(false);
-    
-    // Lista de avaliações disponíveis para atribuir notas
+      // Lista de avaliações disponíveis para atribuir notas
     const [avaliacoesDisponiveis, setAvaliacoesDisponiveis] = useState([
-        { id: 1, nome: 'Prova I História', peso: 20 },
-        { id: 2, nome: 'Prova II Matemática', peso: 40 },
-        { id: 3, nome: 'Trabalho em Grupo II', peso: 10 }
+        { id: 1, disciplina: 'História', nome: 'Prova I História', peso: 20 },
+        { id: 2, disciplina: 'Matemática', nome: 'Prova II Matemática', peso: 40 },
+        { id: 3, disciplina: 'História', nome: 'Trabalho em Grupo II', peso: 10 },
+        { id: 4, disciplina: 'Português', nome: 'Redação', peso: 30 },
+        { id: 5, disciplina: 'Matemática', nome: 'Lista de Exercícios', peso: 15 }
     ]);
 
     // Notas dos alunos em cada avaliação
@@ -152,10 +153,10 @@ export default function AvaliacoesPage() {
                 {alunoSelecionado && (
                     <div className="secao-notas">
                         <h2 className="titulo-notas">Notas de {alunoSelecionado}</h2>
-                        <div className="table-responsive">
-                            <table className="tabela-avaliacoes">
+                        <div className="table-responsive">                            <table className="tabela-avaliacoes">
                                 <thead>
                                     <tr>
+                                        <th>Disciplina</th>
                                         <th>Avaliação</th>
                                         <th>Nota (0-10)</th>
                                         <th>Peso</th>
@@ -169,6 +170,7 @@ export default function AvaliacoesPage() {
                                         
                                         return (
                                             <tr key={avaliacao.id}>
+                                                <td><span className="disciplina-badge">{avaliacao.disciplina}</span></td>
                                                 <td>{avaliacao.nome}</td>
                                                 <td>{nota.nota.toFixed(1)}</td>
                                                 <td>{avaliacao.peso}%</td>
