@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/alunos-prof.css';
 import '@/styles/ranking.css';
+import '@/styles/ordenador-ranking.css';
 import { useState, useEffect, useCallback } from 'react';
 import { Header } from '@/app/components/header';
 import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
