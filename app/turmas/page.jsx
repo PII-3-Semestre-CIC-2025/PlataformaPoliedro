@@ -18,6 +18,7 @@ const Turmas = () => {
                 const idEtapa = localStorage.getItem('etapaSelecionada');
                 if (!idEtapa) return;
                 const data = await buscarTurmasPorEtapa(idEtapa);
+                data.sort((a, b) => a.codigo.localeCompare(b.codigo));
                 setOpcoes(data);
             } catch (error) {
                 console.error('Erro ao buscar turmas:', error);

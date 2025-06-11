@@ -28,7 +28,7 @@ export const ModalCriarTurma = ({ onClose }) => {
     setSucesso(false);
 
     try {
-      const response = await fetch('/api/turmas/cadastrar', {
+      const response = await fetch('/api/turmas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ etapa, codigo }),
@@ -66,8 +66,10 @@ export const ModalCriarTurma = ({ onClose }) => {
             required
           >
             <option value="" disabled hidden></option>
-            {opcoes.map(opcao => (
-              <option key={opcao.id} value={opcao.id}>{opcao.nome_etapa}</option>
+            {opcoes.map((opcao, idx) => (
+              <option key={opcao.id ?? opcao.nome_etapa ?? idx} value={opcao.id}>
+                {opcao.nome_etapa}
+              </option>
             ))}
           </select>
 

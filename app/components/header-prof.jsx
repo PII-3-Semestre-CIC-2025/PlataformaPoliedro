@@ -54,7 +54,7 @@ export const Header = () => {
       if (etapaSelecionada) {
         try {
           const turmasData = await buscarTurmasPorEtapa(etapaSelecionada)
-          const codigosTurmas = turmasData.map(t => t.codigo)
+          const codigosTurmas = turmasData.map(t => t.codigo).sort((a, b) => a.localeCompare(b))
           setTurmas(codigosTurmas)
           if (turmaSelecionada && codigosTurmas.includes(turmaSelecionada)) {
             setTurmaSelecionada(turmaSelecionada)
