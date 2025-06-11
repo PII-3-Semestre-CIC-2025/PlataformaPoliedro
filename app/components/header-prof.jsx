@@ -2,6 +2,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/styles/header.css'
 import '@/styles/globals.css'
+import '@/styles/header.css'
+import '@/styles/globals.css'
 import { useEffect, useState } from 'react';
 import { buscarTurmasPorEtapa } from '@/lib/client/turmasService.js';
 import { buscarEtapas } from '@/lib/client/etapasService.js';
@@ -235,6 +237,11 @@ export const Header = () => {
       </div>
       {/* Overlay para fechar menu */}
       {menuAberto && <div className="menu-overlay" onClick={toggleMenu}></div>}
+
+      {/* Modal Criar Turma */}
+      {showModalCriarTurma && (
+        <ModalCriarTurma onClose={() => setShowModalCriarTurma(false)} />
+      )}
 
       {/* Modal Criar Turma */}
       {showModalCriarTurma && (
