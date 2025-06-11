@@ -1,0 +1,591 @@
+/* ==================== CONSULTAR PONTUAÇÃO - ESTILOS ==================== */
+
+.consultar-pontuacao {
+    min-height: 100vh;
+    background-image: url('/images/ClassBackground.png'); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.consultar-pontuacao::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); 
+    z-index: 1;
+    pointer-events: none;
+}
+
+.consultar-pontuacao > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* ==================== HEADER ==================== */
+.header-aluno {
+    background: #124F8F;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(18, 79, 143, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-aluno .logo {
+    height: 60px;
+    width: auto;
+}
+
+.logo-link {
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.logo-link:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+/* ==================== LOADING E ERRO ==================== */
+.loading-container, .erro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #124F8F;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.erro-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+.btn-tentar-novamente {
+    background: #124F8F;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-tentar-novamente:hover {
+    background: #0f3d6f;
+    transform: translateY(-2px);
+}
+
+/* ==================== MAIN CONTENT ==================== */
+.main-content {
+    padding: 2rem 0;
+}
+
+.titulo-pagina {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== SEÇÃO DE ESTATÍSTICAS ==================== */
+.secao-stats {
+    margin-bottom: 3rem;
+}
+
+.cards-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-stat {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(18, 79, 143, 0.1);
+}
+
+.card-stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.card-icon {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.icon-trophy, .icon-student, .icon-conquest, .medal-icon {
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.medal-icon {
+    font-size: 28px;
+}
+
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+}
+
+.card-content {
+    text-align: center;
+}
+
+/* Cards específicos */
+.card-stat.ranking .posicao {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.posicao.ouro { color: #FFD700; text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3); }
+.posicao.prata { color: #C0C0C0; text-shadow: 0 2px 4px rgba(192, 192, 192, 0.3); }
+.posicao.bronze { color: #CD7F32; text-shadow: 0 2px 4px rgba(205, 127, 50, 0.3); }
+.posicao.normal { color: #124F8F; text-shadow: 0 2px 4px rgba(18, 79, 143, 0.3); }
+
+.card-stat.pontos .pontos-total {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #e74c3c;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+}
+
+.card-stat.estudante .nome-aluno {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.ra-aluno {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0;
+    font-family: 'Courier New', monospace;
+}
+
+/* ==================== SEÇÕES ==================== */
+.secao-ranking, .secao-conquistas {
+    margin-bottom: 3rem;
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(18, 79, 143, 0.1);
+}
+
+.titulo-secao {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+.icone-secao {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* ==================== TABELA RANKING ==================== */
+.table-responsive {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+}
+
+.tabela-ranking {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+}
+
+.tabela-ranking thead {
+    background: #124F8F;
+    color: white;
+}
+
+.tabela-ranking th,
+.tabela-ranking td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.tabela-ranking th {
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tabela-ranking tbody tr {
+    transition: all 0.3s ease;
+}
+
+.tabela-ranking tbody tr:hover {
+    background: #f8f9fa;
+    transform: scale(1.01);
+}
+
+.tabela-ranking tbody tr.aluno-atual {
+    background: linear-gradient(90deg, rgba(18, 79, 143, 0.1) 0%, rgba(18, 79, 143, 0.05) 100%);
+    border-left: 4px solid #124F8F;
+}
+
+.posicao-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.posicao-badge.ouro { background: linear-gradient(45deg, #FFD700, #FFA500); color: white; }
+.posicao-badge.prata { background: linear-gradient(45deg, #C0C0C0, #A0A0A0); color: white; }
+.posicao-badge.bronze { background: linear-gradient(45deg, #CD7F32, #B8860B); color: white; }
+.posicao-badge.normal { background: linear-gradient(45deg, #124F8F, #0f3d6f); color: white; }
+
+.nome-tabela {
+    text-align: left !important;
+    font-weight: 500;
+}
+
+.badge-voce {
+    background: #e74c3c;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+}
+
+.pontos-tabela {
+    font-weight: 600;
+    color: #e74c3c;
+}
+
+.media-tabela {
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+.ranking-resumo {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 1rem;
+}
+
+/* ==================== CONQUISTAS ==================== */
+.lista-conquistas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card-conquista {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    padding: 1.25rem;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+    justify-content: space-between;
+}
+
+.card-conquista:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #124F8F;
+}
+
+.conquista-icone {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.conquista-icone img {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.conquista-info {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.conquista-titulo {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.conquista-pontos {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.pontos-ganhos {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #27ae60;
+    margin: 0;
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #7f8c8d;
+}
+
+.empty-icon {
+    font-size: 80px;
+    opacity: 0.3;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.empty-state h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #95a5a6;
+}
+
+.empty-state p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* ==================== RESPONSIVIDADE ==================== */
+
+/* Tablets */
+@media (max-width: 991px) {
+    .titulo-pagina {
+        font-size: 2rem;
+    }
+    
+    .cards-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .main-content {
+        padding: 1.5rem 0;
+    }
+    
+    .secao-ranking, .secao-conquistas {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .header-aluno .logo {
+        height: 50px;
+    }
+    
+    .titulo-pagina {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .cards-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .card-stat {
+        padding: 1.25rem;
+    }
+    
+    .card-stat.ranking .posicao,
+    .card-stat.pontos .pontos-total {
+        font-size: 2.5rem;
+    }
+    
+    .card-stat.estudante .nome-aluno {
+        font-size: 1.3rem;
+    }
+    
+    .secao-ranking, .secao-conquistas {
+        padding: 1rem;
+        border-radius: 15px;
+    }
+    
+    .titulo-secao {
+        font-size: 1.3rem;
+    }
+    
+    .tabela-ranking th,
+    .tabela-ranking td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .nome-tabela {
+        font-size: 0.85rem;
+    }
+      .card-conquista {
+        padding: 1rem;
+        flex-direction: row;
+        text-align: left;
+        gap: 0.75rem;
+        justify-content: space-between;
+    }
+    
+    .conquista-icone {
+        margin-right: 0.75rem;
+    }
+    
+    .conquista-info {
+        flex-grow: 1;
+        text-align: left;
+    }
+    
+    .conquista-pontos {
+        text-align: right;
+        flex-shrink: 0;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    .titulo-pagina {
+        font-size: 1.5rem;
+    }
+    
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-stat {
+        padding: 1rem;
+    }
+    
+    .secao-ranking, .secao-conquistas {
+        padding: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .tabela-ranking th,
+    .tabela-ranking td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+    }
+    
+    .loading-container, .erro-container {
+        padding: 1rem;
+    }
+    
+    .erro-content {
+        padding: 1.5rem;
+    }
+}
+
+/* ==================== ANIMAÇÕES ==================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-stat,
+.secao-ranking,
+.secao-conquistas {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.card-stat:nth-child(1) { animation-delay: 0.1s; }
+.card-stat:nth-child(2) { animation-delay: 0.2s; }
+.card-stat:nth-child(3) { animation-delay: 0.3s; }
+
+.secao-ranking { animation-delay: 0.4s; }
+.secao-conquistas { animation-delay: 0.5s; }
