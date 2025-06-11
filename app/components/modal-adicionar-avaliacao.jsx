@@ -1,33 +1,45 @@
 'use client'
+import { useEffect, useState } from 'react';
+import { buscarDisciplinasPorEtapa } from '@/lib/client/disciplinasService';
 
 export function ModalAdicionarAvaliacao({ isOpen, onClose, onConfirm }) {
-    if (!isOpen) return null;    // Lista de disciplinas disponíveis
-    const disciplinas = [
-        'Matemática',
-        'Português',
-        'História',
-        'Geografia',
-        'Ciências',
-        'Física',
-        'Química',
-        'Biologia',
-        'Inglês',
-        'Educação Física',
-        'Arte',
-        'Filosofia',
-        'Sociologia',
-        'Literatura'
-    ];
+    const [disciplinas, setDisciplinas] = useState([]);
 
-    const handleSubmit = (e) => {
+    const atualizarDisciplinas = async () => {
+        const etapa = localStorage.getItem('etapaSelecionada');
+        if (etapa) {
+            const lista = await buscarDisciplinasPorEtapa(etapa);
+            setDisciplinas(lista);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            atualizarDisciplinas();
+        }
+        window.addEventListener('etapaOuTurmaAtualizada', atualizarDisciplinas);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', atualizarDisciplinas);
+        };
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
+        const turma = localStorage.getItem('turmaSelecionada');
         const avaliacao = {
-            id: Date.now(), // Gerando um ID único
             disciplina: formData.get('disciplina'),
             nome: formData.get('nome'),
-            peso: parseInt(formData.get('peso'))
+            peso: parseFloat(formData.get('peso')),
+            codigo_turma: turma
         };
+        await fetch('/api/avaliacoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(avaliacao)
+        });
         onConfirm(avaliacao);
         onClose();
     };
@@ -36,7 +48,8 @@ export function ModalAdicionarAvaliacao({ isOpen, onClose, onConfirm }) {
         <>
             <div className="blur-background" onClick={onClose}></div>
             <div className="cadastro-modal">
-                <h2>Adicionar Avaliação</h2>                <form onSubmit={handleSubmit}>
+                <h2>Adicionar Avaliação</h2>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="disciplina">Disciplina</label>
                         <select
@@ -44,18 +57,18 @@ export function ModalAdicionarAvaliacao({ isOpen, onClose, onConfirm }) {
                             name="disciplina"
                             required
                             className="form-select"
+                            defaultValue=""
                         >
-                            <option value="" disabled selected>
+                            <option value="" disabled>
                                 Selecione uma disciplina
                             </option>
-                            {disciplinas.map((disciplina, index) => (
-                                <option key={index} value={disciplina}>
+                            {disciplinas.map((disciplina) => (
+                                <option key={disciplina} value={disciplina}>
                                     {disciplina}
                                 </option>
                             ))}
                         </select>
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="nome">Nome da Avaliação</label>
                         <input
@@ -66,7 +79,6 @@ export function ModalAdicionarAvaliacao({ isOpen, onClose, onConfirm }) {
                             placeholder="Ex: Prova de História"
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="peso">Peso (%)</label>
                         <input
@@ -79,7 +91,6 @@ export function ModalAdicionarAvaliacao({ isOpen, onClose, onConfirm }) {
                             placeholder="Ex: 20"
                         />
                     </div>
-
                     <button type="submit" className="botao-confirmar">
                         Confirmar
                     </button>

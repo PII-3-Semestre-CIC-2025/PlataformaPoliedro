@@ -57,13 +57,19 @@ export const Header = () => {
             setTurmaSelecionada(turmaSelecionada);
           } else if (codigosTurmas.length > 0) {
             setTurmaSelecionada(codigosTurmas[0]);
+            localStorage.setItem('turmaSelecionada', codigosTurmas[0]);
+            window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
           } else {
             setTurmaSelecionada('');
+            localStorage.setItem('turmaSelecionada', '');
+            window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
           }
         } catch {}
       } else {
         setTurmas([]);
         setTurmaSelecionada('');
+        localStorage.setItem('turmaSelecionada', '');
+        window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
       }
     }
     if (!carregando) carregarTurmas();
@@ -75,7 +81,6 @@ export const Header = () => {
     setTurmaSelecionada('');
     localStorage.setItem('etapaSelecionada', novaEtapa);
     localStorage.setItem('turmaSelecionada', '');
-    window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
   const handleTurmaChange = (e) => {
     const novaTurma = e.target.value;
