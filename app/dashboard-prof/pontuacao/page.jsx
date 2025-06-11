@@ -258,11 +258,14 @@ export default function PontuarPage() {
                     <option value="Selecionar Categoria:" disabled>
                         Selecionar Categoria:
                     </option>
-                    {categorias.map(categoria => (
-                        <option key={categoria.id} value={categoria.nome}>
-                            {categoria.nome}
-                        </option>
-                    ))}
+                    {categorias
+                        .slice()
+                        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+                        .map(categoria => (
+                            <option key={categoria.id} value={categoria.nome}>
+                                {categoria.nome}
+                            </option>
+                        ))}
                 </select>
 
                 <div className="table-responsive">

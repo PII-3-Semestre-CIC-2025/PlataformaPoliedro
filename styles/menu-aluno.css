@@ -1,5 +1,7 @@
 .menu-aluno {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-image: url('/images/ClassBackground.png'); 
   background-size: cover;
   background-position: center;
@@ -63,12 +65,14 @@
 }
 
 .menu-container {
+  flex: 1 1 0;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 150px;
-  min-height: calc(100vh - 65px); /* Altura total menos o header */
   padding: 20px;
+  box-sizing: border-box;
+  height: auto;
 }
 
 .menu-item {
@@ -80,6 +84,7 @@
   text-decoration: none;
   transition: transform 0.3s ease;
   max-width: 300px;
+  margin-bottom: 150px;
 }
 
 .menu-item:hover {
