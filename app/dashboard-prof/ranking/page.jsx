@@ -6,14 +6,12 @@ import '@/styles/ordenador-ranking.css';
 import { useState, useEffect, useCallback } from 'react';
 import { Header } from '@/app/components/header-prof';
 import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
+import { buscarMediasPorTurma } from '@/lib/client/notasService';
 
 export default function RankingPage() {
     const [ordenacao, setOrdenacao] = useState('Posição Decrescente');
     const [alunos, setAlunos] = useState([]);
     const [erro, setErro] = useState(null);
-
-    // TODO: FUNCIONAR COM MÉDIA
-
 
     const fetchAlunos = useCallback(async () => {
         try {
@@ -24,20 +22,29 @@ export default function RankingPage() {
                 return;
             }
             const alunosData = await buscarAlunosPorTurma(turmaSelecionada);
-            // Mapeia para o formato esperado
+            const mediasData = await buscarMediasPorTurma(turmaSelecionada);
+
+            // mapa RA -> média
+            const mediasMap = {};
+            mediasData.forEach(m => {
+                mediasMap[m.ra] = m.media_ponderada;
+            });
+
             const alunosFormatados = alunosData.map((rel, idx) => ({
                 id: idx + 1,
                 nome: rel.alunos.nome,
-                pontos: rel.alunos.total_pontos ?? 0
+                pontos: rel.alunos.total_pontos ?? 0,
+                ra: rel.alunos.RA,
+                media: mediasMap[rel.alunos.RA] ?? null
             }));
-            // Calcula o ranking real por pontos
+
             const ranking = [...alunosFormatados]
-                .sort((a, b) => b.pontos - a.pontos)
+                .sort((a, b) => (b.media ?? 0) - (a.media ?? 0))
                 .map((aluno, idx) => ({
                     ...aluno,
                     posicao: idx + 1
                 }));
-            // Associa a posição real a cada aluno
+
             const alunosComRanking = alunosFormatados.map(aluno => {
                 const pos = ranking.find(r => r.id === aluno.id)?.posicao ?? '-';
                 return { ...aluno, posicao: pos };
@@ -61,7 +68,6 @@ export default function RankingPage() {
         };
     }, [fetchAlunos]);
 
-    // Ordenação visual, mas não altera o campo posicao
     const ordenarAlunos = (criterio) => {
         setOrdenacao(criterio);
         let alunosOrdenados = [...alunos];
@@ -85,10 +91,10 @@ export default function RankingPage() {
                 alunosOrdenados.sort((a, b) => b.pontos - a.pontos);
                 break;
             case 'Média Crescente':
-                alunosOrdenados.sort((a, b) => (a.pontos / 10) - (b.pontos / 10));
+                alunosOrdenados.sort((a, b) => (a.media ?? 0) - (b.media ?? 0));
                 break;
             case 'Média Decrescente':
-                alunosOrdenados.sort((a, b) => (b.pontos / 10) - (a.pontos / 10));
+                alunosOrdenados.sort((a, b) => (b.media ?? 0) - (a.media ?? 0));
                 break;
         }
         setAlunos(alunosOrdenados);
@@ -129,7 +135,7 @@ export default function RankingPage() {
                                     <td>{aluno.posicao}º</td>
                                     <td>{aluno.nome}</td>
                                     <td>{aluno.pontos}</td>
-                                    <td>{(aluno.pontos / 10).toFixed(1)}</td>
+                                    <td>{aluno.media !== null ? aluno.media.toFixed(1) : '-'}</td>
                                 </tr>
                             ))}
                         </tbody>
