@@ -1,12 +1,9 @@
 'use client'
 import { useState } from 'react';
-import { ModalCadastro } from '@/app/components/modal-cadastro';
-import { supabase } from '@/lib/supabaseClient'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 
 const LoginAlunoPage = () => {
-    const [showCadastroModal, setShowCadastroModal] = useState(false);
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [erro, setErro] = useState(null)
@@ -22,15 +19,24 @@ const LoginAlunoPage = () => {
                         event.preventDefault()
                         setErro(null)
 
-                        const { error } = await supabase.auth.signInWithPassword({
-                        email,
-                        password: senha,
-                        })
+                        try {
+                            const response = await fetch('/api/auth/login-aluno', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ email, senha }),
+                            })
 
-                        if (error) {
-                        setErro(error.message)
-                        } else {
-                        router.push('/etapa')
+                            const data = await response.json()
+
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Erro ao realizar login. Tente novamente mais tarde.')
+                            } else {
+                                router.push('/menu-aluno')
+                            }
+                        } catch (err) {
+                            setErro(err.message || 'Erro de conexão com o servidor.')
                         }
                     }}>
                     {erro && <p style={{ color: 'red' }}>{erro}</p>}

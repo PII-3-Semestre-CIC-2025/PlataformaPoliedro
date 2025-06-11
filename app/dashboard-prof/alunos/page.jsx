@@ -5,7 +5,7 @@ import '@/styles/botao-add-aluno.css';
 import { useState, useEffect, useCallback } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';
 import { ModalCadastrarAluno } from '@/app/components/modal-cadastrar-aluno';
-import { Header } from '@/app/components/header';
+import { Header } from '@/app/components/header-prof';
 import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 
 export default function AlunosProf() {

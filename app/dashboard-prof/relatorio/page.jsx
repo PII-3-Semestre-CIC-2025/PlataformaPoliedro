@@ -2,7 +2,7 @@
 import { createClient } from '@supabase/supabase-js'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
-import { Header } from "@/app/components/header";
+import { Header } from "@/app/components/header-prof";
 import '@/styles/relatorio.css';
 import { useState } from 'react';
 import { ModalEditarAluno } from '@/app/components/modal-editar-aluno';

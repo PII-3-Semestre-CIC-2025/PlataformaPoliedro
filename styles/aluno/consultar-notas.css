@@ -165,25 +165,6 @@
     background: #f8f9fb;
 }
 
-/* Logo como link de voltar */
-.logo-link {
-    display: inline-block;
-    transition: opacity 0.3s ease;
-    cursor: pointer;
-}
-
-.logo-link:hover {
-    opacity: 0.8;
-}
-
-.logo-link:hover .logo {
-    transform: scale(1.05);
-}
-
-.logo {
-    transition: transform 0.3s ease;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {

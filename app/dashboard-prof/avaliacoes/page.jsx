@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react';
-import { Header } from '@/app/components/header';
+import { Header } from '@/app/components/header-prof';
 import '@/styles/avaliacoes/avaliacoes.css';
 import '@/styles/avaliacoes/botao-selectaluno-avaliacoes.css';
 import '@/styles/avaliacoes/botao-atribuir-nota.css';

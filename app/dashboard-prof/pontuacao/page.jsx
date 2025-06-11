@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/pontuacao.css';
 import '@/styles/botao-seleciona-categoria.css';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Header } from '@/app/components/header';
+import { Header } from '@/app/components/header-prof';
 import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 import { buscarCategoriasPorEtapa } from '@/lib/client/categoriasService';
 import { buscarPontuacoes} from '@/lib/client/pontuacoesService';

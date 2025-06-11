@@ -1,72 +1,226 @@
+/* --- Estilos Gerais --- */
 .logo {
-    width: 60px;  
+    width: 60px;
     height: auto;
+    margin-left: 5px;
     margin-bottom: 5px;
+    transition: transform 0.3s ease;
 }
-.logout-btn{
+.logo-link {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+.logo-link:hover {
+    opacity: 0.8;
+}
+.logo-link:hover .logo {
+    transform: scale(1.05);
+}
+.logout-btn {
     height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 15px;
     margin-left: 60px;
+    padding-right: 20px;
 }
 .logout-btn img {
-    width: 40px;  /* Tamanho do ícone */
+    width: 40px;
     height: auto;
 }
-
+/* Header Professor */
 .header-prof { 
-    align-items: center;  /* Mudado de align-content para align-items */
+    align-items: center;
     font-size: 25px;
     height: 70px;
     background-color: #124F8F;
     color: white;
-    display: flex;  /* Adicionado para garantir flexbox */
+    display: flex;
 }
-
 .turma-info {
-    padding-left: 550px;  /* Ajusta o espaço à esquerda dos dropdowns */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding-left: 550px;
 }
-
+.center-elements {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
 .label-select-group {
     display: flex;
     align-items: center;
 }
-
 #etapaDropdown, #turmaDropdown {
-    min-width: 180px;
+    min-width: 165px;
     background: none;
     color: white;
-    font-size: 1.3rem;
+    font-size: 0.9rem;
+    font-weight: 500;
     border: 2px solid white;  
-    border-radius: 10px;  
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;    /* Seta do dropdown */
-    background-size: 16px !important; /* Tamanho da seta */
+    border-radius: 8px;
+    padding: 0.6rem 2.5rem 0.6rem 1.2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-size: 16px !important;
     background-repeat: no-repeat !important;
     background-position: right 12px center !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap;
 }
-#etapaDropdown, #turmaDropdown option {
+
+#etapaDropdown{
+    min-width: 225px; /* Se n, n da pra ler as opcoes direito*/
+}
+
+#etapaDropdown option, #turmaDropdown option {
     background: #124F8F;
     color: white;
 }
-
-/* Responsividade */
-.desktop-only {
-    display: flex !important;
+#etapaDropdown:hover, #turmaDropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
 }
+#etapaDropdown:focus, #turmaDropdown:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+/* Botão Adicionar Turma */
+.btn-adicionar-turma,
+.btn-adicionar-turma-mobile {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+.btn-adicionar-turma {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+}
+.btn-adicionar-turma:hover,
+.btn-adicionar-turma-mobile:hover {
+    background-color: #218838;
+}
+.btn-adicionar-turma:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+.btn-adicionar-turma-mobile {
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+}
+/* Header Aluno */
+.header-aluno { 
+    background-color: #124F8F;
+    color: white;
+    padding: 10px 0;
+    height: 65px;
+    display: flex;
+    align-items: center;
+}
+/* Responsividade Header Aluno e geral */
+@media (max-width: 1200px) {
+    .turma-info {
+        padding-left: 200px;
+    }
+}
+@media (max-width: 992px) {
+    .turma-info {
+        padding-left: 0;
+        gap: 2rem;
+    }
+    .header-prof {
+        font-size: 20px;
+        height: 65px;
+    }
+    .logo {
+        width: 60px;
+    }
+    .logout-btn {
+        margin-left: 60px;
+        margin-top: 10px;
+        padding-right: 10px;
+    }
+}
+@media (max-width: 768px) {
+    .header-aluno,
+    .header-prof {
+        height: 65px;
+        padding: 10px 0;
+        font-size: 18px;
+    }
+    .logo {
+        margin-left: 10px;
+    }
+    .logout-btn {
+        padding-right: 15px;
+        margin-left: 0;
+        margin-top: 0;
+        display: none !important;
+    }
+    .mobile-navbar {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+    .desktop-only {
+        display: none !important;
+    }
+    .mobile-only,
+    button.menu-toggle.mobile-only {
+        display: flex !important;
+    }
+    .turma-info {
+        padding-left: 0;
+        gap: 1rem;
+    }
+}
+@media (max-width: 480px) {
+    .header-aluno,
+    .header-prof {
+        height: 55px;
+        font-size: 16px;
+    }
+    .logo {
+        margin-left: 5px;
+    }
+    .logout-btn img {
+        width: 50px;
+    }
+    .mobile-navbar {
+        top: 65px;
+        height: calc(100vh - 65px);
+        width: 260px;
+        right: -260px;
+    }
+    .mobile-menu-content {
+        padding: 1.5rem 1rem;
+    }
+}
+/* Responsividade */
 
+.desktop-only {
+    display: flex;
+}
 .mobile-only {
-    display: none !important;
+    display: none;
 }
 
 .header-controls {
     display: flex;
     align-items: center;
-    justify-content: center;  /* Centralizado para desktop */
-    height: 100%;  /* Garante que ocupe toda a altura do header */
+    justify-content: center;
+    height: 100%;
 }
-
 .menu-toggle {
     background: none;
     border: none;
@@ -81,11 +235,9 @@
     justify-content: center;
     height: 100%;
 }
-
 .menu-toggle:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
-
 .menu-toggle span {
     width: 25px;
     height: 3px;
@@ -93,7 +245,6 @@
     border-radius: 2px;
     transition: all 0.3s ease;
 }
-
 /* Navbar Mobile */
 .mobile-navbar {
     position: fixed;
@@ -106,30 +257,25 @@
     z-index: 1000;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
-
 .mobile-navbar.active {
     right: 0;
 }
-
 .mobile-menu-content {
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
-
 .mobile-select-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
-
 .mobile-select-group label {
     color: white;
     font-weight: 500;
     font-size: 1.1rem;
 }
-
 .mobile-select {
     background: rgba(255, 255, 255, 0.1) !important;
     color: white !important;
@@ -142,12 +288,10 @@
     background-repeat: no-repeat !important;
     background-position: right 12px center !important;
 }
-
 .mobile-select option {
     background: #124F8F !important;
     color: white !important;
 }
-
 /* Botão Logout Mobile */
 .mobile-logout-btn {
     background: rgba(255, 255, 255, 0.1);
@@ -165,18 +309,15 @@
     justify-content: center;
     gap: 0.5rem;
 }
-
 .mobile-logout-btn:hover {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     text-decoration: none;
 }
-
 .mobile-logout-btn:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
-
 /* Overlay */
 .menu-overlay {
     position: fixed;
@@ -188,60 +329,13 @@
     z-index: 999;
 }
 
-/* Media Queries */
+/* Garante que o botão hambúrguer só aparece no mobile */
+button.menu-toggle.mobile-only {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
-    .desktop-only {
-        display: none !important;
-    }
-    
-    .mobile-only {
+    button.menu-toggle.mobile-only {
         display: flex !important;
     }
-    
-    .turma-info {
-        padding-left: 0;
-    }
-    
-    .logo {
-        width: 60px;  /* Aumentado de 45px para 60px */
-    }
-    
-    .logout-btn {
-        display: none !important;  /* Esconde o logout em mobile */
-    }
-    
-    .header-prof {
-        height: 70px;
-    }
-    
-    .mobile-navbar {
-        top: 70px;
-        height: calc(100vh - 70px);
-    }
 }
-
-@media (max-width: 480px) {
-    .logo {
-        width: 50px;  /* Aumentado de 35px para 50px */
-    }
-    
-    .logout-btn {
-        display: none !important;  /* Esconde o logout em mobile pequeno também */
-    }
-    
-    .header-prof {
-        height: 65px;
-    }
-    
-    .mobile-navbar {
-        top: 65px;
-        height: calc(100vh - 65px);
-        width: 260px;
-        right: -260px;
-    }
-    
-    .mobile-menu-content {
-        padding: 1.5rem 1rem;
-    }
-}
-

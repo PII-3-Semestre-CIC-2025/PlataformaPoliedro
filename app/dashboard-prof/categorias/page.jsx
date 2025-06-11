@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/categoria.css';
 import '@/styles/botao-add-categoria.css';
 import { useState, useEffect } from 'react';
-import { Header } from '@/app/components/header';
+import { Header } from '@/app/components/header-prof';
 import { ModalEditarCategoria } from '@/app/components/modal-editar-categoria';
 import { ModalCadastrarCategoria } from '@/app/components/modal-cadastrar-categoria';
 

@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/menu-aluno.css';
 import '@/styles/botao-seleciona-categoria.css';
 import '@/styles/aluno/consultar-notas.css';
+
+import { Header } from '../../components/header-aluno';
 import { useState } from 'react';
 
 export default function ConsultarNotasPage() {
@@ -58,23 +60,8 @@ export default function ConsultarNotasPage() {
     };
 
     return (
-        <div className="consultar-notas">            <header className="header-aluno">
-                <div className="container-fluid">
-                    <div className="row align-items-center">
-                        <div className="col-6">
-                            <a href="/menu-aluno" className="logo-link">
-                                <img src="/images/logo-cubo.png" alt="Logo - Voltar" className="logo" />
-                            </a>
-                        </div>
-                        <div className="col-6 d-flex justify-content-end">
-                            <a href="/login/aluno" className="logout-btn">
-                                <img src="/images/IconLogout.png" alt="Sair" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+        <div className="consultar-notas">            
+        <Header />
             <main className="main-content">
                 <div className="container-fluid px-4">                    {/* Dropdown de seleção de disciplina */}
                     <div className="disciplina-selector-container">

@@ -1,23 +1,13 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Header } from '../components/header-aluno';
 import '@/styles/menu-aluno.css'
 
 export default function MenuAluno() {
     return (
         <div className="menu-aluno">
-            <header className="header-aluno">
-                <div className="container-fluid">
-                    <div className="row align-items-center">
-                        <div className="col-6">
-                            <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
-                        </div>                        <div className="col-6 d-flex justify-content-end">
-                            <a href="/login/aluno" className="logout-btn">
-                                <img src="/images/IconLogout.png" alt="Sair" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>            <div className="menu-container">
+            <Header />
+            <div className="menu-container">
                 <a href="/menu-aluno/consultar-pontuacao" className="menu-item">
                     <img src="/images/IconeRanking.png" alt="Troféu" className="menu-icon" />
                     <span className="menu-text">CONSULTAR PONTUAÇÃO</span>

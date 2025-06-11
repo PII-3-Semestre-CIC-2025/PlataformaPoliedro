@@ -38,7 +38,7 @@ export const ModalCadastrarAluno = ({ onClose }) => {
     setSucesso(false)
 
     try {
-      const response = await fetch('/api/alunos/cadastrar', {
+      const response = await fetch('/api/alunos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, matricula, turma }),

@@ -4,6 +4,8 @@ import '@/styles/menu-aluno.css';
 import '@/styles/aluno/consultar-pontuacao.css';
 import { useState, useEffect } from 'react';
 
+import { Header } from '../../components/header-aluno';
+
 export default function ConsultarPontuacaoPage() {
     const [dadosAluno, setDadosAluno] = useState(null);
     const [ranking, setRanking] = useState([]);
@@ -136,20 +138,7 @@ export default function ConsultarPontuacaoPage() {
     };    if (carregando) {
         return (
             <div className="consultar-pontuacao">
-                <header className="header-aluno">
-                    <div className="container-fluid">
-                        <div className="row align-items-center">
-                            <div className="col-6">
-                                <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
-                            </div>
-                            <div className="col-6 d-flex justify-content-end">
-                                <a href="/login/aluno" className="logout-btn">
-                                    <img src="/images/IconLogout.png" alt="Sair" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </header>
+                <Header />
                 <div className="loading-container">
                     <div className="loading-spinner"></div>
                     <p>Carregando dados...</p>

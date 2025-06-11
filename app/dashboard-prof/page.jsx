@@ -1,6 +1,6 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Header } from "@/app/components/header";
+import { Header } from "@/app/components/header-prof";
 import '@/styles/dashboardprof.css'
 import Link from 'next/link';
 
@@ -35,7 +35,7 @@ const DashboardProf = () => {
                         </Link>
                     </div>
                     <div className="col-md-4">
-                        <Link href="/relatorio" className="menuBtn bgRelatorios">
+                        <Link href="/dashboard-prof/relatorio" className="menuBtn bgRelatorios">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" width="100" height="100"><path d="M180-180v-600 224-33 409Zm97-270h253.7q2.3-16 6.3-31t12-29H277v60Zm0 171h198q17-14 36.5-23.5T552-319v-20H277v60Zm0-342h406v-60H277v60Zm-97 501q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h600q24 0 42 18t18 42v345q0-37-16.5-68.5T780-556v-224H180v600h248v60H180Zm504-221q-39.48 0-66.74-27.26Q590-395.52 590-435q0-39.48 27.26-66.74Q644.52-529 684-529q39.48 0 66.74 27.26Q778-474.48 778-435q0 39.48-27.26 66.74Q723.48-341 684-341ZM488-120v-51q0-26 11-44.5t31-28.5q37-19 75-28t79-9q41 0 79 8.5t75 28.5q20 9 31 28t11 45v51H488Z"/></svg>
                             <i className="fas fa-file-alt"></i> Relatórios
                         </Link>

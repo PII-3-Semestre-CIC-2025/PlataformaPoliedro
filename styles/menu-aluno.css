@@ -31,20 +31,35 @@
 }
 
 .logo {
-    width: 60px;
-    height: auto;
-    margin-left: 5px;
+  width: 60px;
+  height: auto;
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.logo-link {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.logo-link:hover {
+    opacity: 0.8;
+}
+
+.logo-link:hover .logo {
+    transform: scale(1.05);
 }
 
 .logout-btn {
-    display: flex;
-    align-items: center;
-    padding-right: 20px;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
 }
 
 .logout-btn img {
-    width: 40px;
-    height: auto;
+  width: 40px;
+  height: auto;
 }
 
 .menu-container {
@@ -95,10 +110,9 @@
   .menu-container {
     gap: 80px;
   }
-    .menu-icon {
+  .menu-icon {
     width: 280px;
   }
-  
   .menu-text {
     font-size: 1.2rem;
   }
@@ -111,18 +125,11 @@
     gap: 70px;
     padding: 40px 20px;
   }
-  
   .menu-icon {
     width: 260px;
   }
-  
   .menu-text {
     font-size: 1.1rem;
-  }
-  
-  .logo {
-    width: 55px;  /* Tamanho intermediário para tablets */
-    margin-left: 18px;
   }
 }
 
@@ -132,10 +139,9 @@
     gap: 60px;
     padding: 30px 15px;
   }
-    .menu-icon {
+  .menu-icon {
     width: 230px;
   }
-  
   .menu-text {
     font-size: 1rem;
   }

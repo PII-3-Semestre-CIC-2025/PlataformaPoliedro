@@ -13,8 +13,8 @@ const rotasPublicas = [
     '/images',
     '/api'
 ]
-const rotasProfessor = ['/etapa', '/dashboard-prof']
-const rotasAluno = []
+const rotasProfessor = ['/etapa', '/turmas', '/dashboard-prof']
+const rotasAluno = ['/menu-aluno']
 
 export async function middleware(request) {
     if (rotasPublicas.some((path) => request.nextUrl.pathname.startsWith(path))) {
