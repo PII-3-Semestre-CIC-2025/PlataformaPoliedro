@@ -1,6 +1,6 @@
 'use client'
 
-export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDisponiveis, alunoSelecionado, notasExistentes }) {
+export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDisponiveis, alunoSelecionado, nomeAlunoSelecionado, notasExistentes }) {
     if (!isOpen) return null;
 
     // 3. Use sempre id_avaliacao
@@ -36,7 +36,7 @@ export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDispon
         <>
             <div className="blur-background" onClick={onClose}></div>
             <div className="cadastro-modal">
-                <h2>Atribuir Nota para {alunoSelecionado}</h2>
+                <h2>Atribuir Nota para {nomeAlunoSelecionado}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="avaliacao">Avaliação</label>

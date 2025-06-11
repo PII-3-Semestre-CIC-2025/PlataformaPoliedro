@@ -77,17 +77,11 @@ export default function AvaliacoesPage() {
                 av.id === avaliacaoAtualizada.id ? avaliacaoAtualizada : av
             )
         );
+        alert('A avaliação foi atualizada com sucesso.');
     };
 
     const handleExcluirAvaliacao = (id) => {
-        const avaliacaoEmUso = Object.values(notasAlunos).some(notas =>
-            notas.some(nota => nota.avaliacaoId === id)
-        );
-
-        if (avaliacaoEmUso) {
-            alert('Não é possível excluir uma avaliação que já possui notas atribuídas.');
-            return;
-        }
+        alert('A avaliação e todas as notas relacionadas foram excluídas com sucesso.');
 
         setAvaliacoesDisponiveis(avaliacoes => 
             avaliacoes.filter(av => av.id !== id)
@@ -214,7 +208,7 @@ export default function AvaliacoesPage() {
                                             if (!avaliacao) return null;
 
                                             return (
-                                                <tr key={avaliacao.id}>
+                                                <tr key={`${avaliacao.id}-${nota.id}`}>
                                                     <td><span className="disciplina-badge">{avaliacao.disciplina}</span></td>
                                                     <td>{avaliacao.nome}</td>
                                                     <td>{nota.nota.toFixed(1)}</td>
@@ -253,6 +247,7 @@ export default function AvaliacoesPage() {
                     onConfirm={handleAtribuirNota}
                     avaliacoesDisponiveis={avaliacoesDisponiveis}
                     alunoSelecionado={alunoSelecionado}
+                    nomeAlunoSelecionado={alunos.find(a => a.ra === alunoSelecionado)?.nome || ''}
                     notasExistentes={notasAlunos[alunoSelecionado] || []}
                 />
 
