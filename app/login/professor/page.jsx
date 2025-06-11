@@ -1,12 +1,15 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@/styles/modal-recuperar-senha.css';
 import { useState } from 'react';
 import { ModalCadastro } from '@/app/components/modal-cadastro';
+import { ModalRecuperarSenha } from '@/app/components/modal-recuperar-senha';
 import { useRouter } from 'next/navigation'
 
 
 const LoginProfPage = () => {
     const [showCadastroModal, setShowCadastroModal] = useState(false);
+    const [showRecuperarSenhaModal, setShowRecuperarSenhaModal] = useState(false);
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [erro, setErro] = useState(null)
@@ -78,11 +81,18 @@ const LoginProfPage = () => {
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
                         />
-                    </div>
-
-                    <button type="submit" className="submit-button">Entrar</button>
+                    </div>                    <button type="submit" className="submit-button">Entrar</button>
                 </form>
-                <a href="#" className="forgot-password">Esqueceu a senha?</a>
+                <a 
+                    href="#" 
+                    className="forgot-password"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setShowRecuperarSenhaModal(true);
+                    }}
+                >
+                    Esqueceu a senha?
+                </a>
                 
                 <div className="divider"></div>
                 
@@ -90,10 +100,12 @@ const LoginProfPage = () => {
             </section>
 
             <div className="pattern-section d-none d-lg-block col-lg-6"  />
-        </div>
-
-        {showCadastroModal && (
+        </div>        {showCadastroModal && (
                 <ModalCadastro onClose={() => setShowCadastroModal(false)} />
+        )}
+
+        {showRecuperarSenhaModal && (
+                <ModalRecuperarSenha onClose={() => setShowRecuperarSenhaModal(false)} />
         )}
 
         </>
