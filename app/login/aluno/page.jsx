@@ -46,6 +46,11 @@ const LoginAlunoPage = () => {
                             type="email"
                             id="email"
                             name="email"
+                            autoComplete="email"
+                            autoFocus
+                            placeholder='Ex.: (Seu RA)@p4ed.com.br'
+                            //pattern=".+@p4ed\.com\.br"
+                            //title="Use seu e-mail institucional que termina com @p4ed.com.br"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -58,6 +63,8 @@ const LoginAlunoPage = () => {
                             type="password"
                             id="senha"
                             name="senha"
+                            autoComplete="current-password"
+                            placeholder='Digite sua senha'
                             required
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}

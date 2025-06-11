@@ -5,50 +5,23 @@ import '@/styles/botao-seleciona-categoria.css';
 import '@/styles/aluno/consultar-notas.css';
 
 import { Header } from '../../components/header-aluno';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { buscarNotasAluno } from '@/lib/client/notasService';
 
 export default function ConsultarNotasPage() {
     const [disciplinaSelecionada, setDisciplinaSelecionada] = useState('');
+    const [notasPorDisciplina, setNotasPorDisciplina] = useState({});
+    const [disciplinas, setDisciplinas] = useState([]);
+    const [erro, setErro] = useState(null);
 
-    // Disciplinas disponíveis (hardcoded por enquanto)
-    const disciplinas = [
-        'História',
-        'Matemática',
-        'Português',
-        'Ciências',
-        'Geografia',
-        'Inglês',
-        'Educação Física',
-        'Artes',
-        'Algoritmos'
-    ];
-
-    // Dados das notas por disciplina (mock data)
-    const notasPorDisciplina = {
-        'História': [
-            { avaliacao: 'Prova I História', nota: 9.8 },
-            { avaliacao: 'Prova II História', nota: 9.5 },
-            { avaliacao: 'Trabalho em Grupo', nota: 8.5 }
-        ],
-        'Matemática': [
-            { avaliacao: 'Prova I Matemática', nota: 8.0 },
-            { avaliacao: 'Prova II Matemática', nota: 7.5 },
-            { avaliacao: 'Lista de Exercícios', nota: 9.0 }
-        ],
-        'Algoritmos': [
-            { avaliacao: 'Prova de Algoritmos', nota: 0 },
-            { avaliacao: 'Prova de Algoritmos', nota: 0 },
-            { avaliacao: 'Prova de Algoritmos', nota: 0 }
-        ],
-        'Português': [
-            { avaliacao: 'Redação', nota: 8.5 },
-            { avaliacao: 'Interpretação de Texto', nota: 9.0 }
-        ],
-        'Ciências': [
-            { avaliacao: 'Prova de Biologia', nota: 7.8 },
-            { avaliacao: 'Experimento Laboratório', nota: 9.2 }
-        ]
-    };
+    useEffect(() => {
+        buscarNotasAluno()
+            .then(notas => {
+                setNotasPorDisciplina(notas);
+                setDisciplinas(Object.keys(notas));
+            })
+            .catch(e => setErro(e.message));
+    }, []);
 
     const handleDisciplinaChange = (e) => {
         setDisciplinaSelecionada(e.target.value);
@@ -63,7 +36,8 @@ export default function ConsultarNotasPage() {
         <div className="consultar-notas">            
         <Header />
             <main className="main-content">
-                <div className="container-fluid px-4">                    {/* Dropdown de seleção de disciplina */}
+                <div className="container-fluid px-4">                    
+                    {/* Dropdown de seleção de disciplina */}
                     <div className="disciplina-selector-container">
                         <select 
                             className="botao-seleciona-categoria"
@@ -77,7 +51,8 @@ export default function ConsultarNotasPage() {
                                 </option>
                             ))}
                         </select>
-                    </div>                    {/* Seção de notas - só aparece quando disciplina for selecionada */}
+                    </div>                    
+                    {/* Seção de notas - só aparece quando disciplina for selecionada */}
                     {disciplinaSelecionada && (
                         <div className="notas-section">
                             <h2 className="notas-title">

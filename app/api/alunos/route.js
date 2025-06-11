@@ -8,10 +8,14 @@ export async function POST(request) {
       return new Response(JSON.stringify({ error: 'Preencha todos os campos.' }), { status: 400 });
     }
 
-    const senhaHash = await bcrypt.hash(matricula, 10);
-    const email = `${matricula}@email.test`;
+    const matriculaFormatada = String(matricula).trim().toLowerCase();
 
-    await cadastrarAluno(nome, matricula, turma, email, senhaHash);
+    const senhaHash = await bcrypt.hash(matriculaFormatada, 10);
+    console.log("HASH GERADO:", senhaHash);
+    const email = `${matriculaFormatada}@email.test`;
+
+    await cadastrarAluno(nome, matriculaFormatada, turma, email, senhaHash);
+
     return new Response(JSON.stringify({ message: 'Aluno cadastrado com sucesso.' }), { status: 201 });
 
   } catch (error) {

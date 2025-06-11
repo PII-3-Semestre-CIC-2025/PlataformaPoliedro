@@ -3,10 +3,14 @@ import bcrypt from 'bcrypt'
 import { SignJWT } from 'jose'
 
 export async function POST(request) {
-    const { email, senha } = await request.json()
-    if (!email || !senha) {
+    const { email: emailDigitado, senha: senhaDigitada } = await request.json()
+    
+    if (!emailDigitado || !senhaDigitada) {
         return new Response(JSON.stringify({ error: 'Preencha todos os campos.' }), { status: 400 })
     }
+
+    const senha = String(senhaDigitada).trim()
+    const email = String(emailDigitado).trim().toLowerCase()
 
     const { data: aluno } = await supabase
         .from('alunos')
