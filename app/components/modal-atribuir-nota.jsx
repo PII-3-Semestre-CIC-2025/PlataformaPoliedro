@@ -1,12 +1,27 @@
 'use client'
 
-export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDisponiveis, alunoSelecionado, nomeAlunoSelecionado, notasExistentes }) {
-    if (!isOpen) return null;
+import { useState, useMemo } from 'react';
 
-    // 3. Use sempre id_avaliacao
-    const avaliacoesDisponiveisParaAtribuir = avaliacoesDisponiveis.filter(avaliacao => 
-        !notasExistentes.some(nota => nota.id_avaliacao === avaliacao.id)
-    );
+export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDisponiveis, alunoSelecionado, nomeAlunoSelecionado, notasExistentes }) {
+    const [disciplinaSelecionada, setDisciplinaSelecionada] = useState('');
+
+    const disciplinas = useMemo(() => {
+        const set = new Set();
+        avaliacoesDisponiveis.forEach(avaliacao => {
+            if (avaliacao && avaliacao.disciplina) set.add(avaliacao.disciplina);
+        });
+        return Array.from(set);
+    }, [avaliacoesDisponiveis]);
+
+    const avaliacoesDisponiveisParaAtribuir = useMemo(() => {
+        return avaliacoesDisponiveis
+            .filter(avaliacao => 
+                (!disciplinaSelecionada || avaliacao.disciplina === disciplinaSelecionada) &&
+                !notasExistentes.some(nota => nota.id_avaliacao === avaliacao.id)
+            );
+    }, [avaliacoesDisponiveis, notasExistentes, disciplinaSelecionada]);
+
+    if (!isOpen) return null;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,7 +31,6 @@ export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDispon
             id_avaliacao: parseInt(formData.get('avaliacao')),
             nota: parseFloat(formData.get('nota'))
         };
-        console.log('Enviando nota:', novaNota);
         const res = await fetch('/api/notas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -39,11 +53,30 @@ export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDispon
                 <h2>Atribuir Nota para {nomeAlunoSelecionado}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
+                        <label htmlFor="disciplina">Disciplina</label>
+                        <select
+                            id="disciplina"
+                            name="disciplina"
+                            value={disciplinaSelecionada}
+                            onChange={e => setDisciplinaSelecionada(e.target.value)}
+                            required
+                        >
+                            <option value="">Selecione uma disciplina</option>
+                            {disciplinas.map(disciplina => (
+                                <option key={disciplina} value={disciplina}>
+                                    {disciplina}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="avaliacao">Avaliação</label>
                         <select
                             id="avaliacao"
                             name="avaliacao"
                             required
+                            disabled={!disciplinaSelecionada}
                         >
                             <option value="">Selecione uma avaliação</option>
                             {avaliacoesDisponiveisParaAtribuir
