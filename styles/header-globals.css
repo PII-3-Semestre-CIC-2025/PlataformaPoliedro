@@ -1,0 +1,142 @@
+.logo {
+    width: 60px;
+    height: auto;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    transition: transform 0.3s ease;
+}
+
+.logo-link {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.logo-link:hover {
+    opacity: 0.8;
+}
+
+.logo-link:hover .logo {
+    transform: scale(1.05);
+}
+
+.logout-btn {
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    padding-right: 20px;
+}
+
+.logout-btn img {
+    width: 40px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logout-btn:hover img {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.mobile-only {
+    display: none;
+}
+@media (max-width: 991px) {
+    .desktop-only {
+        display: none !important;
+    }
+    .mobile-only {
+        display: block !important;
+    }
+}
+@media (min-width: 992px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+@media (max-width: 768px) {
+    .logo {
+        margin-left: 10px;
+    }
+    .logout-btn {
+        padding-right: 15px;
+        margin-left: 0;
+        margin-top: 0;
+    }
+    .header-base {
+        height: 65px;
+        padding: 10px 0;
+        font-size: 18px;
+    }
+}
+@media (max-width: 480px) {
+    .logo {
+        margin-left: 5px;
+    }
+    .logout-btn img {
+        width: 50px;
+    }
+    .header-base {
+        height: 55px;
+        font-size: 16px;
+    }
+}
+.header-base {
+    background-color: #124F8F;
+    color: white;
+    padding: 10px 0;
+    height: 65px;
+    display: flex;
+    align-items: center;
+}
+
+.header-base,
+.header-base > .container-fluid,
+.header-base > .container-fluid > .row.align-items-center {
+    height: 100%;
+}
