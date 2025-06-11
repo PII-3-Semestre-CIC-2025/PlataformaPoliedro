@@ -11,6 +11,7 @@ export const Header = () => {
   const [etapaSelecionada, setEtapaSelecionada] = useState('');
   const [turmaSelecionada, setTurmaSelecionada] = useState('');
   const [carregando, setCarregando] = useState(true);
+  const [menuAberto, setMenuAberto] = useState(false);
 
   useEffect(() => {
     const etapaSalva = localStorage.getItem('etapaSelecionada') || '';
@@ -76,7 +77,6 @@ export const Header = () => {
     localStorage.setItem('turmaSelecionada', '');
     window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
-
   const handleTurmaChange = (e) => {
     const novaTurma = e.target.value;
     setTurmaSelecionada(novaTurma);
@@ -84,53 +84,123 @@ export const Header = () => {
     window.dispatchEvent(new Event('etapaOuTurmaAtualizada'));
   };
 
-  if (carregando) return null;
+  const toggleMenu = () => {
+    setMenuAberto(!menuAberto);
+  };
 
+  if (carregando) return null;
   return (
-    <header className="header-prof">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-3">
-            <a href="/dashboard-prof/" className="logo-link">
-              <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
-            </a>
-          </div>
-          <div className="col-8 turma-info" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>            
-            <div className="label-select-group">
-              <select
-                id="etapaDropdown"
-                value={etapaSelecionada}
-                onChange={handleEtapaChange}
-                className="form-select"
-              >
-                <option value="" disabled hidden>Etapa</option>
-                {etapas.map(etapa => (
-                  <option key={etapa} value={etapa}>Etapa: {etapa}</option>
-                ))}
-              </select>
+    <>
+      <header className="header-prof">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-3">
+              <a href="/dashboard-prof/" className="logo-link">
+                <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
+              </a>
             </div>
-            <div className="label-select-group">              
-              <select
-                id="turmaDropdown"
-                value={turmaSelecionada}
-                onChange={handleTurmaChange}
-                className="form-select"
-                disabled={!etapaSelecionada}
+            
+            {/* Desktop - Dropdowns visíveis */}
+            <div className="col-8 turma-info desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '6rem' }}>            
+              <div className="label-select-group">
+                <select
+                  id="etapaDropdown"
+                  value={etapaSelecionada}
+                  onChange={handleEtapaChange}
+                  className="form-select"
+                >
+                  <option value="" disabled hidden>Etapa</option>
+                  {etapas.map(etapa => (
+                    <option key={etapa} value={etapa}>Etapa: {etapa}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="label-select-group">              
+                <select
+                  id="turmaDropdown"
+                  value={turmaSelecionada}
+                  onChange={handleTurmaChange}
+                  className="form-select"
+                  disabled={!etapaSelecionada}
+                >
+                  <option value="" disabled hidden>Turma</option>
+                  {turmas.map(turma => (
+                    <option key={turma} value={turma}>Turma: {turma}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Mobile - Espaço vazio */}
+            <div className="col-8 mobile-only"></div>
+
+            <div className="col-1 header-controls">
+              {/* Botão Menu Hambúrguer - apenas mobile */}
+              <button 
+                className="menu-toggle mobile-only" 
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
               >
-                <option value="" disabled hidden>Turma</option>
-                {turmas.map(turma => (
-                  <option key={turma} value={turma}>Turma: {turma}</option>
-                ))}
-              </select>
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+              
+              {/* Botão Logout */}
+              <a href="/" className="logout-btn">
+                <img src="/images/IconLogout.png" alt="Logout" />
+              </a>
             </div>
           </div>
-          <div className="col-1">
-            <a href="/" className="logout-btn">
-              <img src="/images/IconLogout.png" alt="Logout" />
+        </div>
+      </header>
+
+      {/* Menu Mobile - Navbar com dropdowns */}
+      <div className={`mobile-navbar ${menuAberto ? 'active' : ''}`}>
+        <div className="mobile-menu-content">
+          <div className="mobile-select-group">
+            <label>Etapa:</label>
+            <select
+              value={etapaSelecionada}
+              onChange={handleEtapaChange}
+              className="form-select mobile-select"
+            >
+              <option value="" disabled hidden>Selecione uma etapa</option>
+              {etapas.map(etapa => (
+                <option key={etapa} value={etapa}>{etapa}</option>
+              ))}
+            </select>
+          </div>
+            <div className="mobile-select-group">
+            <label>Turma:</label>
+            <select
+              value={turmaSelecionada}
+              onChange={handleTurmaChange}
+              className="form-select mobile-select"
+              disabled={!etapaSelecionada}
+            >
+              <option value="" disabled hidden>Selecione uma turma</option>
+              {turmas.map(turma => (
+                <option key={turma} value={turma}>{turma}</option>
+              ))}
+            </select>
+          </div>
+          
+          {/* Botão Logout Mobile */}
+          <div className="mobile-select-group">
+            <a href="/" className="mobile-logout-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+              </svg>
+              Sair
             </a>
           </div>
         </div>
       </div>
-    </header>
+
+      {/* Overlay para fechar menu */}
+      {menuAberto && <div className="menu-overlay" onClick={toggleMenu}></div>}
+    </>
   )
 }

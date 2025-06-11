@@ -18,7 +18,7 @@ export default function MenuAluno() {
                     </div>
                 </div>
             </header>            <div className="menu-container">
-                <a href="#" className="menu-item">
+                <a href="/menu-aluno/consultar-pontuacao" className="menu-item">
                     <img src="/images/IconeRanking.png" alt="Troféu" className="menu-icon" />
                     <span className="menu-text">CONSULTAR PONTUAÇÃO</span>
                 </a>

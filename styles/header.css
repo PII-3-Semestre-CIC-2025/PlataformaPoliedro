@@ -1,5 +1,6 @@
 .logo {
-    width: 15%;
+    width: 60px;  
+    height: auto;
     margin-bottom: 5px;
 }
 .logout-btn{
@@ -7,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-left: 60px;
 }
 .logout-btn img {
@@ -16,12 +17,12 @@
 }
 
 .header-prof { 
-    align-content: center;
+    align-items: center;  /* Mudado de align-content para align-items */
     font-size: 25px;
-    height: 80px;
+    height: 70px;
     background-color: #124F8F;
     color: white;
-    align-content: end;
+    display: flex;  /* Adicionado para garantir flexbox */
 }
 
 .turma-info {
@@ -49,3 +50,198 @@
     background: #124F8F;
     color: white;
 }
+
+/* Responsividade */
+.desktop-only {
+    display: flex !important;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* Centralizado para desktop */
+    height: 100%;  /* Garante que ocupe toda a altura do header */
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Navbar Mobile */
+.mobile-navbar {
+    position: fixed;
+    top: 80px;
+    right: -300px;
+    width: 280px;
+    height: calc(100vh - 80px);
+    background-color: #124F8F;
+    transition: right 0.3s ease;
+    z-index: 1000;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-navbar.active {
+    right: 0;
+}
+
+.mobile-menu-content {
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.mobile-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mobile-select-group label {
+    color: white;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.mobile-select {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    font-size: 1rem !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-size: 16px !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+}
+
+.mobile-select option {
+    background: #124F8F !important;
+    color: white !important;
+}
+
+/* Botão Logout Mobile */
+.mobile-logout-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.mobile-logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+}
+
+.mobile-logout-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+    
+    .mobile-only {
+        display: flex !important;
+    }
+    
+    .turma-info {
+        padding-left: 0;
+    }
+    
+    .logo {
+        width: 60px;  /* Aumentado de 45px para 60px */
+    }
+    
+    .logout-btn {
+        display: none !important;  /* Esconde o logout em mobile */
+    }
+    
+    .header-prof {
+        height: 70px;
+    }
+    
+    .mobile-navbar {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 50px;  /* Aumentado de 35px para 50px */
+    }
+    
+    .logout-btn {
+        display: none !important;  /* Esconde o logout em mobile pequeno também */
+    }
+    
+    .header-prof {
+        height: 65px;
+    }
+    
+    .mobile-navbar {
+        top: 65px;
+        height: calc(100vh - 65px);
+        width: 260px;
+        right: -260px;
+    }
+    
+    .mobile-menu-content {
+        padding: 1.5rem 1rem;
+    }
+}
+
