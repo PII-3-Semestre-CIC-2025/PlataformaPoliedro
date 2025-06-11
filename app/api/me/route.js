@@ -9,13 +9,12 @@ export async function GET(request) {
     const token = match[1];
     try {
         const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
-        // payload pode ter campos diferentes para aluno e professor
         if (payload.tipo === 'aluno') {
             return new Response(JSON.stringify({
                 tipo: 'aluno',
                 ra: payload.sub,
                 nome: payload.nome,
-                email: payload.email
+                email: payload.emailna
             }), { status: 200 });
         } else if (payload.tipo === 'professor') {
             return new Response(JSON.stringify({

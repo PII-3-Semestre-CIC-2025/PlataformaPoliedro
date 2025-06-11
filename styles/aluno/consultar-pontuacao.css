@@ -383,6 +383,7 @@
     flex-grow: 1;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .conquista-titulo {
@@ -524,6 +525,7 @@
         text-align: right;
         flex-shrink: 0;
     }
+    
 }
 
 /* Mobile pequeno */

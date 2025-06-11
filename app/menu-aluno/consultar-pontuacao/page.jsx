@@ -1,14 +1,12 @@
 'use client'
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/menu-aluno.css';
 import '@/styles/aluno/consultar-pontuacao.css';
-import { useState, useEffect } from 'react';
-
-import { Header } from '../../components/header-aluno';
+import { buscarMediasPorTurma } from '@/lib/client/notasService';
 
 export default function ConsultarPontuacaoPage() {
     const [dadosAluno, setDadosAluno] = useState(null);
-    const [ranking, setRanking] = useState([]);
     const [posicaoAluno, setPosicaoAluno] = useState(null);
     const [conquistasRecentes, setConquistasRecentes] = useState([]);
     const [carregando, setCarregando] = useState(true);
@@ -16,107 +14,75 @@ export default function ConsultarPontuacaoPage() {
 
     useEffect(() => {
         carregarDadosAluno();
-    }, []);    const carregarDadosAluno = async () => {
+    }, []);
+
+    const carregarDadosAluno = async () => {
         try {
             setCarregando(true);
             setErro(null);
 
-            // Simular carregamento
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const resMe = await fetch('/api/me');
+            if (!resMe.ok) throw new Error('Não autenticado');
+            const me = await resMe.json();
+            const ra = me.ra;
 
-            // Dados mockados do aluno logado
-            const alunoMock = {
-                RA: '24.01883-0',
-                nome: 'João Silva Santos',
-                total_pontos: 85,
-                email: 'joao.silva@email.com'
-            };
+            const resPontos = await fetch(`/api/alunos/${ra}`);
+            if (!resPontos.ok) throw new Error('Erro ao buscar pontos');
+            const aluno = await resPontos.json();
 
-            setDadosAluno(alunoMock);
+            setDadosAluno({
+                RA: me.ra,
+                nome: me.nome,
+                total_pontos: aluno.total_pontos ?? 0,
+            });
 
-            // Carregar dados mockados
-            carregarRankingMock(alunoMock.RA);
-            carregarConquistasMock();
+            const resTurma = await fetch(`/api/turmas?ra=${ra}`);
+            if (!resTurma.ok) throw new Error('Turma não encontrada');
+            const turmaData = await resTurma.json();
+            const codigoTurma = turmaData.codigo_turma;
+            if (!codigoTurma) throw new Error('Turma não encontrada');
+
+            const resRanking = await fetch(`/api/alunos?codigo_turma=${codigoTurma}`);
+            if (!resRanking.ok) throw new Error('Erro ao buscar ranking');
+            const rankingData = await resRanking.json();
+
+            const medias = await buscarMediasPorTurma(codigoTurma);
+            const mediasMap = {};
+            medias.forEach(m => {
+                const ra = (m.RA || m.ra || '').toString().trim();
+                mediasMap[ra] = m.media_ponderada;
+            });
+
+            console.log('mediasMap', mediasMap);
+            console.log('rankingData antes do score', rankingData);
+
+            rankingData.forEach(a => {
+                const ra = (a.RA || a.ra || '').toString().trim();
+                const media = mediasMap[ra] ?? 0;
+                a.media_ponderada = media;
+                a._score = media + ((a.total_pontos ?? 0) / 15);
+            });
+
+            console.log('rankingData depois do score', rankingData);
+            rankingData.sort((a, b) => b._score - a._score);
+
+            const posicao = rankingData.findIndex(a => a.RA === ra);
+            setPosicaoAluno(posicao !== -1 ? posicao + 1 : null);
+
+            const resConquistas = await fetch(`/api/pontuacoes?RA_aluno=${ra}&performance=true&order=created_at.desc`);
+            if (!resConquistas.ok) throw new Error('Erro ao buscar conquistas');
+            const conquistas = await resConquistas.json();
+            setConquistasRecentes(conquistas);
 
         } catch (error) {
+            console.error(error);
             setErro(error.message);
-            console.error('Erro ao carregar dados:', error);
+            setDadosAluno(null);
+            setPosicaoAluno(null);
+            setConquistasRecentes([]);
         } finally {
             setCarregando(false);
         }
-    };    const carregarRankingMock = (raAluno) => {
-        // Dados mockados do ranking da turma
-        const rankingMock = [
-            { RA: '24.01001-1', nome: 'Maria Silva', total_pontos: 95, posicao: 1 },
-            { RA: '24.01002-2', nome: 'Pedro Santos', total_pontos: 88, posicao: 2 },
-            { RA: '24.01883-0', nome: 'João Silva Santos', total_pontos: 85, posicao: 3 },
-            { RA: '24.01004-4', nome: 'Ana Costa', total_pontos: 82, posicao: 4 },
-            { RA: '24.01005-5', nome: 'Carlos Oliveira', total_pontos: 78, posicao: 5 },
-            { RA: '24.01006-6', nome: 'Lucia Mendes', total_pontos: 75, posicao: 6 },
-            { RA: '24.01007-7', nome: 'Rafael Lima', total_pontos: 72, posicao: 7 },
-            { RA: '24.01008-8', nome: 'Beatriz Alves', total_pontos: 69, posicao: 8 },
-            { RA: '24.01009-9', nome: 'Diego Ferreira', total_pontos: 65, posicao: 9 },
-            { RA: '24.01010-0', nome: 'Camila Rocha', total_pontos: 62, posicao: 10 },
-            { RA: '24.01011-1', nome: 'Gabriel Souza', total_pontos: 58, posicao: 11 },
-            { RA: '24.01012-2', nome: 'Juliana Castro', total_pontos: 55, posicao: 12 }
-        ];
-
-        setRanking(rankingMock);
-
-        // Encontrar posição do aluno atual
-        const posicao = rankingMock.findIndex(aluno => aluno.RA === raAluno);
-        setPosicaoAluno(posicao !== -1 ? posicao + 1 : null);
-    };    const carregarConquistasMock = () => {
-        // Dados mockados de conquistas recentes
-        const conquistasMock = [
-            {
-                id: 1,
-                performance: 95,
-                created_at: '2024-12-15T10:30:00Z',
-                categorias: {
-                    nome: 'Participação em Aula',
-                    valor: 10
-                }
-            },
-            {
-                id: 2,
-                performance: 88,
-                created_at: '2024-12-14T14:20:00Z',
-                categorias: {
-                    nome: 'Trabalho em Grupo',
-                    valor: 15
-                }
-            },
-            {
-                id: 3,
-                performance: 100,
-                created_at: '2024-12-13T09:15:00Z',
-                categorias: {
-                    nome: 'Prova Matemática',
-                    valor: 20
-                }
-            },
-            {
-                id: 4,
-                performance: 92,
-                created_at: '2024-12-12T11:45:00Z',
-                categorias: {
-                    nome: 'Exercícios de Casa',
-                    valor: 8
-                }
-            },
-            {
-                id: 5,
-                performance: 85,
-                created_at: '2024-12-11T16:30:00Z',
-                categorias: {
-                    nome: 'Apresentação Oral',
-                    valor: 12
-                }
-            }
-        ];
-
-        setConquistasRecentes(conquistasMock);
     };
 
     const formatarData = (dataString) => {
@@ -134,49 +100,38 @@ export default function ConsultarPontuacaoPage() {
         if (posicao === 1) return 'ouro';
         if (posicao === 2) return 'prata';
         if (posicao === 3) return 'bronze';
-        return 'normal';
-    };    if (carregando) {
+        return '';
+    };
+
+    if (carregando) {
         return (
             <div className="consultar-pontuacao">
-                <Header />
                 <div className="loading-container">
-                    <div className="loading-spinner"></div>
-                    <p>Carregando dados...</p>
+                    <div className="spinner-border" role="status"></div>
+                    <span>Carregando...</span>
                 </div>
             </div>
         );
-    }    if (erro) {
+    }
+
+    if (erro) {
         return (
             <div className="consultar-pontuacao">
-                <header className="header-aluno">
-                    <div className="container-fluid">
-                        <div className="row align-items-center">
-                            <div className="col-6">
-                                <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
-                            </div>
-                            <div className="col-6 d-flex justify-content-end">
-                                <a href="/login/aluno" className="logout-btn">
-                                    <img src="/images/IconLogout.png" alt="Sair" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </header>
                 <div className="erro-container">
                     <div className="erro-content">
                         <h2>Erro ao carregar dados</h2>
                         <p>{erro}</p>
-                        <button 
-                            className="btn-tentar-novamente"
-                            onClick={carregarDadosAluno}
-                        >
+                        <button className="btn-tentar-novamente" onClick={carregarDadosAluno}>
                             Tentar Novamente
                         </button>
                     </div>
                 </div>
             </div>
         );
-    }    return (        <div className="consultar-pontuacao">
+    }
+
+    return (
+        <div className="consultar-pontuacao">
             <header className="header-aluno">
                 <div className="container-fluid">
                     <div className="row align-items-center">
@@ -196,12 +151,10 @@ export default function ConsultarPontuacaoPage() {
 
             <main className="main-content">
                 <div className="container-fluid px-4">
-                    
-                    {/* Seção de Estatísticas do Aluno */}
                     <div className="secao-stats">
                         <h1 className="titulo-pagina">Minha Pontuação</h1>
-                        
-                        <div className="cards-stats">                            <div className="card-stat ranking">
+                        <div className="cards-stats">
+                            <div className="card-stat ranking">
                                 <div className="card-header">
                                     <img src="/images/IconeRanking.png" alt="Ranking" className="card-icon" />
                                     <h3>Minha Posição</h3>
@@ -212,7 +165,6 @@ export default function ConsultarPontuacaoPage() {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="card-stat pontos">
                                 <div className="card-header">
                                     <div className="icon-trophy">🏆</div>
@@ -224,7 +176,6 @@ export default function ConsultarPontuacaoPage() {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="card-stat estudante">
                                 <div className="card-header">
                                     <div className="icon-student">👤</div>
@@ -238,16 +189,16 @@ export default function ConsultarPontuacaoPage() {
                                 </div>
                             </div>
                         </div>
-                    </div>                    {/* Seção de Conquistas Recentes */}
+                    </div>
                     <div className="secao-conquistas">
                         <h2 className="titulo-secao">
                             <div className="icon-conquest">🏅</div>
                             Conquistas Recentes
                         </h2>
-                        
                         {conquistasRecentes.length > 0 ? (
                             <div className="lista-conquistas">
-                                {conquistasRecentes.map((conquista, index) => (                                    <div key={conquista.id} className="card-conquista">
+                                {conquistasRecentes.map((conquista) => (
+                                    <div key={conquista.id} className="card-conquista">
                                         <div className="conquista-icone">
                                             <div className="medal-icon">🥇</div>
                                         </div>
@@ -255,6 +206,9 @@ export default function ConsultarPontuacaoPage() {
                                             <h4 className="conquista-titulo">
                                                 {conquista.categorias?.nome}
                                             </h4>
+                                            <span className="conquista-data">
+                                                {formatarData(conquista.created_at)}
+                                            </span>
                                         </div>
                                         <div className="conquista-pontos">
                                             <span className="pontos-ganhos">
@@ -263,7 +217,8 @@ export default function ConsultarPontuacaoPage() {
                                         </div>
                                     </div>
                                 ))}
-                            </div>                        ) : (
+                            </div>
+                        ) : (
                             <div className="empty-state">
                                 <div className="empty-icon">📊</div>
                                 <h3>Nenhuma conquista ainda</h3>

@@ -34,3 +34,23 @@ export async function POST(request) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
+
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const ra = searchParams.get('ra');
+  if (!ra) {
+    return new Response(JSON.stringify({ error: 'RA não informado.' }), { status: 400 });
+  }
+
+  const { data, error } = await supabase
+    .from('alunos_turmas')
+    .select('codigo_turma')
+    .eq('RA_aluno', ra)
+    .single();
+
+  if (error || !data) {
+    return new Response(JSON.stringify({ error: 'Turma não encontrada.' }), { status: 404 });
+  }
+
+  return new Response(JSON.stringify({ codigo_turma: data.codigo_turma }), { status: 200 });
+}

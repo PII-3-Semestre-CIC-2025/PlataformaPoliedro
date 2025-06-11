@@ -35,11 +35,16 @@ export default function RankingPage() {
                 nome: rel.alunos.nome,
                 pontos: rel.alunos.total_pontos ?? 0,
                 ra: rel.alunos.RA,
-                media: mediasMap[rel.alunos.RA] ?? null
+                media: mediasMap[rel.alunos.RA] ?? 0
             }));
 
+            // Score: média + (pontos / 15)
             const ranking = [...alunosFormatados]
-                .sort((a, b) => (b.media ?? 0) - (a.media ?? 0))
+                .map(aluno => ({
+                    ...aluno,
+                    _score: (aluno.media ?? 0) + ((aluno.pontos ?? 0) / 15)
+                }))
+                .sort((a, b) => b._score - a._score)
                 .map((aluno, idx) => ({
                     ...aluno,
                     posicao: idx + 1
