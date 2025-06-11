@@ -1,52 +1,65 @@
 'use client'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { buscarDisciplinasPorEtapa } from '@/lib/client/disciplinasService';
 
 export function ModalGerenciarAvaliacoes({ isOpen, onClose, avaliacoes, onEdit, onDelete }) {
+    const [disciplinaSelecionada, setDisciplinaSelecionada] = useState('');
+    const [disciplinas, setDisciplinas] = useState([]);
+
+    const atualizarDisciplinas = async () => {
+        const etapa = localStorage.getItem('etapaSelecionada');
+        if (etapa) {
+            const lista = await buscarDisciplinasPorEtapa(etapa);
+            setDisciplinas(lista);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            atualizarDisciplinas();
+        }
+        window.addEventListener('etapaOuTurmaAtualizada', atualizarDisciplinas);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', atualizarDisciplinas);
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
-    const [disciplinaSelecionada, setDisciplinaSelecionada] = useState('');
-
-    // Lista de disciplinas disponíveis
-    const disciplinas = [
-        'Matemática',
-        'Português',
-        'História',
-        'Geografia',
-        'Ciências',
-        'Física',
-        'Química',
-        'Biologia',
-        'Inglês',
-        'Espanhol',
-        'Educação Física',
-        'Arte',
-        'Filosofia',
-        'Sociologia',
-        'Literatura',
-        'Informática'
-    ];
-
-    // Filtrar avaliações por disciplina selecionada
     const avaliacoesFiltradas = disciplinaSelecionada 
         ? avaliacoes.filter(avaliacao => avaliacao.disciplina === disciplinaSelecionada)
         : [];
 
-    const handleSubmit = (e, avaliacao) => {
+    const handleSubmit = async (e, avaliacao) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const avaliacaoAtualizada = {
-            ...avaliacao,
+        const body = {
             nome: formData.get('nome'),
-            peso: parseInt(formData.get('peso'))
+            peso: parseFloat(formData.get('peso'))
         };
+        const res = await fetch(`/api/avaliacoes/${avaliacao.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+            alert('Erro ao atualizar avaliação');
+            return;
+        }
+        const avaliacaoAtualizada = await res.json();
         onEdit(avaliacaoAtualizada);
-    };    return (
+    };
+
+    const handleDelete = async (id) => {
+        await fetch(`/api/avaliacoes/${id}`, { method: 'DELETE' });
+        onDelete();
+    };
+
+    return (
         <>
             <div className="blur-background" onClick={onClose}></div>
             <div className="cadastro-modal gerenciar-modal">
                 <h2>Gerenciar Avaliações</h2>
-                
-                {/* Dropdown para selecionar disciplina */}
                 <div className="form-group">
                     <label htmlFor="disciplina-select">Selecionar Disciplina</label>
                     <select
@@ -56,15 +69,14 @@ export function ModalGerenciarAvaliacoes({ isOpen, onClose, avaliacoes, onEdit, 
                         className="form-select"
                     >
                         <option value="">Selecione uma disciplina</option>
-                        {disciplinas.map((disciplina, index) => (
-                            <option key={index} value={disciplina}>
+                        {disciplinas.map((disciplina) => (
+                            <option key={disciplina} value={disciplina}>
                                 {disciplina}
                             </option>
                         ))}
                     </select>
                 </div>
 
-                {/* Lista de avaliações da disciplina selecionada */}
                 {disciplinaSelecionada && (
                     <div className="lista-avaliacoes">
                         {avaliacoesFiltradas.length > 0 ? (
@@ -106,7 +118,7 @@ export function ModalGerenciarAvaliacoes({ isOpen, onClose, avaliacoes, onEdit, 
                                         <button 
                                             type="button" 
                                             className="botao-excluir"
-                                            onClick={() => onDelete(avaliacao.id)}
+                                            onClick={() => handleDelete(avaliacao.id)}
                                         >
                                             <img 
                                                 src="/images/Icon Deletar.png" 

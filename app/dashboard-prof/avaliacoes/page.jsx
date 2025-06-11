@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Header } from '@/app/components/header';
 import '@/styles/avaliacoes/avaliacoes.css';
 import '@/styles/avaliacoes/botao-selectaluno-avaliacoes.css';
@@ -10,42 +10,66 @@ import '@/styles/avaliacoes/modal-gerenciar-avaliacoes.css';
 import { ModalAdicionarAvaliacao } from '@/app/components/modal-adicionar-avaliacao';
 import { ModalAtribuirNota } from '@/app/components/modal-atribuir-nota';
 import { ModalGerenciarAvaliacoes } from '@/app/components/modal-gerenciar-avaliacoes';
+import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
+import { buscarNotasPorTurma } from '@/lib/client/notasService';
+import { buscarAvaliacoesPorTurma } from '@/lib/client/avaliacoesService';
 
 export default function AvaliacoesPage() {
     const [alunoSelecionado, setAlunoSelecionado] = useState('');
     const [modalAddAvaliacaoAberto, setModalAddAvaliacaoAberto] = useState(false);
     const [modalNotaAberto, setModalNotaAberto] = useState(false);
     const [modalGerenciarAberto, setModalGerenciarAberto] = useState(false);
-      // Lista de avaliações disponíveis para atribuir notas
-    const [avaliacoesDisponiveis, setAvaliacoesDisponiveis] = useState([
-        { id: 1, disciplina: 'História', nome: 'Prova I História', peso: 20 },
-        { id: 2, disciplina: 'Matemática', nome: 'Prova II Matemática', peso: 40 },
-        { id: 3, disciplina: 'História', nome: 'Trabalho em Grupo II', peso: 10 },
-        { id: 4, disciplina: 'Português', nome: 'Redação', peso: 30 },
-        { id: 5, disciplina: 'Matemática', nome: 'Lista de Exercícios', peso: 15 }
-    ]);
 
-    // Notas dos alunos em cada avaliação
-    const [notasAlunos, setNotasAlunos] = useState({
-        'Henrique Nalin': [
-            { avaliacaoId: 1, nota: 9.8 },
-            { avaliacaoId: 2, nota: 8.0 }
-        ],
-        'Vitor Porto': [
-            { avaliacaoId: 1, nota: 7.5 }
-        ]
-    });
+    const [avaliacoesDisponiveis, setAvaliacoesDisponiveis] = useState([]);
+    const [notasAlunos, setNotasAlunos] = useState({});
     
-    const [alunos] = useState([
-        'Henrique Nalin',
-        'Vitor Porto',
-        'Leonardo Belo',
-        'Lyssa Okawa',
-        'Breno Augusto',
-        'Leticia Carvalho',
-        'Bruno Nogueira',
-        'Mateo Cortez'
-    ]);
+    const [alunos, setAlunos] = useState([]);
+    const [etapaSelecionada, setEtapaSelecionada] = useState('');
+    const [turmaSelecionada, setTurmaSelecionada] = useState('');
+
+    useEffect(() => {
+        setAlunoSelecionado('');
+    }, [turmaSelecionada]);
+
+    const fetchAll = useCallback(async () => {
+        const turma = localStorage.getItem('turmaSelecionada');
+        setTurmaSelecionada(turma || '');
+        if (!turma) {
+            setAlunos([]);
+            setNotasAlunos({});
+            setAvaliacoesDisponiveis([]);
+            return;
+        }
+        const [alunosData, notas, avaliacoes] = await Promise.all([
+            buscarAlunosPorTurma(turma),
+            buscarNotasPorTurma(turma),
+            buscarAvaliacoesPorTurma(turma)
+        ]);
+        setAlunos(alunosData.map(rel => ({ ra: rel.alunos.RA, nome: rel.alunos.nome })));
+        const agrupadas = {};
+        notas.forEach(nota => {
+            if (!agrupadas[nota.RA_aluno]) agrupadas[nota.RA_aluno] = [];
+            agrupadas[nota.RA_aluno].push({
+                id_avaliacao: nota.id_avaliacao,
+                nota: nota.nota,
+                id: nota.id
+            });
+        });
+        setNotasAlunos(agrupadas);
+        setAvaliacoesDisponiveis(avaliacoes);
+    }, []);
+
+    useEffect(() => {
+        fetchAll();
+        window.addEventListener('etapaOuTurmaAtualizada', fetchAll);
+        window.addEventListener('storage', fetchAll);
+        window.addEventListener('focus', fetchAll);
+        return () => {
+            window.removeEventListener('etapaOuTurmaAtualizada', fetchAll);
+            window.removeEventListener('storage', fetchAll);
+            window.removeEventListener('focus', fetchAll);
+        };
+    }, [fetchAll]);
 
     const handleEditarAvaliacao = (avaliacaoAtualizada) => {
         setAvaliacoesDisponiveis(avaliacoes => 
@@ -56,7 +80,6 @@ export default function AvaliacoesPage() {
     };
 
     const handleExcluirAvaliacao = (id) => {
-        // Verificar se a avaliação está em uso
         const avaliacaoEmUso = Object.values(notasAlunos).some(notas =>
             notas.some(nota => nota.avaliacaoId === id)
         );
@@ -71,32 +94,49 @@ export default function AvaliacoesPage() {
         );
     };
 
-    const handleAdicionarAvaliacao = (novaAvaliacao) => {
+    const handleAdicionarAvaliacao = async (novaAvaliacao) => {
         setAvaliacoesDisponiveis(avaliacoes => [...avaliacoes, novaAvaliacao]);
+        const turma = localStorage.getItem('turmaSelecionada');
+        if (turma) {
+            const avaliacoes = await buscarAvaliacoesPorTurma(turma);
+            setAvaliacoesDisponiveis(avaliacoes);
+        }
+
+        if (modalNotaAberto) {
+            setModalNotaAberto(false);
+            setTimeout(() => setModalNotaAberto(true), 0);
+        }
     };
 
-    const handleAtribuirNota = (novaNota) => {
+    const handleAtribuirNota = async (notaSalva) => {
+        await atualizarNotas();
+    };
+
+    const handleExcluirNota = async (id_avaliacao) => {
         if (!alunoSelecionado) return;
-
-        setNotasAlunos(prevNotas => ({
-            ...prevNotas,
-            [alunoSelecionado]: [
-                ...(prevNotas[alunoSelecionado] || []),
-                novaNota
-            ]
-        }));
+        const notaParaExcluir = (notasAlunos[alunoSelecionado] || []).find(
+            nota => nota.id_avaliacao === id_avaliacao
+        );
+        if (!notaParaExcluir) return;
+        await fetch(`/api/notas/${notaParaExcluir.id}`, { method: 'DELETE' });
+        await atualizarNotas();
     };
 
-    const handleExcluirNota = (avaliacaoId) => {
-        if (!alunoSelecionado) return;
-
-        setNotasAlunos(prevNotas => ({
-            ...prevNotas,
-            [alunoSelecionado]: prevNotas[alunoSelecionado].filter(
-                nota => nota.avaliacaoId !== avaliacaoId
-            )
-        }));
-    };
+    async function atualizarNotas() {
+        const turma = localStorage.getItem('turmaSelecionada');
+        if (!turma) return;
+        const notas = await buscarNotasPorTurma(turma);
+        const agrupadas = {};
+        notas.forEach(nota => {
+            if (!agrupadas[nota.RA_aluno]) agrupadas[nota.RA_aluno] = [];
+            agrupadas[nota.RA_aluno].push({
+                id_avaliacao: nota.id_avaliacao,
+                nota: nota.nota,
+                id: nota.id
+            });
+        });
+        setNotasAlunos(agrupadas);
+    }
 
     return (
         <div className="pagina-avaliacoes">
@@ -113,8 +153,8 @@ export default function AvaliacoesPage() {
                                 >
                                     <option value="">Selecionar Aluno</option>
                                     {alunos.map((aluno) => (
-                                        <option key={aluno} value={aluno}>
-                                            {aluno}
+                                        <option key={aluno.ra} value={aluno.ra}>
+                                            {aluno.nome}
                                         </option>
                                     ))}
                                 </select>
@@ -152,8 +192,11 @@ export default function AvaliacoesPage() {
 
                 {alunoSelecionado && (
                     <div className="secao-notas">
-                        <h2 className="titulo-notas">Notas de {alunoSelecionado}</h2>
-                        <div className="table-responsive">                            <table className="tabela-avaliacoes">
+                        <h2 className="titulo-notas">
+                            Notas de {alunos.find(a => a.ra === alunoSelecionado)?.nome || ''}
+                        </h2>
+                        <div className="table-responsive">                            
+                            <table className="tabela-avaliacoes">
                                 <thead>
                                     <tr>
                                         <th>Disciplina</th>
@@ -164,32 +207,34 @@ export default function AvaliacoesPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {notasAlunos[alunoSelecionado]?.map((nota) => {
-                                        const avaliacao = avaliacoesDisponiveis.find(a => a.id === nota.avaliacaoId);
-                                        if (!avaliacao) return null;
-                                        
-                                        return (
-                                            <tr key={avaliacao.id}>
-                                                <td><span className="disciplina-badge">{avaliacao.disciplina}</span></td>
-                                                <td>{avaliacao.nome}</td>
-                                                <td>{nota.nota.toFixed(1)}</td>
-                                                <td>{avaliacao.peso}%</td>
-                                                <td>
-                                                    <button
-                                                        className="botao-excluir"
-                                                        onClick={() => handleExcluirNota(nota.avaliacaoId)}
-                                                    >
-                                                        <img 
-                                                            src="/images/Icon Deletar.png" 
-                                                            alt="Excluir"
-                                                            width={20}
-                                                            height={20}
-                                                        />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                    {notasAlunos[alunoSelecionado]
+                                        ?.filter(nota => nota && typeof nota.id_avaliacao !== 'undefined')
+                                        .map((nota) => {
+                                            const avaliacao = avaliacoesDisponiveis.find(a => a.id === nota.id_avaliacao);
+                                            if (!avaliacao) return null;
+
+                                            return (
+                                                <tr key={avaliacao.id}>
+                                                    <td><span className="disciplina-badge">{avaliacao.disciplina}</span></td>
+                                                    <td>{avaliacao.nome}</td>
+                                                    <td>{nota.nota.toFixed(1)}</td>
+                                                    <td>{avaliacao.peso}%</td>
+                                                    <td>
+                                                        <button
+                                                            className="botao-excluir"
+                                                            onClick={() => handleExcluirNota(nota.id_avaliacao)}
+                                                        >
+                                                            <img 
+                                                                src="/images/Icon Deletar.png" 
+                                                                alt="Excluir"
+                                                                width={20}
+                                                                height={20}
+                                                            />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                 </tbody>
                             </table>
                         </div>

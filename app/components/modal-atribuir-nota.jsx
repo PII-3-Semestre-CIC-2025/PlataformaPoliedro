@@ -3,21 +3,34 @@
 export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDisponiveis, alunoSelecionado, notasExistentes }) {
     if (!isOpen) return null;
 
-    const handleSubmit = (e) => {
+    // 3. Use sempre id_avaliacao
+    const avaliacoesDisponiveisParaAtribuir = avaliacoesDisponiveis.filter(avaliacao => 
+        !notasExistentes.some(nota => nota.id_avaliacao === avaliacao.id)
+    );
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const novaNota = {
-            avaliacaoId: parseInt(formData.get('avaliacao')),
+            RA_aluno: alunoSelecionado,
+            id_avaliacao: parseInt(formData.get('avaliacao')),
             nota: parseFloat(formData.get('nota'))
         };
-        onConfirm(novaNota);
+        console.log('Enviando nota:', novaNota);
+        const res = await fetch('/api/notas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novaNota)
+        });
+        if (!res.ok) {
+            const erro = await res.json();
+            alert('Erro ao salvar nota: ' + erro.error);
+            return;
+        }
+        const notaSalva = await res.json();
+        onConfirm(notaSalva);
         onClose();
     };
-
-    // Filtra avaliações que ainda não foram atribuídas ao aluno
-    const avaliacoesDisponiveisParaAtribuir = avaliacoesDisponiveis.filter(avaliacao => 
-        !notasExistentes.some(nota => nota.avaliacaoId === avaliacao.id)
-    );
 
     return (
         <>
@@ -33,10 +46,12 @@ export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDispon
                             required
                         >
                             <option value="">Selecione uma avaliação</option>
-                            {avaliacoesDisponiveisParaAtribuir.map(avaliacao => (
-                                <option key={avaliacao.id} value={avaliacao.id}>
-                                    {avaliacao.nome} (Peso: {avaliacao.peso}%)
-                                </option>
+                            {avaliacoesDisponiveisParaAtribuir
+                                .filter(avaliacao => avaliacao && avaliacao.id)
+                                .map(avaliacao => (
+                                    <option key={avaliacao.id} value={avaliacao.id}>
+                                        {avaliacao.nome} (Peso: {avaliacao.peso}%)
+                                    </option>
                             ))}
                         </select>
                     </div>
