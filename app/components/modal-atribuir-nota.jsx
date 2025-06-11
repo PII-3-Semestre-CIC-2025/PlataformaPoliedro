@@ -50,7 +50,7 @@ export function ModalAtribuirNota({ isOpen, onClose, onConfirm, avaliacoesDispon
                                 .filter(avaliacao => avaliacao && avaliacao.id)
                                 .map(avaliacao => (
                                     <option key={avaliacao.id} value={avaliacao.id}>
-                                        {avaliacao.nome} (Peso: {avaliacao.peso}%)
+                                        ({avaliacao.disciplina}) - {avaliacao.nome} (Peso: {avaliacao.peso}%)
                                     </option>
                             ))}
                         </select>

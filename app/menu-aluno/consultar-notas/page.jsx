@@ -126,9 +126,13 @@ export default function ConsultarNotasPage() {
                                         {getNotasDisciplina().length > 0 ? (
                                             getNotasDisciplina().map((item, index) => (
                                                 <tr key={index}>
-                                                    <td>{item.avaliacao}</td>
                                                     <td>
-                                                        <span className={`nota ${item.nota === 0 ? 'nota-zero' : ''}`}>
+                                                        {disciplinaSelecionada === 'TODAS'
+                                                            ? `(${item.disciplina}) - ${item.avaliacao}`
+                                                            : item.avaliacao}
+                                                    </td>
+                                                    <td>
+                                                            <span className={`nota ${item.nota !== null && item.nota < 6 ? 'nota-zero' : ''}`}>
                                                             {item.nota !== null && item.nota !== undefined ? item.nota : '—'}
                                                         </span>
                                                     </td>
