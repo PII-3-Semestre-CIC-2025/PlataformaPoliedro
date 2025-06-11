@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/menu-aluno.css';
 import '@/styles/aluno/consultar-pontuacao.css';
 import { buscarMediasPorTurma } from '@/lib/client/notasService';
+import { Header } from '../../components/header-aluno';
 
 export default function ConsultarPontuacaoPage() {
     const [dadosAluno, setDadosAluno] = useState(null);
@@ -132,23 +133,7 @@ export default function ConsultarPontuacaoPage() {
 
     return (
         <div className="consultar-pontuacao">
-            <header className="header-aluno">
-                <div className="container-fluid">
-                    <div className="row align-items-center">
-                        <div className="col-6">
-                            <a href="/menu-aluno" className="logo-link">
-                                <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
-                            </a>
-                        </div>
-                        <div className="col-6 d-flex justify-content-end">
-                            <a href="/login/aluno" className="logout-btn">
-                                <img src="/images/IconLogout.png" alt="Sair" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+            <Header />
             <main className="main-content">
                 <div className="container-fluid px-4">
                     <div className="secao-stats">
