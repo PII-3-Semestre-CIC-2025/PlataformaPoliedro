@@ -26,7 +26,16 @@
 }
 
 .turma-info {
-    padding-left: 550px;  /* Ajusta o espaço à esquerda dos dropdowns */
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* Centraliza o container center-elements */
+    height: 100%;
+}
+
+.center-elements {
+    display: flex;
+    align-items: center;
+    gap: 2rem;  /* Espaçamento entre os elementos */
 }
 
 .label-select-group {
@@ -38,17 +47,70 @@
     min-width: 180px;
     background: none;
     color: white;
-    font-size: 1.3rem;
+    font-size: 0.9rem;
+    font-weight: 500;
     border: 2px solid white;  
-    border-radius: 10px;  
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;    /* Seta do dropdown */
-    background-size: 16px !important; /* Tamanho da seta */
+    border-radius: 8px;
+    padding: 0.6rem 2.5rem 0.6rem 1.2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-size: 16px !important;
     background-repeat: no-repeat !important;
     background-position: right 12px center !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap;
 }
 #etapaDropdown, #turmaDropdown option {
     background: #124F8F;
     color: white;
+}
+
+#etapaDropdown:hover, #turmaDropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+#etapaDropdown:focus, #turmaDropdown:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Botão Adicionar Turma */
+.btn-adicionar-turma {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-adicionar-turma:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-adicionar-turma-mobile {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-adicionar-turma-mobile:hover {
+    background-color: #218838;
 }
 
 /* Responsividade */

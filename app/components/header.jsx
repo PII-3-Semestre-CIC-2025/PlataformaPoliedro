@@ -1,9 +1,11 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '@/styles/header.css' 
+import '@/styles/header.css'
+import '@/styles/globals.css'
 import { useEffect, useState } from 'react';
 import { buscarTurmasPorEtapa } from '@/lib/client/turmasService.js';
 import { buscarEtapas } from '@/lib/client/etapasService.js';
+import { ModalCriarTurma } from './modal-criar-turma';
 
 export const Header = () => {
   const [etapas, setEtapas] = useState([]);
@@ -12,6 +14,7 @@ export const Header = () => {
   const [turmaSelecionada, setTurmaSelecionada] = useState('');
   const [carregando, setCarregando] = useState(true);
   const [menuAberto, setMenuAberto] = useState(false);
+  const [showModalCriarTurma, setShowModalCriarTurma] = useState(false);
 
   useEffect(() => {
     const etapaSalva = localStorage.getItem('etapaSelecionada') || '';
@@ -103,36 +106,43 @@ export const Header = () => {
               <a href="/dashboard-prof/" className="logo-link">
                 <img src="/images/logo-cubo.png" alt="Logo" className="logo" />
               </a>
-            </div>
-            
-            {/* Desktop - Dropdowns visíveis */}
-            <div className="col-8 turma-info desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '6rem' }}>            
-              <div className="label-select-group">
-                <select
-                  id="etapaDropdown"
-                  value={etapaSelecionada}
-                  onChange={handleEtapaChange}
-                  className="form-select"
+            </div>            {/* Desktop - Dropdowns visíveis */}
+            <div className="col-8 turma-info desktop-only">            
+              <div className="center-elements">
+                <div className="label-select-group">
+                  <select
+                    id="etapaDropdown"
+                    value={etapaSelecionada}
+                    onChange={handleEtapaChange}
+                    className="form-select"
+                  >
+                    <option value="" disabled hidden>Etapa</option>
+                    {etapas.map(etapa => (
+                      <option key={etapa} value={etapa}>Etapa: {etapa}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="label-select-group">              
+                  <select
+                    id="turmaDropdown"
+                    value={turmaSelecionada}
+                    onChange={handleTurmaChange}
+                    className="form-select"
+                    disabled={!etapaSelecionada}
+                  >
+                    <option value="" disabled hidden>Turma</option>
+                    {turmas.map(turma => (
+                      <option key={turma} value={turma}>Turma: {turma}</option>
+                    ))}
+                  </select>
+                </div>
+                <button 
+                  className="btn-adicionar-turma"
+                  onClick={() => setShowModalCriarTurma(true)}
+                  title="Adicionar Nova Turma"
                 >
-                  <option value="" disabled hidden>Etapa</option>
-                  {etapas.map(etapa => (
-                    <option key={etapa} value={etapa}>Etapa: {etapa}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="label-select-group">              
-                <select
-                  id="turmaDropdown"
-                  value={turmaSelecionada}
-                  onChange={handleTurmaChange}
-                  className="form-select"
-                  disabled={!etapaSelecionada}
-                >
-                  <option value="" disabled hidden>Turma</option>
-                  {turmas.map(turma => (
-                    <option key={turma} value={turma}>Turma: {turma}</option>
-                  ))}
-                </select>
+                  + Adicionar Turma
+                </button>
               </div>
             </div>
 
@@ -188,7 +198,19 @@ export const Header = () => {
               {turmas.map(turma => (
                 <option key={turma} value={turma}>{turma}</option>
               ))}
-            </select>
+            </select>          </div>
+          
+          {/* Botão Adicionar Turma Mobile */}
+          <div className="mobile-select-group">
+            <button 
+              className="btn-adicionar-turma-mobile"
+              onClick={() => {
+                setShowModalCriarTurma(true);
+                setMenuAberto(false);
+              }}
+            >
+              + Adicionar Turma
+            </button>
           </div>
           
           {/* Botão Logout Mobile */}
@@ -202,10 +224,13 @@ export const Header = () => {
             </a>
           </div>
         </div>
-      </div>
-
-      {/* Overlay para fechar menu */}
+      </div>      {/* Overlay para fechar menu */}
       {menuAberto && <div className="menu-overlay" onClick={toggleMenu}></div>}
+
+      {/* Modal Criar Turma */}
+      {showModalCriarTurma && (
+        <ModalCriarTurma onClose={() => setShowModalCriarTurma(false)} />
+      )}
     </>
   )
 }
