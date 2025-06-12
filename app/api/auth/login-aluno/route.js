@@ -1,36 +1,33 @@
 import { supabase } from '@/lib/supabaseAdmin.js'
-import bcrypt from 'bcrypt'
 import { SignJWT } from 'jose'
 
 export async function POST(request) {
-    const { email: emailDigitado, senha: senhaDigitada } = await request.json()
+    const { RA: raDigitado, nome: nomeDigitado } = await request.json()
     
-    if (!emailDigitado || !senhaDigitada) {
+    if (!raDigitado || !nomeDigitado) {
         return new Response(JSON.stringify({ error: 'Preencha todos os campos.' }), { status: 400 })
     }
 
-    const senha = String(senhaDigitada).trim()
-    const email = String(emailDigitado).trim().toLowerCase()
+    const nome = String(nomeDigitado).trim().toLowerCase()
+    const RA = String(raDigitado).trim()
 
     const { data: aluno } = await supabase
         .from('alunos')
         .select('*')
-        .eq('email', email)
+        .eq('RA', RA)
         .single()
 
     if (!aluno) {
-        return new Response(JSON.stringify({ error: 'E-mail ou senha incorretos.' }), { status: 401 })
+        return new Response(JSON.stringify({ error: 'RA ou nome incorretos.' }), { status: 401 })
     }
 
-    const senhaCorreta = await bcrypt.compare(senha, aluno.senha)
-    if (!senhaCorreta) {
-        return new Response(JSON.stringify({ error: 'E-mail ou senha incorretos.' }), { status: 401 })
+    if (String(aluno.nome).trim().toLowerCase() != nome) {
+        return new Response(JSON.stringify({ error: 'RA ou nome incorretos.' }), { status: 401 })
     }
 
     const jwt = await new SignJWT({
         sub: aluno.RA,
         tipo: 'aluno',
-        email: aluno.email,
         nome: aluno.nome
     })
         .setProtectedHeader({ alg: 'HS256' })

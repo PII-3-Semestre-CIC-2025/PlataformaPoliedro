@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 
 
 const LoginAlunoPage = () => {
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
+    const [nome, setNome] = useState('')
+    const [RA, setRA] = useState('')
     const [erro, setErro] = useState(null)
     const router = useRouter()
 
@@ -25,7 +25,7 @@ const LoginAlunoPage = () => {
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({ email, senha }),
+                                body: JSON.stringify({ nome, RA }),
                             })
 
                             const data = await response.json()
@@ -41,39 +41,36 @@ const LoginAlunoPage = () => {
                     }}>
                     {erro && <p style={{ color: 'red' }}>{erro}</p>}
                     <div className="form-group">
-                        <label>E-mail:</label>
+                        <label>Nome Completo:</label>
                         <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            autoComplete="email"
+                            type="name"
+                            id="nome"
+                            name="nome"
+                            autoComplete="name"
                             autoFocus
-                            placeholder='Ex.: (Seu RA)@p4ed.com.br'
-                            //pattern=".+@p4ed\.com\.br"
-                            //title="Use seu e-mail institucional que termina com @p4ed.com.br"
+                            placeholder='Ex.: Joao Pereira Silva.'
                             required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>Senha:</label>
+                        <label>Matrícula:</label>
                         <input
-                            type="password"
-                            id="senha"
-                            name="senha"
-                            autoComplete="current-password"
-                            placeholder='Digite sua senha'
+                            type="student-id"
+                            id="ra"
+                            name="ra"
+                            autoComplete="student-id"
+                            placeholder='Digite seu número de matrícula.'
                             required
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
+                            value={RA}
+                            onChange={(e) => setRA(e.target.value)}
                         />
                     </div>
 
                     <button type="submit" className="submit-button">Entrar</button>
                 </form>
-                <a href="#" className="forgot-password">Esqueceu a senha?</a>
                 
             </section>
 

@@ -13,8 +13,7 @@ export async function GET(request) {
             return new Response(JSON.stringify({
                 tipo: 'aluno',
                 ra: payload.sub,
-                nome: payload.nome,
-                email: payload.emailna
+                nome: payload.nome
             }), { status: 200 });
         } else if (payload.tipo === 'professor') {
             return new Response(JSON.stringify({

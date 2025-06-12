@@ -40,7 +40,7 @@ a {
 }
 
 .blur-background {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -51,7 +51,7 @@ a {
   }
   
   .cadastro-modal {
-    position: absolute;
+    position: fixed;
     z-index: 2;
     top: 50%;
     left: 50%;

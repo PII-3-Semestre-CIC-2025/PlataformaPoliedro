@@ -14,30 +14,23 @@ export const ModalRecuperarSenha = ({ onClose }) => {
         setEnviando(true);
 
         try {
-            // TODO: Implementar API de recuperação de senha
-            // const response = await fetch('/api/auth/recuperar-senha', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ email }),
-            // });
+            const response = await fetch('/api/auth/mail-rec-senha', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
 
-            // const data = await response.json();
+            const data = await response.json();
 
-            // if (!response.ok) {
-            //     throw new Error(data.error || 'Erro ao enviar e-mail de recuperação.');
-            // }
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro ao enviar e-mail de recuperação.');
+            }
 
-            // Simulação de sucesso por enquanto
+            setSucesso(true);
+            setEnviando(false);
             setTimeout(() => {
-                setSucesso(true);
-                setEnviando(false);
-                setTimeout(() => {
-                    onClose();
-                }, 2000);
-            }, 1000);
-
+                onClose();
+            }, 2000);
         } catch (err) {
             setErro(err.message || 'Erro ao enviar e-mail de recuperação.');
             setEnviando(false);
@@ -72,6 +65,9 @@ export const ModalRecuperarSenha = ({ onClose }) => {
                             <input
                                 type="email"
                                 id="email-recuperacao"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
                                 placeholder="Digite seu e-mail"
                                 required
                                 value={email}

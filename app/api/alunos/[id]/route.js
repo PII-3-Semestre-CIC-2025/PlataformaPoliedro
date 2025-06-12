@@ -36,7 +36,7 @@ export async function GET(request, context) {
 
   const { data: aluno, error } = await supabase
     .from('alunos')
-    .select('RA, nome, email, total_pontos')
+    .select('RA, nome, total_pontos')
     .eq('RA', ra)
     .single();
 

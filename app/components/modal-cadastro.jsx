@@ -1,5 +1,6 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@/styles/loginprof.css'
 import { useState } from 'react'
 
 export const ModalCadastro = ({ onClose }) => {
@@ -65,7 +66,7 @@ export const ModalCadastro = ({ onClose }) => {
           <input
             type="password"
             id="senha"
-            placeholder='Mínimo 8 caracteres'
+            placeholder='Mínimo de 8 caractéres.'
             minLength="8"
             required
             value={senha}
@@ -76,7 +77,7 @@ export const ModalCadastro = ({ onClose }) => {
           <input
             type="password"
             id="confirmar"
-            placeholder="Repita a senha"
+            placeholder="Repita a senha."
             minLength="8"
             required
             value={confirmarSenha}

@@ -4,6 +4,7 @@ import { jwtVerify } from 'jose'
 const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 
 const rotasPublicas = [
+    '/redefinir-senha',
     '/login', 
     '/login/professor', 
     '/login/aluno',
