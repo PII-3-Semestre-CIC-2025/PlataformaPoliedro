@@ -187,18 +187,20 @@ export default function ConsultarPontuacaoPage() {
                                         <div className="conquista-icone">
                                             <div className="medal-icon">🥇</div>
                                         </div>
-                                        <div className="conquista-info">
-                                            <h4 className="conquista-titulo">
-                                                {conquista.categorias?.nome}
-                                            </h4>
-                                            <span className="conquista-data">
-                                                {formatarData(conquista.created_at)}
-                                            </span>
-                                        </div>
-                                        <div className="conquista-pontos">
-                                            <span className="pontos-ganhos">
-                                                +{conquista.categorias?.valor} pts
-                                            </span>
+                                        <div className="conquista-info-row">
+                                            <div className="conquista-info">
+                                                <h4 className="conquista-titulo mb-0">
+                                                    {conquista.categorias?.nome}
+                                                </h4>
+                                                <span className="conquista-data">
+                                                    {formatarData(conquista.created_at)}
+                                                </span>
+                                            </div>
+                                            <div className="conquista-pontos">
+                                                <span className="pontos-ganhos">
+                                                    +{conquista.categorias?.valor} pts
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}

@@ -100,7 +100,7 @@ export const Header = () => {
 
   const toggleMenu = () => setMenuAberto(!menuAberto)
 
-  if (carregando) return null
+  if (carregando) return <header className="header-base header-prof" style={{ minHeight: 100 }}></header>
   return (
     <>
       {/* Header Desktop */}

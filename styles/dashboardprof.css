@@ -1,63 +1,12 @@
-:root {
-    --background: #ffffff;
-    --foreground: #171717;
-}
-
-/* Comentado para evitar problemas de dark mode automático */
-/*
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
-}
-*/
-
-html,
-body {
-    max-width: 100vw;
-    overflow-x: hidden;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    color: var(--foreground);
-    background: var(--background);
-    font-family: Arial, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-}
-
 a {
     color: inherit;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .professor-dashboard{
     background-color: white;
     min-height: 100vh;
     width: 100%;
-}
-
-.info-box{
-    justify-content: center;
-    align-content: center;
-    background-color: #CCCC;
-    text-align: center;
-    height: 50px;
-    color: #124F8F;
-    font-size: 25px;
-    border-radius: 15px;
-    margin-top: -10px;
 }
 
 .menuRow {
@@ -68,6 +17,7 @@ a {
 
 .menuBtn {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -108,6 +58,6 @@ a {
     background-color: #1abddc;
 }
 
-.bgConfiguracao {
+.bgCategorias {
     background-color: #e91e63;
 }

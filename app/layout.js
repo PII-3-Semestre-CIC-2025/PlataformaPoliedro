@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
-import "../styles/globals.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "@/styles/globals.css";
 import CursorResetter from "./components/CursorResetter";
 
 const poppins = Poppins({

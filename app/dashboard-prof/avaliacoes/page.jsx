@@ -24,7 +24,6 @@ export default function AvaliacoesPage() {
     const [notasAlunos, setNotasAlunos] = useState({});
     
     const [alunos, setAlunos] = useState([]);
-    const [etapaSelecionada, setEtapaSelecionada] = useState('');
     const [turmaSelecionada, setTurmaSelecionada] = useState('');
 
     useEffect(() => {
