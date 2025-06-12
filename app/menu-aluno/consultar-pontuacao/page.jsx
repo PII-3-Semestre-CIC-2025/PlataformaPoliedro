@@ -170,7 +170,7 @@ export default function ConsultarPontuacaoPage() {
                                     <div className="nome-aluno">
                                         {dadosAluno?.nome}
                                     </div>
-                                    <p className="ra-aluno">RA: {dadosAluno?.RA}</p>
+                                    <p className="ra-aluno">Matrícula: {dadosAluno?.RA}</p>
                                 </div>
                             </div>
                         </div>

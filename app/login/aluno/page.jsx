@@ -43,7 +43,7 @@ const LoginAlunoPage = () => {
                     <div className="form-group">
                         <label>Nome Completo:</label>
                         <input
-                            type="name"
+                            type="text"
                             id="nome"
                             name="nome"
                             autoComplete="name"
@@ -58,10 +58,9 @@ const LoginAlunoPage = () => {
                     <div className="form-group">
                         <label>Matrícula:</label>
                         <input
-                            type="student-id"
+                            type="text"
                             id="ra"
                             name="ra"
-                            autoComplete="student-id"
                             placeholder='Digite seu número de matrícula.'
                             required
                             value={RA}

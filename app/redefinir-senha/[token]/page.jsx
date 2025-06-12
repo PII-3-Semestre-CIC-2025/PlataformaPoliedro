@@ -68,7 +68,7 @@ const RecuperarSenhaPage = () => {
                             type="password"
                             id="confirmarSenha"
                             name="confirmarSenha"
-                            autoComplete="confirm-password"
+                            autoComplete="new-password"
                             placeholder='Repita a nova senha.'
                             minLength="8"
                             required
