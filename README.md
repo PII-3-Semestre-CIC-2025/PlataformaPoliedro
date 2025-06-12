@@ -1,5 +1,5 @@
 # 🎓PoliPoints
-**PoliPoints** é uma plataforma em desenvolvimento para o [Colégio Poliedro](https://www.colegiopoliedro.com.br/) por alunos do [Instituto Mauá de Tecnologia](https://maua.br/) com o objetivo de modernizar a dinâmica na sala da aula para deixá-la mais divertida.  
+**PoliPoints** é uma plataforma em desenvolvimento para o [Colégio Poliedro](https://www.colegiopoliedro.com.br/), feita por alunos do [Instituto Mauá de Tecnologia](https://maua.br/) com o objetivo de modernizar a dinâmica na sala da aula para deixá-la mais divertida.  
 
 ### ⚙️ Tecnologias:
 - [⚛️React JS](https://react.dev/)
