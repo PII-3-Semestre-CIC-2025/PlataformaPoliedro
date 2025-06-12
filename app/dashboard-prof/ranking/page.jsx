@@ -9,7 +9,7 @@ import { buscarAlunosPorTurma } from '@/lib/client/alunosService';
 import { buscarMediasPorTurma } from '@/lib/client/notasService';
 
 export default function RankingPage() {
-    const [ordenacao, setOrdenacao] = useState('Posição Decrescente');
+    const [ordenacao, setOrdenacao] = useState('Posição Crescente');
     const [alunos, setAlunos] = useState([]);
     const [erro, setErro] = useState(null);
 
@@ -54,6 +54,10 @@ export default function RankingPage() {
                 const pos = ranking.find(r => r.id === aluno.id)?.posicao ?? '-';
                 return { ...aluno, posicao: pos };
             });
+
+            // Ordena por posição crescente ao carregar
+            alunosComRanking.sort((a, b) => a.posicao - b.posicao);
+
             setAlunos(alunosComRanking);
             setErro(null);
         } catch (error) {

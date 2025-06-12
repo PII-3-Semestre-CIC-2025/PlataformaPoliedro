@@ -202,6 +202,13 @@ export default function AvaliacoesPage() {
                                 <tbody>
                                     {notasAlunos[alunoSelecionado]
                                         ?.filter(nota => nota && typeof nota.id_avaliacao !== 'undefined')
+                                        .slice()
+                                        .sort((a, b) => {
+                                            const avA = avaliacoesDisponiveis.find(av => av.id === a.id_avaliacao);
+                                            const avB = avaliacoesDisponiveis.find(av => av.id === b.id_avaliacao);
+                                            if (!avA || !avB) return 0;
+                                            return avA.disciplina.localeCompare(avB.disciplina, 'pt-BR', { sensitivity: 'base' });
+                                        })
                                         .map((nota) => {
                                             const avaliacao = avaliacoesDisponiveis.find(a => a.id === nota.id_avaliacao);
                                             if (!avaliacao) return null;
